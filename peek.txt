@@ -1,0 +1,8 @@
+<?php
+// peek into current captcha-code for testing purposes
+session_start();
+include_once(dirname(__FILE__)."/util/securimage.php");
+$img = new Securimage();
+
+echo("captcha=".$img->getCode());
+?>

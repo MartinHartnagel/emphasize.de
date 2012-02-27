@@ -1,0 +1,4 @@
+AuthName "martinauthor"
+AuthType Basic
+AuthUserFile /var/www/html/web78/files/.martin_htpasswd
+require valid-user

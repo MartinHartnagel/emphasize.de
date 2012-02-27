@@ -1,0 +1,15 @@
+# free access of site
+User-agent: *
+Allow: /util/about.php
+Allow: /util/shadow.php?*$
+Allow: /util/i.php?*$
+Allow: /util/load.php?*$
+Allow: /util/download.php
+Allow: /avatars/default.png
+Allow: /*?lang=*$
+Allow: /*?agb$
+Disallow: /cgi-bin/
+Disallow: /util/
+Disallow: /avatars/
+Disallow: /*?
+Sitemap: http://emphasize.de/sitemap.php
