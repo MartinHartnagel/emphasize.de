@@ -20,6 +20,7 @@ function recurseFiles($path) {
 function getFiltered($c) {
 	$c=preg_replace("/<!-- nizip -->.*<!-- \/nizip -->/msU", "", $c);
 	$c=preg_replace("/\/\/ nizip.*\/\/ \/nizip/msU", "", $c);
+	$c=preg_replace("/-- nizip.*-- \/nizip/msU", "", $c);
   $c=preg_replace("/<!-- izip/msU", "", $c);
   $c=preg_replace("/\/izip -->/msU", "", $c);
 	return $c;
@@ -93,7 +94,7 @@ if (!is_file($file)) {
 				|| $f=="./avatars/_dice.png"
 				|| $f=="./avatars/_viking.png")) {
 			// skip
-		} else if (startsWith($f, "./author")) {
+		} else if (startsWith($f, "./author") || startsWith($f, "./.git")) {
 			// skip
 		} else {
 			//$zip->addFile($f, "emphasize-".$version.substr($f, 1));
@@ -132,4 +133,3 @@ header("Content-Length: ".filesize($file));
 
 @readfile($file);
 ?>
-

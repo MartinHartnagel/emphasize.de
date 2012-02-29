@@ -135,25 +135,25 @@ function init() {
 							style="width: 280px; height: 134px;">
 							&nbsp;<img src="graphics/info.png" valign="middle" />
 							<i18n key="tab24"> <en>Add, modify or remove an information on
-							the timeline. <br />
+							the timeline. 
 							Up to 120 characters per info are available, use the return key
 							to submit an info. A new info can be entered only once every ± 2
 							minutes, otherwise the existing info will be modified. By
 							entering a blank info an existing info is removed.</en> <de>Infos
-							zur Zeitleiste hinzufügen, ändern und wieder entfernen.<br />
+							zur Zeitleiste hinzufügen, ändern und wieder entfernen.
 							Es sind bis zu 120 Zeichen pro Info möglich, durch die
 							Return-Taste wird eine Info eingetragen. Eine neue Info kann nur
 							alle ± 2 Minuten eingetragen werden, ansonsten wird die
 							existierende Info geändert. Durch Eintragen einer leeren Info
 							kann eine existierende Info wieder entfernt werden.</de> <fr>Informations
-							sur la timeline pour ajouter, modifier et supprimer. <br />
+							sur la timeline pour ajouter, modifier et supprimer. 
 							Il ya jusqu'à 120 caractères par les informations disponibles, la
 							touche de retour est une base de données. Une nouvelle
 							dénonciation peut être entré une seule fois tous les ± 2 minutes,
 							sinon les informations existant est modifié. En entrant un vide
 							Info est une information existante sera supprimée.</fr> <es>La
 							información sobre la línea de tiempo para agregar, modificar y
-							eliminar. <br />
+							eliminar. 
 							Hay hasta 120 caracteres por la información disponible, la tecla
 							de retorno es una base de datos de información. Una nueva
 							información se puede introducir sólo una vez cada ± 2 minutos, de
