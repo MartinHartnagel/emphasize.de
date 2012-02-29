@@ -89,7 +89,7 @@ if (!empty($_POST)) {
 			} while ($row = mysql_fetch_array($asql));
 			mysql_free_result($asql);
 
-			$insert = @mysql_query("REPLACE INTO " . $db_prefix . "USER SET aid='".p($aid)."', name='".$n."', pw_hash='".$token."', email=' ', tbody='<tr><td class=\"noreport\" rowspan=\"0\" bgcolor=\"#6ba163\"><i18n key=\"guest1\"><en>use scissors to divide</en><de>teile mich mit der Schere</de><fr>ciseaux pour fracture</fr><es>tijera para dividir</es></i18n></td></tr>', lang='".$l."', confirmed='a', base_href='".p($domain."/util/briefing.php?a=".$aid."&q=")."'");
+			$insert = @mysql_query("REPLACE INTO " . $db_prefix . "USER SET aid='".p($aid)."', name='".$n."', pw_hash='".$token."', email=' ', tbody='<tr><td class=\"noreport\" rowspan=\"0\" bgcolor=\"#6ba163\">".'<i18n key="guest1"><en>use scissors to divide</en><de>teile mich mit der Schere</de><fr>ciseaux pour fracture</fr><es>tijera para dividir</es></i18n>'."</td></tr>', lang='".$l."', confirmed='a', base_href='".p($domain."/util/briefing.php?a=".$aid."&q=")."'");
 			if (!$insert) {
 				//ERROR
 				fail("Eintrag fehlgeschlagen");

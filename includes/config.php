@@ -1,14 +1,10 @@
 <?php
 
 $version="next"; 
-//$domain = "http://emphasize.de";
+$domain = "http://emphasize.de";
 // alternative domains for the same installation:
-//$domains=array("de"=>"http://arbeitszeiterfassung.emphasize.de");
-//$db_prefix="EMPHASIZE_";
-// nizip
- $domain = "http://next.de";
- $db_prefix="NEXT_";
-// /nizip
+$domains=array("de"=>"http://next.emphasize.de");
+$db_prefix="EMPHASIZE_";
 
 $db_name = "some"; //Name of the host database
 $db_host = "localhost"; //Database host (usually this is "localhost")

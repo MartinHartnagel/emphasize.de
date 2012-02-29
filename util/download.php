@@ -18,25 +18,10 @@ function recurseFiles($path) {
 }
 
 function getFiltered($c) {
-	$o = preg_match_all('/<i18n\s+?key="(.*)">.*<\/i18n>/imsU', $c, $matches);
-	for($i=0; $i < $o; $i++) {
-		$key=trim($matches[1][$i]);
-		$c=preg_replace('/\s*?<i18n\s+key="'.$key.'">.*<\/i18n>/imsU', '<i18n ref="'.$key.'"></i18n>', $c);
-	}
-
-	$o = preg_match_all('/<i18n\s+?key=\'(.*)\'>.*<\/i18n>/imsU', $c, $matches);
-	for($i=0; $i < $o; $i++) {
-		$key=trim($matches[1][$i]);
-		$c=preg_replace('/<i18n\s+?key=\''.$key.'\'>.*<\/i18n>/imsU', '<i18n ref=\''.$key.'\'></i18n>', $c);
-	}
-
-	$c=preg_replace('/>\s*?<\/i18n>\s*?/imsU', "/>", $c);
-	$c=preg_replace('/\s*?<i18n\s+?/imsU', '<i18n ', $c);
-
 	$c=preg_replace("/<!-- nizip -->.*<!-- \/nizip -->/msU", "", $c);
 	$c=preg_replace("/\/\/ nizip.*\/\/ \/nizip/msU", "", $c);
-        $c=preg_replace("/<!-- izip/msU", "", $c);
-        $c=preg_replace("/\/izip -->/msU", "", $c);
+  $c=preg_replace("/<!-- izip/msU", "", $c);
+  $c=preg_replace("/\/izip -->/msU", "", $c);
 	return $c;
 }
 

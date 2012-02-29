@@ -144,18 +144,18 @@ function termsAccepted() {
 							estará asegurado.</es></i18n>
 						</div>
 					</div><br /> 
-					<i18n key="rtr11"><en>I have read, understood<br />
-					and accept the <a href="<?php echo($domain.'/?agb');?>"
-						target="_blank">Terms & Conditions</a></en> <de>Ich habe die <a
-						href="<?php echo($domain.'/?agb');?>" target="_blank">AGB</a>s
+					<?php echo(str_replace(array("_agb_href_"), array($domain.'/?agb'), i18n("<i18n key='rtr11'><en>I have read, understood<br />
+					and accept the <a href=\"_agb_href_\"
+						target=\"_blank\">Terms & Conditions</a></en> <de>Ich habe die <a
+						href=\"_agb_href_\" target=\"_blank\">AGB</a>s
 					gelesen<br />
 					und akzeptiere diese</de> <fr>J'ai lu et j'accepte<br />
-					les <a href="<?php echo($domain.'/?agb');?>" target="_blank">conditions</a></fr>
+					les <a href=\"_agb_href_\" target=\"_blank\">conditions</a></fr>
 					<es>He leído y acepto<br />
-					las <a href="<?php echo($domain.'/?agb');?>" target="_blank">Condiciones</a></es></i18n>:
+					las <a href=\"_agb_href_\" target=\"_blank\">Condiciones</a></es></i18n>"))); ?>:
 					<input id="registerTermsAndConditions" type="checkbox"
 					name="termsAndConditions" value="readAccepted" /> 
-					<br /><i18n key="rtr9"> <en>Start with</en> <de>Loslegen
+					<br /><i18n key='rtr9'> <en>Start with</en> <de>Loslegen
 					mit</de> <fr>Commence avec</fr> <es>Comience con</es></i18n>:<br />
 					<div class="hc">
 						<select id="startWith" class="help" name="startwith">

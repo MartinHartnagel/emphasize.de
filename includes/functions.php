@@ -316,50 +316,11 @@ function i18n($text, $useLang="") {
   } else {
 	  $lang=detectLang();
 	}
-  // nizip
-	global $db_prefix;
-	global $lc;
-	connectDb();
 	
-	$c = preg_match_all('/\s*?<i18n\s+key=["\'](.*)["\']>(.*)<\/i18n>\s*?/imsU', $text, $matches, PREG_PATTERN_ORDER);
-	for($i=0; $i < $c; $i++) {
-	  $match=$matches[0][$i];
-		$key=trim($matches[1][$i]);
-		$chunk=$matches[2][$i];
-		$lfallback="";
-		$result="";
-		foreach(array_keys($lc) as $l) {
-		  if (strpos($chunk, "<" . $l . ">") !== false) {
-		    $lt=preg_replace("/\s\s*/", " ", trim(between($chunk, "<" . $l . ">", "</" . $l . ">")));
-			  if (strlen($lt) > 0) { 
-			    if ($l == $lang) {
-			      $result=$lt;
-			    }
-			    if ($l == "en") {
-			      $lfallback=$lt;
-			    }
-			    // initial inserts
-				  $insert = @mysql_query("REPLACE INTO " . $db_prefix . "I18N SET `key`='".p($key)."', `update`='2011-03-24 00:00:01', lang='".p($l)."', value='".p($lt)."'");
-				  if (!$insert) {
-					  // fail("insert for \"$key\".\"$l\" failed: ".p($lt));
-				  }
-			  }
-			}
-	  }
-    if (strlen($result) == 0) { 
-		  $result=$lfallback;
-		}
-		$text=str_replace($match, $result, $text);
-		unset($match);
-		unset($result);
-		unset($key);
-	}
-	unset($matches);
-	// /nizip
-	
+	$text=preg_replace('/<i18n\s+?key=/imsU', "<i18n ref=", $text);
 	$text=preg_replace('/>\s*?<\/i18n>\s*?/imsU', "/>", $text);
 	$text=preg_replace('/\s*?<i18n/imsU', '<i18n', $text);
-	$text=preg_replace('/<i18n\s+?/imsU', '<i18n ', $text);
+	$text=preg_replace('/<i18n \s+?/imsU', '<i18n ', $text);
 	
 	while(($f=strpos($text, "<i18n ref=")) !== false) {
 	  $sep=substr($text, $f+10, 1);
@@ -947,7 +908,7 @@ function getUserAvatar($avatar) {
 	global $domain;
 	global $max_avatar_width;
 	global $max_avatar_height;
-	return '<img id="shadow" src="'.$domain.'/util/shadow.php?../avatars/'.$avatar.'.png" style="position:absolute;z-index:107;top:0px;left:'.($max_avatar_width*-2).'px;" /><div id="avatar" style="position:absolute; z-index:108; top:100px;left:'.($max_avatar_width*-2-3).'px;width:1px;height:1px;"><img id="user" class="help" src="'.$domain.'/avatars/'.$avatar.'.png" title="'.$name.'" /><div id="help_user" class="docu" style="width:220px;height:44px;"><i18n key="con25"><en><a href="javascript:tubeTutorial(\'akZ90qEgKEQ\')">Character</a> placed on the current activity by clicking on the corresponding field.</en><de><a href="javascript:tubeTutorial(\'R1XmQ9pioJU\')">Spielfigur</a> die jeweils auf die aktuelle Aktivität durch Klick auf das entsprechende Feld gesetzt wird.</de><fr>Le <a href="javascript:tubeTutorial(\'akZ90qEgKEQ\')">caractère</a> en cours à chaque activité en cliquant sur le coffret.</fr><es>El <a href="javascript:tubeTutorial(\'akZ90qEgKEQ\')">carácter</a> actual de cada actividad haciendo clic en la caja.</es></i18n></div></div>';
+	return '<img id="shadow" src="'.$domain.'/util/shadow.php?../avatars/'.$avatar.'.png" style="position:absolute;z-index:107;top:0px;left:'.($max_avatar_width*-2).'px;" /><div id="avatar" style="position:absolute; z-index:108; top:100px;left:'.($max_avatar_width*-2-3).'px;width:1px;height:1px;"><img id="user" class="help" src="'.$domain.'/avatars/'.$avatar.'.png" title="'.$name.'" /><div id="help_user" class="docu" style="width:220px;height:44px;">'."<i18n key='con25'><en><a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">Character</a> placed on the current activity by clicking on the corresponding field.</en><de><a href=\"javascript:tubeTutorial('R1XmQ9pioJU')\">Spielfigur</a> die jeweils auf die aktuelle Aktivität durch Klick auf das entsprechende Feld gesetzt wird.</de><fr>Le <a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">caractère</a> en cours à chaque activité en cliquant sur le coffret.</fr><es>El <a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">carácter</a> actual de cada actividad haciendo clic en la caja.</es></i18n>".'</div></div>';
 }
 
 function setUserAvatar($avatar) {
@@ -1346,5 +1307,4 @@ function dequeueMail() {
 	mysql_free_result($sql);
 	return $dequeued;
 }
-
 ?>

@@ -295,20 +295,20 @@ function fileImport() {
 			" />
 			<div id="help_buttonImport" class="docu"
 				style="width: 240px; height: 78px;">
-				<i18n key="upl2"> <en>Import a personal template previously exported
-				into a file with "Select ..." and "Import" to load its contained set
-				of field devisions. The file must be smaller than <?php echo(ceil($max_import_filesize/1024));?>
-				KB.</en> <de>Eine zuvor mit "Export" in eine Datei gespeicherte
-				persönliche Vorlage mit "Durchsuchen ..." auswählen und "Hochladen"
-				als Feldaufteilung laden. Die Datei muß kleiner als <?php echo(ceil($max_import_filesize/1024));?>
+				<?php echo(str_replace(array("_max_import_filesize_"), array(ceil($max_import_filesize/1024)), i18n("<i18n key='upl7'> <en>Import a personal template previously exported
+				into a file with \"Select ...\" and \"Import\" to load its contained set
+				of field devisions. The file must be smaller than _max_import_filesize_
+				KB.</en> <de>Eine zuvor mit \"Export\" in eine Datei gespeicherte
+				persönliche Vorlage mit \"Durchsuchen ...\" auswählen und \"Hochladen\"
+				als Feldaufteilung laden. Die Datei muß kleiner als _max_import_filesize_
 				KB sein.</de> <fr>Importer un modèle personnel préalablement
-				exportés dans un fichier avec "Choisir ..." et "Importer"pour
+				exportés dans un fichier avec \"Choisir ...\" et \"Importer\" pour
 				charger son contenu devisions ensemble de champ. Le fichier doit
-				être inférieure à <?php echo(ceil($max_import_filesize/1024));?> Ko.</fr>
+				être inférieure à _max_import_filesize_ Ko.</fr>
 				<es>Importar una plantilla de personal previamente exportados a un
-				archivo con "Seleccionar ..." y "Importar"para cargar su contenido
-				conjunto de devisions campo. El archivo debe ser menor de <?php echo(ceil($max_import_filesize/1024));?>
-				KB.</es></i18n>
+				archivo con \"Seleccionar ...\" y \"Importar\" para cargar su contenido
+				conjunto de devisions campo. El archivo debe ser menor de _max_import_filesize_
+				KB.</es></i18n>"))); ?>
 			</div>
 		</div>
 					</td>

@@ -180,28 +180,28 @@ header("Content-Type: text/html;charset=UTF-8");
 			" />
 			<div id="help_buttonUpload" class="docu"
 				style="width: 240px; height: 128px;">
-				<i18n key="upl2"> <en>Upload a PNG image with "Select ..." and
-				"Upload" to make it selectable as a pawn. The PNG image must be
-				smaller than <?php echo(ceil($max_avatar_filesize/1024));?> KB and <?php echo($max_avatar_width); ?>
-				pixels wide and <?php echo($max_avatar_height); ?> pixels high. The
+				<?php echo(str_replace(array("_max_avatar_filesize_", "_max_avatar_width_", "_max_avatar_height_"), array(ceil($max_avatar_filesize/1024), $max_avatar_width, $max_avatar_height), i18n("<i18n key='upl2'> <en>Upload a PNG image with \"Select ...\" and
+				\"Upload\" to make it selectable as a pawn. The PNG image must be
+				smaller than _max_avatar_filesize_ KB and _max_avatar_width_
+				pixels wide and _max_avatar_height_ pixels high. The
 				shadow of the character should not be included in the PNG image,
 				this is created automatically.</en> <de>Ein PNG-Bild mit
-				"Durchsuchen ..." auswählen und "Hochladen" als Spielfigur
-				auswählbar machen. Das PNG-Bild muß kleiner als <?php echo(ceil($max_avatar_filesize/1024));?>
-				KB sein und maximal <?php echo($max_avatar_width); ?> Pixel breit
-				und <?php echo($max_avatar_height); ?> Pixel hoch sein. Der Schatten
+				\"Durchsuchen ...\" auswählen und \"Hochladen\" als Spielfigur
+				auswählbar machen. Das PNG-Bild muß kleiner als _max_avatar_filesize_
+				KB sein und maximal _max_avatar_width_ Pixel breit
+				und _max_avatar_height_ Pixel hoch sein. Der Schatten
 				der Spielfigur sollte im PNG-Bild nicht enthalten sein, dieser wird
-				automatisch erzeugt.</de> <fr>Une image PNG avec "Choisir ..." et
-				sélectionnez "Envoyer" comme un pion pour faire de sélection.
-				L'image PNG doit être inférieure à <?php echo(ceil($max_avatar_filesize/1024));?>
-				Ko et <?php echo($max_avatar_width); ?> pixels de large et <?php echo($max_avatar_height); ?>
+				automatisch erzeugt.</de> <fr>Une image PNG avec \"Choisir ...\" et
+				sélectionnez \"Envoyer\" comme un pion pour faire de sélection.
+				L'image PNG doit être inférieure à _max_avatar_filesize_
+				Ko et _max_avatar_width_ pixels de large et _max_avatar_height_
 				pixels de haut. L'ombre du personnage ne doit pas être inclus dans
 				l'image PNG, ceci est créé automatiquement.</fr> <es>Una imagen PNG
-				con "Seleccionar ..." y seleccione "Subir", como un peón para hacer
-				seleccionable. La imagen PNG debe ser menor de <?php echo(ceil($max_avatar_filesize/1024));?>
-				KB y <?php echo($max_avatar_width); ?> píxeles de ancho y <?php echo($max_avatar_height); ?>
+				con \"Seleccionar ...\" y seleccione \"Subir\", como un peón para hacer
+				seleccionable. La imagen PNG debe ser menor de _max_avatar_filesize_
+				KB y _max_avatar_width_ píxeles de ancho y _max_avatar_height_
 				píxeles. La sombra del personaje no debe ser incluido en la imagen
-				PNG, este se crea automáticamente.</es></i18n>
+				PNG, este se crea automáticamente.</es></i18n>"))); ?>
 			</div>
 		</div>
 		<img id="loading" src="graphics/loading.gif" width="18" height="18"

@@ -190,10 +190,10 @@ CREATE TABLE IF NOT EXISTS `emphasize_blog` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `NEXT_I18N`
+-- Tabellenstruktur für Tabelle `EMPHASIZE_I18N`
 --
 
-CREATE TABLE IF NOT EXISTS `NEXT_I18N` (
+CREATE TABLE IF NOT EXISTS `EMPHASIZE_I18N` (
   `KEY` varchar(12) NOT NULL,
   `UPDATE` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `LANG` varchar(5) NOT NULL,

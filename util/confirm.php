@@ -65,11 +65,10 @@ function initLogin() {
 		fail("Confirmation failed");
 	}
 
-  echo(str_replace("_name_", $name, i18n('<i18n key="cfm1"><en>Registration for _name_ successfully completed, please login with password:</en> <de>Registration
-	für _name_ erfolgreich abgeschlossen, bitte mit Passwort
-	einloggen:</de> <fr>Inscription pour _name_ réussi, s\'il
-	vous plaît login avec mot de passe:</fr> <es>Registro de _name_ completado
-	con éxito, por favor inicio de sesión con contraseña:</es></i18n>')));
+  echo(str_replace("_name_", $name, i18n("<i18n key='cfm1'><en>Registration for _name_ successfully completed, please login with password:</en>
+  <de>Registration für _name_ erfolgreich abgeschlossen, bitte mit Passwort einloggen:</de> 
+  <fr>Inscription pour _name_ réussi, s'il vous plaît login avec mot de passe:</fr>
+  <es>Registro de _name_ completado	con éxito, por favor inicio de sesión con contraseña:</es></i18n>")));
 	?>
 	
 <body onload="initLogin()">
