@@ -431,8 +431,7 @@ $('a.blog').live('click',function(){
 					pour télécharger et installer</fr> <es>El software del servidor se
 					Emphasize.de para descargar e instalar</es></i18n>
 					: <a href="<?php echo($domain.'/util/download.php');?>"
-						alt="download zip" title="download zip">emphasize-<?php echo($version);?>.zip
-					</a>
+						alt="download zip" title="download emphasize.de-<?php echo($version);?>.zip" class="download">emphasize.de&nbsp;<?php echo($version);?></a>
 					
 					<br /> <br />
 					<i18n key="demo50"> <en>Do you need support for this, then please contact</en> <de>Benötigen Sie Support hierzu, dann kontaktieren Sie</de><fr>Avez-vous besoin d'aide pour cela, alors s'il vous plaît contactez</fr> <es>¿Necesita ayuda para esto, entonces por favor póngase en contacto con</es></i18n>

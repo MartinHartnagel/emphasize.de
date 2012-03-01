@@ -21,6 +21,10 @@ header("Content-Type: text/html;charset=UTF-8");
 			<i18n key="fdf3"> <en>Malfunction</en> <de>Fehlfunktion</de> <fr>Dysfonctionnement</fr>
 			<es>Mal funcionamiento</es></i18n>
 		</option>
+		<option value="vulnerabilities">
+			<i18n key="fdf8"> <en>Vulnerability</en> <de>Sicherheitslücke</de> <fr>Vulnérabilité</fr>
+			<es>Vulnerabilidad</es></i18n>
+		</option>
 		<option value="feature">
 			<i18n key="fdf4"> <en>Improvement</en> <de>Verbesserung</de> <fr>Amélioration</fr>
 			<es>Mejora</es></i18n>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XML_DIZ_INFO>
+	<MASTER_PAD_VERSION_INFO>
+		<MASTER_PAD_VERSION>3.10</MASTER_PAD_VERSION>
+		<MASTER_PAD_EDITOR>Online PAD Generator 1.33 - http://www.padbuilder.com</MASTER_PAD_EDITOR>
+		<MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to disseminate information to anyone interested in their software products. To find out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
+	</MASTER_PAD_VERSION_INFO>
+	<Company_Info>
+		<Company_Name>emphasize.de</Company_Name>
+		<Address_1 />
+		<Address_2 />
+		<City_Town />
+		<State_Province />
+		<Zip_Postal_Code />
+		<Country />
+		<Company_WebSite_URL>http://emphasize.de</Company_WebSite_URL>
+		<Contact_Info>
+			<Author_First_Name>Martin</Author_First_Name>
+			<Author_Last_Name>Hartnagel</Author_Last_Name>
+			<Author_Email />
+			<Contact_First_Name />
+			<Contact_Last_Name />
+			<Contact_Email>emphasize@emphasize.de</Contact_Email>
+		</Contact_Info>
+		<Support_Info>
+			<Sales_Email />
+			<Support_Email />
+			<General_Email />
+			<Sales_Phone />
+			<Support_Phone />
+			<General_Phone />
+			<Fax_Phone />
+		</Support_Info>
+	</Company_Info>
+	<Program_Info>
+		<Program_Name>Emphasize</Program_Name>
+		<Program_Version>next</Program_Version>
+		<Program_Release_Month>02</Program_Release_Month>
+		<Program_Release_Day>29</Program_Release_Day>
+		<Program_Release_Year>2012</Program_Release_Year>
+		<Program_Cost_Dollars />
+		<Program_Cost_Other_Code />
+		<Program_Cost_Other />
+		<Program_Type>Freeware</Program_Type>
+		<Program_Release_Status>Beta</Program_Release_Status>
+		<Program_Install_Support />
+		<Program_OS_Support>iPhone,Mac OS X,Unix,Win2000,Win7 x32,Win7 x64,WinVista,WinVista x64,WinXP</Program_OS_Support>
+		<Program_Language>English,French,German,Spanish</Program_Language>
+		<Program_Change_Info />
+		<Program_Specific_Category>Business</Program_Specific_Category>
+		<Program_Category_Class>Business::Project Management</Program_Category_Class>
+		<Program_Categories>Time Reporting</Program_Categories>
+		<Program_System_Requirements>Browser</Program_System_Requirements>
+		<File_Info>
+			<File_Size_Bytes>603858</File_Size_Bytes>
+			<File_Size_K>589</File_Size_K>
+			<File_Size_MB>0.57</File_Size_MB>
+		</File_Info>
+		<Expire_Info>
+			<Has_Expire_Info>N</Has_Expire_Info>
+			<Expire_Count />
+			<Expire_Based_On />
+			<Expire_Other_Info />
+			<Expire_Month />
+			<Expire_Day />
+			<Expire_Year />
+		</Expire_Info>
+	</Program_Info>
+	<Program_Descriptions>
+		<English>
+			<Keywords>time management tracking projects reporting work acquisition log implementation block pay employment Employed Freelance Report</Keywords>
+			<Char_Desc_45>free, web based time reporting service</Char_Desc_45>
+			<Char_Desc_80>Emphasize is a web based, free &amp; simple time reporting service</Char_Desc_80>
+      <Char_Desc_250>time tracking as simple as a board game: adjustable board, edit timeline, simple reports showing monthly / daily totals of recorded times</Char_Desc_250>
+			<Char_Desc_450>Based on the idea that time and attendance could be as simple as a board game, there is a playing field which can be customized by each user individually. With scissors and glue, you can change the available partitions. By moving the pointer on the timeline one may correct time entries. Reports show monthly / daily totals of the recorded times.</Char_Desc_450>
+			<Char_Desc_2000>At work with different employers, must often use many different time management systems, each with far too cumbersome implemented "time registration"?
+This approach is based on the idea that time and attendance could be as simple as a board game. There is an customizable playing field on which an character can be placed according to the current activity. With scissors and glue-up icon in the corner you can change the field partitions yourself. By moving the pointer to the timeline one can correct time entries.
+Time recording runs in therowser, so no need to install anything.</Char_Desc_2000>
+		</English>
+		<German>
+			<Keywords>Zeiterfassung Zeitmanagement Projekte Arbeit Akquise Log Logbuch Implementierung Block Bezahlung Beschäftigung Angestellt Freelance Bericht</Keywords>
+			<Char_Desc_45>kostenlose, webbasierte Arbeitszeiterfassung</Char_Desc_45>
+			<Char_Desc_80>Emphasize ist ein kostenloser, webbasierter Zeiterfassungs-Dienst</Char_Desc_80>
+			<Char_Desc_250>Zeiterfassung so einfach wie ein Brett-Spiel: anpassbares Spielfeld, Zeitleiste auf der die Zeit zurückgedreht werden kann, einfache Berichte zeigen monatliche/tägliche Summen der erfassten Zeiten.</Char_Desc_250>
+			<Char_Desc_450>Basierend auf der Idee, dass Zeiterfassung so einfach wie ein Brett-Spiel sein könnte, gibt es ein Spielfeld, welches jeder Benutzer individuell anpassen kann. Mit Schere und Kleber kann man die Feldaufteilung selbst verändern. Durch Versetzen des Zeigers auf dem Zeitstrahl kann man Einträge im nach-hinein noch korrigieren. Berichte zeigen monatliche/tägliche Summen der erfassten Zeiten.</Char_Desc_450>
+			<Char_Desc_2000>Im Beruf bei den unterschiedlichen Arbeitgebern muß man oft viele unterschiedliche Zeiterfassungssysteme benutzen, die jeweils viel zu umständlich den eigentlich Bereich der "Erfassung von zeitlichem Aufwand" umgesetzt haben.
+Ansatz basiert nun auf der Idee, dass Zeiterfassung so einfach wie ein Brett-Spiel sein könnte. Es gibt ein immer wieder neu individuell anpassbares Spielfeld auf dem man seine Spielfigur entsprechend zur aktuellen Aktivität umsetzt. Mit Schere und Kleber-Symbol oben in der Ecke kann man die Feld-Aufteilung selbst verändern. Durch Versetzen des Zeigers auf dem Zeitstrahl kann man Einträge im nach-hinein noch korrigieren.
+Die Zeiterfassung läuft im Browser, man braucht also nichts zu installieren.</Char_Desc_2000>
+		</German>
+		<French>
+			<Keywords>La gestion du temps gestion du temps les projets le travail l'acquisition journal journaux mise en œuvre le bloc salaires l'emploi occupées Freelance Rapport</Keywords>
+			<Char_Desc_45>libre, suite votre temps passé avec activités</Char_Desc_45>
+
+			<Char_Desc_80>Emphasize est une service en ligne, libre et simple pour des rapports de temps</Char_Desc_80>
+			<Char_Desc_250>suivi en temps simple comme un jeu de société: peut être retournée à pas variable, plan de montage chronologique du temps, des rapports simples montrant mois / totaux journaliers du enregistrées fois.</Char_Desc_250>
+			<Char_Desc_450>Basé sur l'idée que le temps et la fréquentation pourrait être aussi simple qu'un jeu de plateau, il ya un terrain de jeu qui peut personnaliser chaque utilisateur individuellement. Avec des ciseaux et de colle, vous pouvez modifier les partitions elles-mêmes. En déplaçant le pointeur vers la timeline peut être liée à en corriger en eux. Les rapports montrent mensuelle / totaux quotidiens des temps enregistrés.</Char_Desc_450>
+			<Char_Desc_2000>Au travail avec différents employeurs doivent souvent utiliser différents systèmes de gestion du temps, chacun avec beaucoup trop lourd en œuvre le domaine spécifique de "l'acquisition temporelle"?.
+L'approche est maintenant basé sur l'idée que le temps et la fréquentation pourrait être aussi simple qu'un jeu de plateau. Il ya un terrain de jeu toujours nouveau personnalisable pour mettre en œuvre son caractère en fonction de l'activité en cours. Avec des ciseaux et colle-icône dans le coin, vous pouvez modifier la distribution du champ lui-même. En déplaçant le pointeur vers la timeline peut être liée à en corriger en eux.
+Le temps d'enregistrement est en cours d'exécution dans le navigateur, si vous avez besoin d'installer quoi que ce soit.</Char_Desc_2000>
+		</French>
+		<Spanish>
+			<Keywords>hojas tiempo libre informe captura gestión del tiempo proyectos trabajo adquisición registro ejecución bloque pagar por cuenta ajena autónomos</Keywords>
+			<Char_Desc_45>hojas de tiempo libre y en línea</Char_Desc_45>
+			<Char_Desc_80>simple como un juego de mesa, hay un campo de juego que se puede personalizar a cada usuario individual</Char_Desc_80>
+			<Char_Desc_250>Basado en la idea de que el tiempo y la asistencia puede ser tan simple como un juego de mesa, hay un campo de juego que se puede personalizar a cada usuario individual. Con tijeras y pegamento, puede cambiar las propias particiones. Al mover el punt</Char_Desc_250>
+			<Char_Desc_450>En el trabajo de diferentes empleadores a menudo se deben utilizar muchos sistemas diferentes de gestión del tiempo, cada uno con demasiado engorroso implementado el área específica de "adquisición de una base temporal. Enfoque se basa en la idea de que el tiempo y la asistencia puede ser tan simple como un juego de mesa. Hay un campo de juego personalizable siempre nuevo en que para poner en práctica su carácter de acuerdo con la actividad actua</Char_Desc_450>
+			<Char_Desc_2000 />
+		</Spanish>
+	</Program_Descriptions>
+	<Web_Info>
+		<Application_URLs>
+			<Application_Info_URL>http://emphasize.de</Application_Info_URL>
+			<Application_Order_URL>http://emphasize.de</Application_Order_URL>
+			<Application_Screenshot_URL>http://pad.emphasize.de/emphasize.de_bg.png</Application_Screenshot_URL>
+			<Application_Icon_URL>http://pad.emphasize.de/emphasize.de.png</Application_Icon_URL>
+			<Application_XML_File_URL>http://emphasize.de/pad.xml</Application_XML_File_URL>
+		</Application_URLs>
+		<Download_URLs>
+			<Primary_Download_URL>http://emphasize.de/util/download.php</Primary_Download_URL>
+			<Secondary_Download_URL />
+			<Additional_Download_URL_1 />
+			<Additional_Download_URL_2 />
+		</Download_URLs>
+	</Web_Info>
+	<Permissions>
+		<Distribution_Permissions>free and web based</Distribution_Permissions>
+		<EULA>Read and accept the Terms and Conditions: http://emphasize.de?agb</EULA>
+	</Permissions>
+</XML_DIZ_INFO>
