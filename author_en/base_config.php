@@ -30,11 +30,6 @@ $img_base = $upload_base;
 
 $style = "http://www.emphasize.de/default.css"; // css
 
-$db_name = "usr_web78_1"; //Name of the host database
-$db_host = "localhost"; //Database host
-$db_username = "web78"; //Database login
-$db_password = "guru108yoga"; //Database password
-
 $default_backlink_id=-1;
 
 if ((isset($_GET["Filter"]) && ($_GET["Filter"]) != "")||(isset($_GET["f"]) && ($_GET["f"]) != "")) {
