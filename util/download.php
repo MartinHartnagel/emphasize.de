@@ -102,21 +102,24 @@ if (!is_file($file)) {
 		}
 	}
 	// additionals
-	$zip->addFromString("roadmap.php", readFiltered(dirname(__FILE__)."/../../pad/emphasize_roadmap.php"));
+	if (file_exists(dirname(__FILE__)."/../../pad/emphasize_roadmap.php")) {
+	  $zip->addFromString("roadmap.php", readFiltered(dirname(__FILE__)."/../../pad/emphasize_roadmap.php"));
+	}
 	$zip->addFromString("emphasize-".$version."/cache/dummy.txt", "# dummy file for cache to be unzipped");
 	$zip->close();
 
-
-	// write pad.xml from ../pad/emphasize.pad.xml
-	$pad=file_get_contents(dirname(__FILE__)."/../../pad/emphasize.pad.xml");
-	$pad=replaceTagContent("Program_Version", $version, $pad);
-	$pad=replaceTagContent("Program_Release_Month", date("m"), $pad);
-	$pad=replaceTagContent("Program_Release_Day", date("d"), $pad);
-	$pad=replaceTagContent("Program_Release_Year", date("Y"), $pad);
-	$pad=replaceTagContent("File_Size_Bytes", filesize($file), $pad);
-	$pad=replaceTagContent("File_Size_K", floor(filesize($file)/1024), $pad);
-	$pad=replaceTagContent("File_Size_MB", floor(filesize($file)*100/1024/1024)/100, $pad);
-	file_put_contents(dirname(__FILE__)."/../pad.xml", $pad);
+	// write pad.xml
+	if (file_exists(dirname(__FILE__)."/../../pad/emphasize.pad.xml")) {
+	  $pad=file_get_contents(dirname(__FILE__)."/../../pad/emphasize.pad.xml");
+	  $pad=replaceTagContent("Program_Version", $version, $pad);
+	  $pad=replaceTagContent("Program_Release_Month", date("m"), $pad);
+	  $pad=replaceTagContent("Program_Release_Day", date("d"), $pad);
+	  $pad=replaceTagContent("Program_Release_Year", date("Y"), $pad);
+	  $pad=replaceTagContent("File_Size_Bytes", filesize($file), $pad);
+	  $pad=replaceTagContent("File_Size_K", floor(filesize($file)/1024), $pad);
+	  $pad=replaceTagContent("File_Size_MB", floor(filesize($file)*100/1024/1024)/100, $pad);
+	  file_put_contents(dirname(__FILE__)."/../pad.xml", $pad);
+	}
 }
 
 

@@ -30,6 +30,8 @@ $img_base = $upload_base;
 
 $style = "http://www.emphasize.de/default.css"; // css
 
+include_once(dirname(__FILE__).'/../../../files/db1.php');
+
 $default_backlink_id=-1;
 
 if ((isset($_GET["Filter"]) && ($_GET["Filter"]) != "")||(isset($_GET["f"]) && ($_GET["f"]) != "")) {

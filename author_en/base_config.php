@@ -28,6 +28,8 @@ $upload_path = $domain_path . "images/"; //images stored
 $upload_base = $domain . "/images/"; //url base to stored images
 $img_base = $upload_base;
 
+include_once(dirname(__FILE__).'/../../../files/db1.php');
+
 $style = "http://www.emphasize.de/default.css"; // css
 
 $default_backlink_id=-1;
