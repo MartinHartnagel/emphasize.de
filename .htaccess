@@ -1,0 +1,5 @@
+#RewriteEngine On
+#Options +SymLinksIfOwnerMatch
+#RewriteCond %{HTTP_HOST} ^emphasize.de
+#RewriteRule (.*) http://next.emphasize.de/$1 [R=301,L]
+
