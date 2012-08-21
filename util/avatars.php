@@ -1,13 +1,5 @@
 <?php 
 include_once(dirname(__FILE__).'/../includes/config.php');
-if (!isset($_SESSION)) {
-	session_start();
-}
-if (isset($_SESSION['token'])) {
-	$token=$_SESSION['token'];
-	connectDb();
-	pickup($token);
-}
 $export="js";
 header("Content-Type: text/html;charset=UTF-8");
 

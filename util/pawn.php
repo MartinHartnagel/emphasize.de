@@ -1,18 +1,14 @@
 <?php
 include_once(dirname(__FILE__).'/../includes/config.php');
-$token=$_POST["token"];
-connectDb();
-pickup($token);
 $export='json';
-if (isset($_POST["do"]) && $_POST["do"] == "setAvatar") {
-	$newavatar=$_POST['avatar'];
-	setUserAvatar($newavatar);
-	pickup($token);
-} else if (isset($_POST["do"]) && $_POST["do"] == "deleteAvatar") {
-	$theavatar=$_POST['avatar'];
-	deleteUserAvatar($theavatar);
+if (r("do") == "setAvatar") {
+	$newavatar=r('avatar');
+	User::getInstance()->setUserAvatar($newavatar);
+} else if (r("do") == "deleteAvatar") {
+	$theavatar=r('avatar');
+	User::getInstance()->deleteUserAvatar($theavatar);
 	exit();
 }
-echo(getUserAvatar($avatar));
+echo(User::getInstance()->getUserAvatar($avatar));
 bottom();
 ?>

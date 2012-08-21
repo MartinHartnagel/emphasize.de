@@ -41,15 +41,7 @@ header("Content-Type: text/html;charset=UTF-8");
 	<textarea id="feedMessage" name="message"
 		style="width: 100%; height: 110px;">
 </textarea>
-	<br /> <input id="feedbackLang" type="hidden" name="lang"
-		value="<lang/> " /> <input id="feedbackSubmit" name="submit"
-		value="<i18n   key='fdf6'>
-	<en>Send</en>
-	<de>Senden</de>
-	<fr>Envoyer</fr>
-	<es>Enviar</es>
-	</i18n>
-	" type="submit" disabled="true" /> <input type="reset" value="<i18n 
+	<br /> <input type="reset" value="<i18n 
 		
 		key='fdf7'>
 	<en>Clear fields</en>
@@ -58,5 +50,16 @@ header("Content-Type: text/html;charset=UTF-8");
 	<es>Borrar campos</es>
 	</i18n>
 	" />
+	<input id="feedbackLang" type="hidden" name="lang"
+		value="<lang/> " /> <input id="feedbackSubmit" name="submit"
+		value="<i18n   key='fdf6'>
+	<en>Send</en>
+	<de>Senden</de>
+	<fr>Envoyer</fr>
+	<es>Enviar</es>
+	</i18n>
+	" type="submit" disabled="true" /> 
 </form>
+<br/>
+<i18n key='fdf9'><en>Have you checked for</en><de>Gibt es schon einen entsprechenden</de><fr>Avez-vous vérifié pour la</fr><es>¿Ha revisado para la</es></i18n>&nbsp;<a href="roadmap.php" title="Roadmap" target="_blank" class="newWindow"><i18n key='fdf10'><en>duplications</en><de>Eintrag in der Roadmap</de><fr>duplication</fr><es>duplicación</es></i18n></a>?
 <?php bottom(); ?>

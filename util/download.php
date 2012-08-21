@@ -51,7 +51,7 @@ function replaceTagContent($tag, $content, $buffer) {
 }
 
 chdir(dirname(__FILE__)."/..");
-$file="emphasize-".$version.".zip";
+$file="emphasize-".VERSION.".zip";
 
 if (!is_file($file)) {
 	// create it
@@ -66,7 +66,7 @@ if (!is_file($file)) {
 	foreach($files as $f) {
 		// files with special treatments:
 		if (startsWith($f,"./includes/config.php")) {
-			$zip->addFromString("emphasize-".$version.substr($f, 1), readDelogin($f));
+			$zip->addFromString("emphasize-".VERSION.substr($f, 1), readDelogin($f));
 		} else if ($f=="./install.txt" || $f=="./license.txt") {
 			$zip->addFromString(substr($f, 2), readDelogin($f));
 		} else if ($f=="./drop.txt" || $f=="./create.txt" || $f=="./peek.txt") {
@@ -97,21 +97,21 @@ if (!is_file($file)) {
 		} else if (startsWith($f, "./author") || startsWith($f, "./.git")) {
 			// skip
 		} else {
-			//$zip->addFile($f, "emphasize-".$version.substr($f, 1));
-			$zip->addFromString("emphasize-".$version.substr($f, 1), readFiltered($f));
+			//$zip->addFile($f, "emphasize-".VERSION.substr($f, 1));
+			$zip->addFromString("emphasize-".VERSION.substr($f, 1), readFiltered($f));
 		}
 	}
 	// additionals
 	if (file_exists(dirname(__FILE__)."/../../pad/emphasize_roadmap.php")) {
 	  $zip->addFromString("roadmap.php", readFiltered(dirname(__FILE__)."/../../pad/emphasize_roadmap.php"));
 	}
-	$zip->addFromString("emphasize-".$version."/cache/dummy.txt", "# dummy file for cache to be unzipped");
+	$zip->addFromString("emphasize-".VERSION."/cache/dummy.txt", "# dummy file for cache to be unzipped");
 	$zip->close();
 
 	// write pad.xml
 	if (file_exists(dirname(__FILE__)."/../../pad/emphasize.pad.xml")) {
 	  $pad=file_get_contents(dirname(__FILE__)."/../../pad/emphasize.pad.xml");
-	  $pad=replaceTagContent("Program_Version", $version, $pad);
+	  $pad=replaceTagContent("Program_Version", VERSION, $pad);
 	  $pad=replaceTagContent("Program_Release_Month", date("m"), $pad);
 	  $pad=replaceTagContent("Program_Release_Day", date("d"), $pad);
 	  $pad=replaceTagContent("Program_Release_Year", date("Y"), $pad);

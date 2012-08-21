@@ -1,4 +1,4 @@
-<?php 
+<?php
 include_once(dirname(__FILE__)."/../includes/config.php");
 ?>
 <title><i18n key="fdb0"> <en>Thank your for your feedback</en> <de>Danke
@@ -31,12 +31,12 @@ include_once(dirname(__FILE__)."/../includes/config.php");
 			$message=$message."referer: ".$_SERVER["HTTP_REFERER"]."\n\n";
 
 			$from="admin@emphasize.de";
-			if (strlen($_POST["from"]) > 2) {
-				$from=$_POST["from"];
+			if (strlen(r("from")) > 2) {
+				$from=r("from");
 			}
 
-			$title = "[feedback] " . substr($_POST["message"], 0, 40);
-			mail("admin@emphasize.de",
+			$title = "[feedback] " . substr(r("message"), 0, 40);
+			enqueueMail("admin@emphasize.de",
 					$title,
 					$message,
 					"From: " . $from. "\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n");

@@ -1,26 +1,22 @@
-<?php 
+<?php
 include_once(dirname(__FILE__).'/../includes/config.php');
 $export='js';
-if (!empty($_POST)) {
-	if (isset($_POST["do"]) && $_POST["do"] != null) {
-		if ($_POST["do"] == "export") {
-			// deliver it
-			$tbody="<emphasize>".stripslashes($_POST["tbody"])."</emphasize>";
-			$lock=md5("mph".$tbody);
-			$s="emphasize-$version export from $domain, untouched-lock:$lock\n\n".$tbody;
-			header("Content-type: application/emphasize");
-			header("Pragma: public");
-			header("Expires: 0");
-			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-			header("Cache-Control: public");
-			header("Content-Description: File Transfer");
-			header("Content-Disposition: attachment; filename=\"".$_POST["key"].".emphasize\";");
-			header("Content-Transfer-Encoding: binary");
-			header("Content-Length: ".strlen($s));
-			echo($s);
-			exit();
-		}
-	}
+if (r("do") == "export") {
+ // deliver it
+ $tbody="<emphasize>".stripslashes(r("tbody"))."</emphasize>";
+ $lock=md5("mph".$tbody);
+ $s="emphasize-".VERSION." export from $domain, untouched-lock:$lock\n\n".$tbody;
+ header("Content-type: application/emphasize");
+ header("Pragma: public");
+ header("Expires: 0");
+ header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+ header("Cache-Control: public");
+ header("Content-Description: File Transfer");
+ header("Content-Disposition: attachment; filename=\"".r("key").".emphasize\";");
+ header("Content-Transfer-Encoding: binary");
+ header("Content-Length: ".strlen($s));
+ echo($s);
+ exit();
 }
 ?>
 <form id="exporterForm" method="POST" action="export.php">

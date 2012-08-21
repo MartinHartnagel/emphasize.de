@@ -1,19 +1,9 @@
 <?php 
 include_once(dirname(__FILE__).'/../includes/config.php');
 $export="js";
-session_start();
-if (isset($_POST['token'])) {
-	$token=$_POST['token'];
-} else if (isset($_SESSION['token'])) {
-	$token=$_SESSION['token'];
+if (User::getInstance()->getId()==null) {
+	fail("not logged in");
 }
-if (!isset($token)) {
-	echo("not logged in");
-	exit();
-}
-
-connectDb();
-pickup($token);
 
 $json=array('error'=>'', 'msg'=>'', 'avatar'=>'');
 $fileElementName = 'fileToUpload';
@@ -81,6 +71,7 @@ if (!empty($_FILES[$fileElementName]['error']))
 }
 header("Content-Type: text/html;charset=UTF-8");
 ?>
+<title><i18n ref='tab19' /></title>
 <script
 	type="text/javascript" src="js/ajaxfileupload.js"></script>
 <script type="text/javascript">
@@ -125,6 +116,7 @@ header("Content-Type: text/html;charset=UTF-8");
 </head>
 
 <body>
+	<a id="passwdOpen" href="#" onClick="if (!isAboveOpen('passwd')) {return showAbove('passwd', $('#passwdOpen').get(0), '<?php echo($domain.'/util/passwd.php?lang='.$lang); ?>', '#passwdPassword', 240);} else {return false}"><i18n ref="pwd0" /></a><br/>
 	<form name="baseHrefForm" action="" method="POST"
 		onsubmit="return setBaseHref(this.basehref.value);">
 		<i18n key="upl6"> <en>Set a base URL for reports-links</en> <de>Eine
@@ -133,7 +125,7 @@ header("Content-Type: text/html;charset=UTF-8");
 		dirección URL base para los vínculos en los informes</es></i18n>
 		:<br />
 		<div class="hc">
-			<input type="text" name="basehref" value="<?php echo($base_href);?>"
+			<input type="text" name="basehref" value="<?php echo(User::getInstance()->getBaseHref());?>"
 				style="width: 70%;" maxsize="256" /> <input type="submit"
 				id="buttonBaseHref" class="help" style="width: 30%;"
 				value="<i18n 
@@ -161,7 +153,7 @@ header("Content-Type: text/html;charset=UTF-8");
 	</form>
 	<form name="form" action="" method="POST" enctype="multipart/form-data"
 		onsubmit="return fileUpload();">
-		<input type="hidden" name="token" value="<?php echo($token);?>" />
+		<input type="hidden" name="token" value="<?php echo(User::getInstance()->getToken());?>" />
 		<i18n key="upl0"> <en>Upload a PNG-picture</en> <de>Ein PNG-Bild
 		hochladen</de> <fr>Télécharger une image PNG</fr> <es>Subir una imagen
 		PNG</es></i18n>

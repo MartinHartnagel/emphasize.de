@@ -1,10 +1,7 @@
 <?php include_once(dirname(__FILE__).'/../includes/config.php'); ?>
-<?php 
+<?php
 $export="js";
 header("Content-Type: text/html;charset=UTF-8");
-if (!isset($_SESSION)) {
-	session_start();  // Start the session where the securimage-code will be stored.
-}
 ?>
 <title><i18n key="rtr0"> <en>Register for time-tracking with</en> <de>Konto
 	Anlegen zur Zeiterfassung mit</de> <fr>Créer un compte pour
@@ -37,15 +34,15 @@ function termsAccepted() {
 </script>
 	<form action="<?php echo($domain.'/');?>" name="register" method="POST"
 		onsubmit="return termsAccepted();">
-		<table border="0">
+		<table border="0" width="560">
 			<tr>
-				<td valign="top" width="60"><input type="hidden" name="do" value="createUser" />
-					<input type="hidden" name="lang" value="<lang/>" /><i18n
-						key="rtr2"> <en>Create user</en> <de>Benutzer anlegen</de> <fr>Créer
-					un utilisateur</fr> <es>Crear usuario</es></i18n>:<br /> <input
-					id="registerName" type="text" name="name" maxlength="30" /><br /><i18n
-						key="rtr3"> <en>Password</en> <de>Passwort</de> <fr>Mot de passe</fr>
-					<es>Contraseña</es></i18n>:<br />
+				<td valign="top" width="50%"><input type="hidden" name="do"
+					value="createUser" /> <input type="hidden" name="lang"
+					value="<lang/> " /> <i18n key="rtr2"> <en>Create user</en> <de>Benutzer
+					anlegen</de> <fr>Créer un utilisateur</fr> <es>Crear usuario</es></i18n>:<br />
+					<input id="registerName" type="text" name="name" maxlength="30" /><br />
+					<i18n key="rtr3"> <en>Password</en> <de>Passwort</de> <fr>Mot de
+					passe</fr> <es>Contraseña</es></i18n>:<br />
 					<div class="hc">
 						<input id="registerPassword" class="help" type="password"
 							name="password" onkeyup="verifyPasswords()" />
@@ -64,7 +61,7 @@ function termsAccepted() {
 							números. La contraseña se guarda encriptada y por tanto, no
 							visible para el administrador.</es></i18n>
 						</div>
-					</div> <br /><i18n key="rtr5"> <en>Verify password</en> <de>Passwort
+					</div> <br /> <i18n key="rtr5"> <en>Verify password</en> <de>Passwort
 					wiederholen</de> <fr>Répéter mot de passe</fr> <es>Repita la
 					contraseña</es></i18n>:<br />
 					<div class="hc">
@@ -83,7 +80,7 @@ function termsAccepted() {
 							mismo para evitar errores. Los campos tienen un fondo rojo para
 							que coincida con las contraseñas.</es></i18n>
 						</div>
-					</div> <br /><i18n key="rtr7"> <en>Send authenticate email to</en>
+					</div> <br /> <i18n key="rtr7"> <en>Send authenticate email to</en>
 					<de>Verifizierungs Email senden an</de> <fr>e-mail pour
 					vérification</fr> <es>Correo electrónico de verificación</es></i18n>:<br />
 					<div class="hc">
@@ -112,8 +109,8 @@ function termsAccepted() {
 						</div>
 					</div>
 				</td>
-				<td valign="top">
-					<div style="width: 430px; float: left; height: 90px">
+				<td valign="top" width="50%">
+					<div>
 						<img id="siimage" align="left" width="250" height="80"
 							style="padding-right: 5px; border: 0"
 							src="util/securimage_show.php?sid=<?php echo(md5(time())); ?>" />
@@ -125,9 +122,9 @@ function termsAccepted() {
 							src="images/refresh.gif" alt="Reload Image" border="0"
 							onclick="this.blur()" align="bottom" /> </a>
 					</div>
-					<i18n key="rtr12"> <en>Visual
-					safety code</en> <de>Sicherheits-Code</de> <fr>Clé de sécurité</fr>
-					<es>Llave de seguridad</es></i18n>: 
+					<br/>
+					<i18n key="rtr12"> <en>Visual safety code</en> <de>Sicherheits-Code</de>
+					<fr>Clé de sécurité</fr> <es>Llave de seguridad</es></i18n>:
 					<div class="hc">
 						<input id="safetyCode" class="help" type="text" name="code"
 							size="12" />
@@ -143,36 +140,17 @@ function termsAccepted() {
 							mismo, con los humanos (es decir, no automatizados) El registro
 							estará asegurado.</es></i18n>
 						</div>
-					</div><br /> 
-					<?php echo(str_replace(array("_agb_href_"), array($domain.'/?agb'), i18n("<i18n key='rtr11'><en>I have read, understood	and accept the <a href=\"_agb_href_\"
-						target=\"_blank\">Terms & Conditions</a></en> <de>Ich habe die <a
-						href=\"_agb_href_\" target=\"_blank\">AGB</a>s
-					gelesen	und akzeptiere diese</de> <fr>J'ai lu et j'accepte<br />
-					les <a href=\"_agb_href_\" target=\"_blank\">conditions</a></fr>
+					</div> <br /> <?php echo(str_replace(array("_agb_href_"), array($domain.'/agb.php'), i18n("<i18n key='rtr11'><en>I have read, understood	and accept the <a href=\"_agb_href_\"
+							target=\"_blank\">Terms & Conditions</a></en> <de>Ich habe die <a
+							href=\"_agb_href_\" target=\"_blank\">AGB</a>s
+							gelesen	und akzeptiere diese</de> <fr>J'ai lu et j'accepte
+							les <a href=\"_agb_href_\" target=\"_blank\">conditions</a></fr>
 					<es>He leído y acepto las <a href=\"_agb_href_\" target=\"_blank\">Condiciones</a></es></i18n>"))); ?>:
 					<input id="registerTermsAndConditions" type="checkbox"
-					name="termsAndConditions" value="readAccepted" /> 
-					<br /><i18n key='rtr9'> <en>Start with</en> <de>Loslegen
-					mit</de> <fr>Commence avec</fr> <es>Comience con</es></i18n>:<br />
-					<div class="hc">
-						<select id="startWith" class="help" name="startwith">
-							<?php
-							foreach($tbody_names as $key=>$tbody_name) {
-								echo("<option value=\"$key\">$tbody_name</option>");
-							}
-							?>
-						</select>
-						<div id="help_startWith" class="docu"
-							style="width: 180px; height: 38px;">
-							<i18n key="rtr10"> <en>Initial template of the field division.</en>
-							<de>Initiale Vorlage der Spielfeldaufteilung.</de> <fr>Présentation
-							initiale de la division sur le terrain.</fr> <es>La presentación
-							inicial de la división de campo.</es></i18n>
-						</div>
-					</div>
-<input id="registerSubmit"
-					type="submit" value="<i18n   ref='rtr2'> </i18n>" />
-					 				</td>
+					name="termsAndConditions" value="readAccepted" /> <br /> <input
+					id="registerSubmit" type="submit" value="<i18n ref='rtr2'> </i18n>"
+					/>
+				</td>
 			</tr>
 		</table>
 	</form>

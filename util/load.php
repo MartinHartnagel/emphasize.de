@@ -2,7 +2,7 @@
 include_once(dirname(__FILE__).'/../includes/config.php');
 $export="png";
 
-connectDb();
+User::connectDb();
 if (isset($_GET["w"])) {
   $w=$_GET["w"];
 } else {
@@ -23,7 +23,7 @@ imagefilledrectangle($img, 0, 0, $w, $h, $back);
 imagealphablending($img, true);
 $line=imagecolorallocatealpha($img, 25,25,200, 20);
 @mysql_query("DELETE FROM `LOG_LOAD` WHERE UNIX_TIMESTAMP(`TIME`)<UNIX_TIMESTAMP(CURRENT_TIMESTAMP)-2592000");
-$sql = @mysql_query("SELECT time AS x, COUNT(*) AS y FROM " . $db_prefix . "LOAD WHERE time > '" . $since . "' GROUP BY time ORDER BY time ASC");
+$sql = @mysql_query("SELECT time AS x, COUNT(*) AS y FROM " . DB_PREFIX . "LOAD WHERE time > '" . $since . "' GROUP BY time ORDER BY time ASC");
 while($row = mysql_fetch_array($sql)) {
 	$x=floor((strtotime($row["x"])-$offset)/600);
 	$y=$row["y"];

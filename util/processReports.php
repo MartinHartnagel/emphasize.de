@@ -1,9 +1,9 @@
 <?php
 include_once(dirname(__FILE__)."/../includes/config.php");
 $export="txt";
-connectDb();
+User::connectDb();
 
-$sql = @mysql_query("SELECT id_user, cid, type, range, run FROM ".$db_prefix."CRON WHERE run < CURRENT_TIMESTAMP");
+$sql = @mysql_query("SELECT id_user, cid, type, range, run FROM ".DB_PREFIX."CRON WHERE run < CURRENT_TIMESTAMP");
 while ($row = mysql_fetch_array($sql)) {
 	$id_user=$row["id_user"];
 	$cid=$row["cid"];
@@ -14,7 +14,7 @@ while ($row = mysql_fetch_array($sql)) {
 	$nextrun=mailReport($id_user, $cid, $type, $range, $run);
 	if ($nextrun != $run) {
 	  echo("$cid next $nextrun\n");
-	  $update = @mysql_query("UPDATE " . $db_prefix . "CRON SET run='".p($nextrun)."' WHERE cid='".$cid."'");
+	  $update = @mysql_query("UPDATE " . DB_PREFIX . "CRON SET run='".p($nextrun)."' WHERE cid='".$cid."'");
 		if (!$update) {
 			fail("update for \"$cid\" failed");
 		}

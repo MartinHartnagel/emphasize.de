@@ -5,7 +5,7 @@ $export="js";
 header("Content-Type: text/plain;charset=UTF-8");
 echo('<?php'."\n");
 echo('$i18n=array('."\n");
-connectDb();
+User::connectDb();
 $first=true;
 foreach($lc as $l=>$name) {
 	$set=getI18Ns("en", $l);

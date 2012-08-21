@@ -1,30 +1,26 @@
-<?php 
+<?php
 include_once(dirname(__FILE__).'/../includes/config.php');
 if (isset($_GET["standalone"]) && $_GET["standalone"]!="true") {
 	$export="js";
 }
 
-if (!empty($_POST)) {
-	if (isset($_POST["do"]) && $_POST["do"] != null) {
-		if ($_POST["do"] == "writeI18N") {
-			connectDb();
-			writeI18N($_POST["translate"], $_POST["key"], $_POST["value"]);
+		if (r("do") == "writeI18N") {
+			User::connectDb();
+			writeI18N(r("translate"), r("key"), r("value"));
 			echo("written");
 			exit();
 		}
-	}
-}
 header("Content-Type: text/html;charset=UTF-8");
-$from=$_GET["from"];
+$from=r("from");
 if (strlen($from) == 0) {
 	$from="en";
 }
-$translate=$_GET["translate"];
+$translate=r("translate");
 if (!array_key_exists($translate, $lc)) {
 	echo("translation to ".$translate." not supported.");
 	exit();
 }
-connectDb();
+User::connectDb();
 $set=getI18Ns($from, $translate);
 foreach($set as $k=>$v) {
 	echo("<div class=\"translate\" id=\"$k\" style=\"display:none;\">".$lc[$from]." text:<br/><textarea readonly=\"true\" style=\"width:100%;background-color:white;color:blue;\">".$v[0]."</textarea><br/><br/>translated to ".$lc[$translate].":<br/><textarea style=\"width:100%;background-color:white;\">".$v[1]."</textarea></div>\n");

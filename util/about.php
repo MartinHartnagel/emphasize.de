@@ -1,19 +1,20 @@
-<?php 
-include_once(dirname(__FILE__).'/../includes/config.php');
-$export="js";
+<?php
+include_once (dirname(__FILE__) .
+'/../includes/config.php');
+$export = "js";
 header("Content-Type: text/html;charset=UTF-8");
 ?>
+<title><i18n key="abo0"> <en>About</en> <de>Info über</de> <fr>A propos</fr>
+			<es>Acerca de</es></i18n>
+			&nbsp;emphasize.de</title>
+</head>
 <body>
 	<!--bContent-->
 	<div id="bContent">
-		<h1>
-			<i18n key="abo0"> <en>About</en> <de>Info über</de> <fr>A propos</fr>
-			<es>Acerca de</es></i18n>
-			&nbsp;emphasize.de
-		</h1>
+	    <i18n ref="demo0" /><br/><br/>
 		<i18n key="abo1"> <en>Version</en> <de>Version</de> <fr>Version</fr> <es>Versión</es></i18n>
 		:
-		<?php echo($version); ?> &copy; 2011-2012 Martin Hartnagel
+		<?php echo(VERSION); ?> &copy; 2011-2012 Martin Hartnagel
 		<br /> <br />
 		<i18n key="abo2"> <en>Author</en> <de>Autor</de> <fr>Auteur</fr> <es>Autor</es></i18n>
 		: <a href="http://martin.emphasize.de" target="_blank">Martin
@@ -41,9 +42,17 @@ header("Content-Type: text/html;charset=UTF-8");
 					Grove</a></li>
 			<li><a href="http://piwik.org" target="_blank">Piwik - Web analytics</a>
 			</li>
-			<li>Frank P. (concept), Andreas Schönefeldt (concept, tests), Tini
-				Keck (voice), tryto2006 (tests), <a href="http://www.tonstrom.de/"
-				target="_blank">Tobias Luther</a> (tests)
+			<li><a href="http://code.google.com/p/swfobject" target="_blank">SWFObject - embed Piwik-Flash content on welcome site</a>		
+			</li>
+			<li>Frank P. (concept)
+			</li>
+			<li><a href="http://www.lotus-moon.de/" target="_blank" title="Lotus-Moon-Development - Freiberuflicher Software Entwickler">Andreas Schönefeldt</a> (concept, testing)
+			</li>
+			<li>Tini Keck (voice)
+			</li>
+			<li>tryto2006 (testing)
+			</li>
+			<li><a href="http://www.tonstrom.de/" target="_blank">Tobias Luther</a> (testing)
 			</li>
 		</ul>
 	</div>

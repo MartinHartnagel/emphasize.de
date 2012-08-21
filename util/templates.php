@@ -1,14 +1,8 @@
-<?php 
+<?php
 include_once(dirname(__FILE__).'/../includes/config.php');
-if (!isset($_SESSION)) {
-  session_start();
-}
-connectDb();
-if (isset($_SESSION['token'])) {
-	$token=$_SESSION['token'];
-	pickup($token);
-}
+
 if (!empty($_POST)) {
+ $export="json";
   $json=array('error'=>'', 'msg'=>'', 'tbody'=>'');
   $fileElementName = 'fileToImport';
   if (!empty($_FILES[$fileElementName]['error']))
@@ -80,7 +74,7 @@ if (!empty($_POST)) {
 		$tbody = $_POST["tbody"];
 		$key=$id.'_'.base_convert(time(), 10, 36);
 		// make name unique
-		$sql=@mysql_query("SELECT name FROM " . $db_prefix . "TEMPLATES WHERE id_user=".p($id));
+		$sql=@mysql_query("SELECT name FROM " . DB_PREFIX . "TEMPLATE WHERE id_user=".p($id));
 		$names=array();
 		while ($row = mysql_fetch_array($sql)) {
 			$names[]=$row["name"];
@@ -100,7 +94,7 @@ if (!empty($_POST)) {
 		}
 		// name should now be unique and not longer than 30 chars
 
-		$insert = @mysql_query("INSERT INTO " . $db_prefix . "TEMPLATES SET id_user=".p($id).", name='".p($name)."', `KEY`='".p($key)."', tbody='".p($tbody)."'");
+		$insert = @mysql_query("INSERT INTO " . DB_PREFIX . "TEMPLATE SET id_user=".p($id).", name='".p($name)."', `KEY`='".p($key)."', tbody='".p($tbody)."'");
 		if (!$insert) {
 			fail("Eintrag fehlgeschlagen");
 		}
@@ -111,7 +105,7 @@ if (!empty($_POST)) {
 		if (array_key_exists($key, $tbody_value)) {
 			echo($tbody_value[$key]);
 		} else {
-			$sql = @mysql_query("SELECT tbody FROM " . $db_prefix . "TEMPLATES WHERE id_user='".p($id)."' AND `KEY`='" . p($key) . "'");
+			$sql = @mysql_query("SELECT tbody FROM " . DB_PREFIX . "TEMPLATES WHERE id_user='".p($id)."' AND `KEY`='" . p($key) . "'");
 			if ($row = mysql_fetch_array($sql)) {
 				echo($row["tbody"]);
 			}
@@ -120,15 +114,11 @@ if (!empty($_POST)) {
 	} else if (isset($_POST["do"]) && $_POST["do"] == "removeTemplate") {
 		$export="json";
 		$key = $_POST["key"];
-		$delete = @mysql_query("DELETE FROM " . $db_prefix . "TEMPLATES WHERE id_user=".p($id)." AND `KEY`='" . p($key) . "'");
+		$delete = @mysql_query("DELETE FROM " . DB_PREFIX . "TEMPLATES WHERE id_user=".p($id)." AND `KEY`='" . p($key) . "'");
 		if (!$delete) {
 			fail("delete failed");
 		}
 	}
-}
-if (!isset($templates_included)) {
-	$export="js";
-	header("Content-Type: text/html;charset=UTF-8");
 }
 
 $ts='<select id="templateSelect" name="templates"
@@ -140,13 +130,16 @@ $ts='<select id="templateSelect" name="templates"
 foreach($tbody_names as $key=>$tbody_name) {
 	$ts.="<option value=\"$key\">$tbody_name</option>\n";
 }
-$sql = @mysql_query("SELECT `KEY`, name FROM " . $db_prefix . "TEMPLATES WHERE id_user='".p($id)."' ORDER BY name ASC, `KEY` ASC");
+$sql = @mysql_query("SELECT `KEY`, name FROM " . DB_PREFIX . "TEMPLATES WHERE id_user='".p($id)."' ORDER BY name ASC, `KEY` ASC");
 while($row = mysql_fetch_array($sql)) {
 	$ts.="<option value=\"".h($row["KEY"])."\">".h($row["name"])."</option>\n";
 }
 mysql_free_result($sql);
 $ts.='</select>'."\n";
 ?>
+<title><i18n key='tab10'> <en>Manage fields</en> <de>Felderaufteilungen
+						verwalten</de> <fr>Gérer des champs</fr> <es>Administrar los
+						campos</es> </i18n></title>
 <script type="text/javascript">
 function fileImport() {
 	$.ajaxFileUpload({
@@ -171,7 +164,7 @@ function fileImport() {
 				alert(e);
 			}
 		});
-	
+
 	return false;
 }
 </script>
@@ -227,14 +220,14 @@ function fileImport() {
 					</div>
 				</div></td>
 			</tr><tr>
-			<td><input id="descTemplate" name="desc" value="<i18n 
-				
+			<td><input id="descTemplate" name="desc" value="<i18n
+
 				key='tab36'> <en>new template</en> <de>neue Vorlage</de> <fr>nouveau
 				modèle</fr> <es>nueva plantilla</es> </i18n>" type="text"
 				onblur="checkTemplateName()" onkeyup="checkTemplateName()" /></td>
 			<td><div class="hc">
 					<input id="createTemplate" name="create"
-						value="<i18n 
+						value="<i18n
 						 key='tab37'>
 					<en>Create</en>
 					<de>Anlegen</de>
@@ -253,7 +246,7 @@ function fileImport() {
 				</div></td><td>
 				<div class="hc">
 					<input id="exportTemplate" name="export"
-						value="<i18n 
+						value="<i18n
 						 key='tab39'>
 					<en>Export</en>
 					<de>Exportieren</de>
@@ -285,7 +278,7 @@ function fileImport() {
 			type="file" size="20" name="fileToImport" />
 		<div class="hc">
 			<input type="submit" id="buttonImport" class="button help"
-				value="<i18n 
+				value="<i18n
 				 key='tab41'>
 			<en>Import</en>
 			<de>Importieren</de>
@@ -315,6 +308,3 @@ function fileImport() {
 		</tr>
 	</table>
 </form>
-<?php if (!isset($templates_included)) { 
-	bottom();
-} ?>

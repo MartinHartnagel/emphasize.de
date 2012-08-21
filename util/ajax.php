@@ -1,82 +1,63 @@
 <?php
 include_once(dirname(__FILE__).'/../includes/config.php');
-if (!isset($_SESSION)) {
-	session_start();
-}
-if (!empty($_POST)) {
-	if (isset($_POST["do"]) && $_POST["do"] == "getPlace") {
+	if (r("do") == "getPlace") {
 		$export="json";
 		header("Content-Type: text/html;charset=UTF-8");
-		$token = $_POST["token"];
-		$time = $_POST["time"];
-		connectDb();
-		pickup($token);
+		$time = r("time");
 		echo(getPlace($time));
-	} else if (isset($_POST["do"]) && $_POST["do"] == "updateTbody") {
+	} else if (r("do") == "updateTbody") {
 		$export="json";
-		$token=$_POST['token'];
-		$newtbody=$_POST['tbody'];
-		connectDb();
-		pickup($token);
-		$success=updateTbody($newtbody);
+		$newtbody=r('tbody');
+		$success=User::getInstance()->updateTbody($newtbody);
 		exit($success);
-	} else if (isset($_POST["do"]) && $_POST["do"] == "setBaseHref") {
+	} else if (r("do") == "setBaseHref") {
 		$export="json";
-		$token=$_POST['token'];
-		$newbaseHref=$_POST['baseHref'];
-		connectDb();
-		pickup($token);
-		$success=setBaseHref($newbaseHref);
+		$newbaseHref=r('baseHref');
+		$success=User::getInstance()->setBaseHref($newbaseHref);
 		exit($success);
-	} else if (isset($_POST["do"]) && $_POST["do"] == "trackEvent") {
+	} else if (r("do") == "trackEvent") {
 		$export="json";
-		$token=$_POST['token'];
-		$event=$_POST['event'];
-		$color=$_POST['color'];
-		$time=$_POST['time'];
-		connectDb();
-		pickup($token);
-		$success=trackEvent($event, $color, $time);
+		$event=r('event');
+		$color=r('color');
+		$time=r('time');
+		$link=r('link');
+		$success=addEvent($event, $color, $time, $link);
 		exit($success);
-	} else if (isset($_POST["do"]) && $_POST["do"] == "addInfo") {
+	} else if (r("do") == "addInfo") {
 		$export="json";
-		$token=$_POST['token'];
-		$info=$_POST['info'];
-		$time=$_POST['time'];
-		connectDb();
-		pickup($token);
+		$info=r('info');
+		$time=r('time');
 		$success=addInfo($info, $time);
 		exit($success);
-	} else if (isset($_POST["do"]) && $_POST["do"] == "getTimelineHistory") {
+	} else if (r("do") == "getTimelineHistory") {
 		$export="json";
 		header("Content-Type: text/html;charset=UTF-8");
-		$token=$_POST['token'];
-		$now=$_POST['now'];
-		$before=$_POST['before'];
-		connectDb();
-		pickup($token);
+		$now=r('now');
+		$before=r('before');
 		getTimelineHistory($now, $before);
-	} else if (isset($_POST["do"]) && $_POST["do"] == "setLang") {
+	} else if (r("do") == "setLang") {
 		$export="json";
-		$token=$_POST['token'];
-		$newlang=$_POST['lang'];
-		connectDb();
-		pickup($token);
-		setUserLang($newlang);
-	} else if (isset($_POST["do"]) && $_POST["do"] == "logout") {
-		$token=$_POST['token'];
-		connectDb();
-		logout($token);
-		if (isset($_SESSION)) {
-			session_destroy();
-			unset($_SESSION);
-		}
+		$newlang=r('lang');
+		User::getInstance()->setUserLang($newlang);
+  } else if (r("do") == "passwd") {
+		$export="json";
+		User::getInstance()->setPasswd(r("password"), r("verify"));
+	} else if (r("do") == "logout") {
+		User::getInstance()->logout();
 		include_once(dirname(__FILE__)."/../includes/demo.php");
-	} else if (isset($_POST["do"]) && $_POST["do"] == "debug") {
+	} else if (r("do") == "debug") {
 		// nizip
-		debugMail($_POST['txt']);
+		debugMail(r('txt'));
 		// /nizip
-	}
-}
+	} else if (r("do") == "setTemplate") {
+  $export="json";
+  $template=r('template');
+  User::getInstance()->setActiveTemplate($template);
+  echo('<table id="table" class="dashboard" width="100%" height="100%" border="0" cellspacing="2" cellpadding="0">');
+  echo(User::getInstance()->getActiveTemplateValue());
+  echo('</table>');
+  exit();
+ }
+
 bottom();
 ?>

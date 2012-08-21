@@ -1,15 +1,11 @@
 <?php
 include_once(dirname(__FILE__).'/../includes/config.php');
-if (!isset($_SESSION)) {
-	session_start();
-}
 $aid=$_GET["a"];
 $event=$_GET["q"];
 
-connectDb();
-$id=aid($aid);
+$id=User::getInstance()->aid($aid);
 
-$sql = @mysql_query("SELECT MIN(start) AS first, MAX(end) AS last, UNIX_TIMESTAMP(MAX(end))-UNIX_TIMESTAMP(MIN(start)) AS span, MAX(color) AS color FROM " . $db_prefix . "ENTRY WHERE id_user=$id AND event='".p($event)."' AND end IS NOT NULL GROUP BY id_user ORDER BY DATE(start) ASC");
+$sql = @mysql_query("SELECT MIN(start) AS first, MAX(end) AS last, UNIX_TIMESTAMP(MAX(end))-UNIX_TIMESTAMP(MIN(start)) AS span, MAX(color) AS color FROM " . DB_PREFIX . "ENTRY WHERE id_user=$id AND event='".p($event)."' AND end IS NOT NULL GROUP BY id_user ORDER BY DATE(start) ASC");
 
 if ($row = mysql_fetch_array($sql)) {
 	$first=$row["first"];
@@ -22,7 +18,7 @@ if ($row = mysql_fetch_array($sql)) {
 }
 mysql_free_result($sql);
 
-$sql = @mysql_query("SELECT UNIX_TIMESTAMP(end)-UNIX_TIMESTAMP(start) AS sum FROM " . $db_prefix . "ENTRY WHERE id_user=$id AND event='".p($event)."' AND end IS NOT NULL");
+$sql = @mysql_query("SELECT UNIX_TIMESTAMP(end)-UNIX_TIMESTAMP(start) AS sum FROM " . DB_PREFIX . "ENTRY WHERE id_user=$id AND event='".p($event)."' AND end IS NOT NULL");
 
 $sum=0;
 while ($row = mysql_fetch_array($sql)) {
@@ -53,7 +49,7 @@ mysql_free_result($sql);
 		</tr>
 		<tr>
 			<td align="right">Farbe:</td>
-			<td align="center" bgColor="<?php echo($color); ?>"><?php echo($color); ?>
+			<td align="center" style="background-color:<?php echo($color); ?>;"><?php echo($color); ?>
 			</td>
 		</tr>
 		<tr>
