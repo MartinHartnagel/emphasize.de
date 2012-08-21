@@ -459,8 +459,10 @@ $(document).ready(function() {
 				  <form action="https://www.paypal.com/cgi-bin/webscr" target="_blank" method="post">
             <input type="hidden" name="cmd" value="_s-xclick">
             <input type="hidden" name="hosted_button_id" value="L8A7JQWGFNJYG">
-            <input type="image" src="https://www.paypalobjects.com/<lang/>_<i18n key='don0'><de>DE/DE</de><en>US/GB</en><fr>FR/FR</fr><es>ES/ES</es></i18n>/i/btn/btn_donateCC_LG.gif" onclick="track('/util/donate.php', 'Donate')" border="0" name="submit" alt="<i18n key='don1'><de>Jetzt einfach, schnell und sicher online spenden – mit PayPal.</de><en>quickly and securely donate online now - with PayPal.</en><fr>rapidement et en toute sécurité un don en ligne maintenant - avec PayPal.</fr><es>rápida y segura donar en línea ahora - con PayPal.</es></i18n>">
-            <img alt="" border="0" src="https://www.paypalobjects.com/<lang/>_<LANG/>/i/scr/pixel.gif" width="1" height="1">
+            <?php
+              echo('<input type="image" src="https://www.paypalobjects.com/'.i18n("<lang/>_<i18n key='don0'><de>DE/DE</de><en>US/GB</en><fr>FR/FR</fr><es>ES/ES</es></i18n>").'/i/btn/btn_donateCC_LG.gif" onclick="track(\'/util/donate.php\', \'Donate\')" border="0" name="submit" alt="'.i18n("<i18n key='don1'><de>Jetzt einfach, schnell und sicher online spenden – mit PayPal.</de><en>quickly and securely donate online now - with PayPal.</en><fr>rapidement et en toute sécurité un don en ligne maintenant - avec PayPal.</fr><es>rápida y segura donar en línea ahora - con PayPal.</es></i18n>").'">');
+              echo('<img alt="" border="0" src="https://www.paypalobjects.com/'.i18n("<lang/>_<LANG/>").'/i/scr/pixel.gif" width="1" height="1">');
+            ?>
           </form>
         </div>
 				<a href="<?php echo($domain.'/util/download.php');?>"
