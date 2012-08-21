@@ -3,7 +3,7 @@ $author = "en"; //author
 $name = "Martin"; // name
 $surname = "Hartnagel"; // surname
 $feedback_to = "martin-anywhere@emphasize.de"; //mail address(es) to send feedback to
-$db_prefix="emphasize_";
+DB_PREFIX="emphasize_";
 
 include_once(dirname(__FILE__).'/base_config.php');
 
@@ -11,10 +11,9 @@ $domain="http://emphasize.de";
 
 function entry($id) {
   global $author;
-  global $db_prefix;
   global $domain;
   
-  $sql = mysql_query("SELECT log_heading, log_text, log_day, log_date, log_time FROM " . $db_prefix . "blog WHERE log_author='$author' AND log_id='$id'"); 
+  $sql = mysql_query("SELECT log_heading, log_text, log_day, log_date, log_time FROM " . DB_PREFIX . "blog WHERE log_author='$author' AND log_id='$id'"); 
   if ($row = mysql_fetch_array($sql)) {
       $header = stripslashes($row["log_heading"]);  
       echo("<h2>" . $header . "</h2></div></div></div>\n");
@@ -33,7 +32,6 @@ function entry($id) {
 
 function headers($id) {
   global $author;
-  global $db_prefix;
   global $domain;
   global $blogsPreviewHalf;
   global $filter;
@@ -52,7 +50,7 @@ function headers($id) {
     $count=0;
     $entry_ql="AND log_id >= ".$id;
 
-    $sql = mysql_query("SELECT log_id, log_heading, log_date, log_day, log_time FROM " . $db_prefix. "blog WHERE log_author='$author' AND log_heading NOT LIKE '%_special_%' $entry_ql $filter_ql AND TIMESTAMP(log_date, log_time) <= CURRENT_TIMESTAMP ORDER BY log_id ASC LIMIT 0,$maxHalf"); 
+    $sql = mysql_query("SELECT log_id, log_heading, log_date, log_day, log_time FROM " . DB_PREFIX. "blog WHERE log_author='$author' AND log_heading NOT LIKE '%_special_%' $entry_ql $filter_ql AND TIMESTAMP(log_date, log_time) <= CURRENT_TIMESTAMP ORDER BY log_id ASC LIMIT 0,$maxHalf"); 
 
     while ($row = mysql_fetch_array($sql)) {
       if ($latestId == -1) {
@@ -67,7 +65,7 @@ function headers($id) {
     // before
     $entry_ql="AND log_id < ".$id;
 
-    $sql = mysql_query("SELECT log_id, log_heading, log_date, log_day, log_time FROM " . $db_prefix. "blog WHERE log_author='$author' AND log_heading NOT LIKE '%_special_%' $entry_ql $filter_ql AND TIMESTAMP(log_date, log_time) <= CURRENT_TIMESTAMP ORDER BY log_id DESC LIMIT 0,$maxHalf"); 
+    $sql = mysql_query("SELECT log_id, log_heading, log_date, log_day, log_time FROM " . DB_PREFIX. "blog WHERE log_author='$author' AND log_heading NOT LIKE '%_special_%' $entry_ql $filter_ql AND TIMESTAMP(log_date, log_time) <= CURRENT_TIMESTAMP ORDER BY log_id DESC LIMIT 0,$maxHalf"); 
 
     while ($row = mysql_fetch_array($sql)) {
       if ($latestId == -1) {
@@ -80,7 +78,7 @@ function headers($id) {
 
     $maxHalf=$maxHalf*2;
 
-    $sql = mysql_query("SELECT log_id, log_heading, log_date, log_day, log_time FROM " . $db_prefix. "blog WHERE log_author='$author' AND log_heading NOT LIKE '%_special_%' $filter_ql AND TIMESTAMP(log_date, log_time) <= CURRENT_TIMESTAMP ORDER BY log_id DESC LIMIT 0,$maxHalf"); 
+    $sql = mysql_query("SELECT log_id, log_heading, log_date, log_day, log_time FROM " . DB_PREFIX. "blog WHERE log_author='$author' AND log_heading NOT LIKE '%_special_%' $filter_ql AND TIMESTAMP(log_date, log_time) <= CURRENT_TIMESTAMP ORDER BY log_id DESC LIMIT 0,$maxHalf"); 
     while ($row = mysql_fetch_array($sql)) {
       if ($latestId == -1) {
         $latestId = $row["log_id"];

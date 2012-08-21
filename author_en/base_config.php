@@ -65,7 +65,7 @@ mysql_query("SET NAMES 'utf8'");
 if (@mysql_select_db($db_name) ) {
 $headtitle = $domain;
 if (isset($id) && ($id >= 0)) {
-  $sql = mysql_query("SELECT log_heading FROM " . $db_prefix. "blog WHERE log_author='$author' AND log_id='$id' ORDER BY log_id DESC"); 
+  $sql = mysql_query("SELECT log_heading FROM " . DB_PREFIX. "blog WHERE log_author='$author' AND log_id='$id' ORDER BY log_id DESC"); 
 
 if ($row = mysql_fetch_array($sql)) {
 $header = stripslashes($row["log_heading"]);

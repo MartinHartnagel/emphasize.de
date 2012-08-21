@@ -26,7 +26,7 @@ if (strpos($domain, "://".$_SERVER['SERVER_NAME']) === false) {
 <priority>0.2</priority>
 </url>
 <url>
-<loc><?php echo($domain);?>/?agb</loc>
+<loc><?php echo($domain);?>/agb.php</loc>
 <lastmod>2011-09-06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.1</priority>

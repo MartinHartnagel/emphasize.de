@@ -1,7 +1,7 @@
 #!/bin/sh
 dir=`dirname $0`
 process=$1
-domain=`cat $dir/includes/config.php|grep '$domain = '|sed "s/.*\"http/http/g"|sed "s/\";.*//g"`
+domain=$2
 # extract host, port and path
 host=`echo $domain|sed "s/.*\/\///g"|sed "s/\(\.[^\/\"]*\).*/\1/g"`
 path=`echo $domain|sed "s/.*$host//g"|cut -c2-9999`
