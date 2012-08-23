@@ -1039,7 +1039,7 @@ function timePlaceUser() {
       "time" : getTimelineDateTime()
     }),
     success : function(msg) {
-      timePlaceUpdateinitPlaceUsers--;
+      timePlaceUpdates--;
       if (currentPlaceEventVersion == userPlaceEventVersion) {
         initPlaceUser(msg);
       }

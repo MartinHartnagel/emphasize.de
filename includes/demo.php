@@ -89,16 +89,16 @@ function init() {
 }
 
 function animate() {
-  if (step%steps==0 && t.isValid()) moveAvatar(t.getTd(0,0));
-  if (step%steps==1 && t.isValid()) moveAvatar(t.getTd(1,0));
+  if (step%steps==0 && t.isValid()) Avatar.jumpTo(t.getTd(0,0));
+  if (step%steps==1 && t.isValid()) Avatar.jumpTo(t.getTd(1,0));
   if (step%steps==2 && t.isValid()) { t.showEdits(t.getTd(0,0));}
   if (step%steps==3 && t.isValid()) { t.setDemo(false); t.horizontalSplit(t.getTd(0,0)); t.getTd(0,1).innerHTML='<i18n ref="con10" />'; t.setDemo(true); $(t.getTd(0,1)).css("background-color", "#ecfe32");}
-  if (step%steps==4 && t.isValid()) moveAvatar(t.getTd(0,1));
-  if (step%steps==5 && t.isValid()) moveAvatar(t.getTd(1,1));
+  if (step%steps==4 && t.isValid()) Avatar.jumpTo(t.getTd(0,1));
+  if (step%steps==5 && t.isValid()) Avatar.jumpTo(t.getTd(1,1));
   if (step%steps==6 && t.isValid()) t.showEdits(t.getTd(0,0));
   if (step%steps==7 && t.isValid()) { t.setDemo(false); t.horizontalMerge(t.getTd(0,0)); t.setDemo(true); }
-  if (step%steps==8 && t.isValid()) moveAvatar(t.getTd(1,1));
-  if (step%steps==9 && t.isValid()) moveAvatar(t.getTd(1,0));
+  if (step%steps==8 && t.isValid()) Avatar.jumpTo(t.getTd(1,1));
+  if (step%steps==9 && t.isValid()) Avatar.jumpTo(t.getTd(1,0));
 
   step++;
   window.setTimeout("animate()", 2000);
@@ -436,16 +436,15 @@ $(document).ready(function() {
 				</div>
 				<br /> <br />
 				<i18n key="demo45"> <en>Active time-tracking users of this Web
-				service of the last 24 hours</en> <de>Aktive Zeiterfassungs-Benutzer
-				dieses Webdienstes der letzten 24 Stunden</de> <fr>Les utilisateurs
-				de la gestion du temps actifs de ce service Web en les dernières 24
-				heures</fr> <es>Active los usuarios de gestión del tiempo de este
-				servicio web las últimas 24 horas</es></i18n>
+				service</en> <de>Aktive Zeiterfassungs-Benutzer
+				dieses Webdienstes</de> <fr>Les utilisateurs
+				de la gestion du temps actifs de ce service Web</fr> <es>Active los usuarios de gestión del tiempo de este
+				servicio web</es></i18n>
 				:
 				<div
-					style="width: 300px; height: 30px; background-image: url('graphics/load_bg.png');">
+					style="width: 420px; height: 70px; background: url('graphics/grow.jpg') repeat-x scroll left bottom transparent;">
 					<img src="<?php echo($domain.'/util/load.php');?>"
-						alt="last 24h load" width="288" height="20" />
+						alt="<i18n ref="demo45" />" width="420" height="70" />
 				</div>
 				<br /> <br />
 				<i18n key="demo46"> <en>The server software Emphasize.de is

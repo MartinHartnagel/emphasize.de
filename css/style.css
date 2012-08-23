@@ -48,7 +48,7 @@
  width: 60px;
 }
 .tLine {
- background: url("../graphics/timeline.png") repeat scroll left bottom transparent;
+ background: url("../graphics/grow.jpg") repeat-x scroll left bottom transparent;
  height: 60px;
  margin-left: 20px;
  padding-left: 60px;
