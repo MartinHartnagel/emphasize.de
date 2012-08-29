@@ -448,11 +448,14 @@ $(document).ready(function() {
 				</div>
 				<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/aggregaterating">
 				<?php
-				echo(str_replace(array("_week_users_", "_month_users_"), getUserLoads(), i18n('<i18n key="demo71"><de>_week_users_ aktive Benutzer seit einer Woche von _month_users_ aktive Benutzer des vergangenen Monats</de>
+				if (r("ajax") != "true") {
+				 User::connectDb();
+				 echo(str_replace(array("_week_users_", "_month_users_"), getUserLoads(), i18n('<i18n key="demo71"><de>_week_users_ aktive Benutzer seit einer Woche von _month_users_ aktive Benutzer des vergangenen Monats</de>
 				  <en>_week_users_ active users since one week with _month_users_ active users since one month</en>
 				  <fr>_week_users_ utilisateurs actifs depuis une semaine avec les utilisateurs _month_users_ actifs depuis un mois</fr>
 				  <es>_week_users_ usuarios activos desde una semana con _month_users_ usuarios activos desde un mes</es>
-				  </i18n>.'))); ?></span>
+				  </i18n>.'))); 
+                } ?></span>
 				<br /> <br />
 				<i18n key="demo46"> <en>The server software Emphasize.de is
 				available as a download to install for yourself</en> <de>Die

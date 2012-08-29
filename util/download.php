@@ -76,7 +76,7 @@ if (!is_file($file)) {
 			// skip
 		} else if (startsWith($f, "./test/")
 				|| (startsWith($f, "./i/") && $f!="./i/.readme.txt")
-				|| (startsWith($f, "./cache/") && $f!="./i/.readme.txt")
+				|| startsWith($f, "./cache/")
 				|| $f=="./util/download.php"
 				|| $f=="./util/load.php"
 				|| $f=="./util/clear.php"
