@@ -589,8 +589,14 @@ function checkCache() {
   return;
  }
  $cachetime = filemtime($cache);
+ if ($cachetime < time()-86400) {
+  // cached objects invalidate after 24 h
+  unlink($cache);
+  return;
+ }
  for ($i = 1; $i < $numargs; $i++) {
   if ($cachetime < filemtime(dirname(__FILE__) . "/../" . $arg_list[$i])) {
+   unlink($cache);
    return;
   }
  }
@@ -978,5 +984,31 @@ function dequeueMail() {
  mysql_free_result($sql);
  return $dequeued;
 }
+
+// nizip
+function getUserLoads() {
+
+ $sql = @ mysql_query("select count(s.id) month_users from (SELECT ID_USER id, count(time) hits FROM `" . DB_PREFIX . "LOAD` WHERE TIME > DATE_ADD(CURRENT_TIMESTAMP, INTERVAL -1 MONTH) GROUP BY ID_USER order by count(time) asc) AS s where s.hits > 10");
+ if ($sql === FALSE) {
+  fail("load query failed");
+ }
+ $month_users=-1;
+ if ($row = mysql_fetch_array($sql)) {
+  $month_users = $row["month_users"];
+ }
+ mysql_free_result($sql);
+
+ $sql = @ mysql_query("select count(s.id) week_users from (SELECT ID_USER id, count(time) hits FROM `" . DB_PREFIX . "LOAD` WHERE TIME > DATE_ADD(CURRENT_TIMESTAMP, INTERVAL -7 DAY) GROUP BY ID_USER order by count(time) asc) AS s where s.hits > 10");
+ if ($sql === FALSE) {
+  fail("load2 query failed");
+ }
+ $week_users=-1;
+ if ($row = mysql_fetch_array($sql)) {
+  $week_users = $row["week_users"];
+ }
+ mysql_free_result($sql);
+ return array('<meta itemprop="worstRating" content="0" /><span itemprop="ratingValue">'.$week_users.'</span><meta itemprop="bestRating" content="'.$month_users.'" />', '<span itemprop="ratingCount">'.$month_users.'</span>');
+}
+// /nizip
 
 ?>

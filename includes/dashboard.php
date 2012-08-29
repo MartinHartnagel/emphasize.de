@@ -232,36 +232,11 @@ function init() {
 	<div id="timeline" class="timeline">
 		<noscript>
 			<center style="font-size: 20px; color: red; text-decoration: blink;">
-				<i18n ref='tab56' />
-				!
+				<i18n ref='tab56' />!
 			</center>
 		</noscript>
-		<div id="time" class="tDiv">
-			<div id="timetip" class="tTip">
-				<span id="timetipText"></span>
-			</div>
-			<div id="tHours">
-				<span class="tHour">initializing...</span>
-			</div>
-			<div id="tLine" class="tLine"></div>
-			<div id="now" class="tNow">
-				<img id="nowimg" src="graphics/now.png" title="<i18n key='tab43'>
-				<en>now</en>
-				<de>jetzt</de>
-				<fr>maintenant</fr>
-				<es>ahora</es>
-				</i18n>
-				" width="19" height="58" class="help" />
-				<div id="help_nowimg" class="docu"
-					style="width: 180px; height: 18px;">
-					<i18n key="tab44"> <en>Editing time pointer.</en> <de>Editierzeit-Zeiger.</de>
-					<fr>Pointeur du temps d'édition.</fr> <es>Puntero del tiempo
-					edición.</es></i18n>
-				</div>
-			</div>
-		</div>
 	</div>
-	<div id="editor" style="border-color: white;">
+	<div id="editor" style="border-color: white;" class="editorClass">
 		<div id="blind" style="display: none;" title="<i18n 	  key='tab47'>
 			<en>no longer existing field</en>
 			<de>nicht mehr vorhandenes Feld</de>
@@ -291,11 +266,8 @@ function init() {
 						<fr>nouveau</fr> <es>nuevo</es></i18n> </span><a
 					href="util/ajax.php"></a></li>
 			</ul>
-			<div id="<i18n ref='dbd1' />
-			">
 			<table id="table" class="dashboard help" width="100%" height="100%"
 				border="0" cellspacing="2" cellpadding="0">
-				<?php echo(User::getInstance()->getActiveTemplateValue()); ?>
 			</table>
 			<div id="help_table" class="docu"
 				style="width: 320px; height: 314px;">

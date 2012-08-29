@@ -136,6 +136,14 @@ var View = {
     var tabs = $("#tabs")
         .tabs(
             {
+              show : function(e, ui) {
+                View.sizing();
+                return true;
+              },
+              add : function(e, ui) {
+                $(this).tabs("select", ui.index);
+                View.sizing();
+              },
               ajaxOptions : {
                 error : function(xhr, status, index, anchor) {
                   $(anchor.hash).html(
@@ -191,6 +199,14 @@ var View = {
   },
   addEditHandler : function(handler) {
     this.dashboard.setOnEdited(handler);
+  },
+  sizing : function() {
+    var wh = $(window).height();
+    var h = $(".ui-tabs-panel:visible").offset().top
+        + $(".ui-tabs-panel:visible").outerHeight(true)
+        - $(".ui-tabs-panel:visible").height() + 10;
+    $(".ui-tabs-panel").height(Math.floor(wh - h));
+    View.dashboard.updateEdits();
   }
 };
 
@@ -202,8 +218,8 @@ $(document).ready(function() {
 
 function updateTimelineMax(days) {
   timelineMax = 1440 * days;
-  $('.tDiv').css("width", (timelineMax + timelineMax) + "px");
-  $('.tNow').css("left", (timelineMax + timelineMax) + "px");
+  $('.tDiv').css("width", Math.floor(timelineMax + timelineMax) + "px");
+  $('#now').css("left", Math.floor(timelineMax + timelineMax) + "px");
   updateTimeline();
 }
 
@@ -253,14 +269,14 @@ function initView() {
   View.dashboard.setDebug(debug);
   View.dashboard.showActions();
   $(window).resize(function() {
-    View.dashboard.updateEdits();
+    View.sizing();
     if (currentPlace != undefined) {
       updateTitle(currentPlace);
       Avatar.showIn(currentPlace);
     }
     updateTimelineWidth();
   });
-  $("#time").bind('click', function(e) {
+  $("#time").live('click', function(e) {
     var pos = $("#time").position();
     moveTimeTo(-pos.left + e.pageX - 4);
   });
@@ -282,8 +298,8 @@ function initView() {
       $("#timetip").hide();
     }
   };
-  $("#time").mousemove(timeTip);
-  $("#time").hover(timeTip, function() {
+  $("#time").live("mousemove", timeTip);
+  $("#time").live("hover", timeTip, function() {
     $("#timetip").hide();
   });
   addInfoText = $("#info").val();
@@ -359,7 +375,6 @@ function initView() {
   // disable timeline selection
   $('.timeline').find('*').attr('unselectable', 'on').css('MozUserSelect',
       'none');
-  View.dashboard.updateEdits();
 }
 
 function initReport() {
@@ -495,6 +510,13 @@ function placeUser(element) {
           "link" : "http://martin.emphasize.de"
         };
         queue.push(entry);
+        var time;
+        if (timelineDateTime != undefined) {
+          time = parseDateTime(timelineDateTime).getTime();
+        } else {
+          time = new Date().getTime();
+        }
+        Timeline.addEvent(time, entry);
         processQueue();
       }
     }
@@ -668,8 +690,8 @@ function showAbove(type, element, url, focusElement, w, h, embedded) {
     var rect = {
       x : pos.left,
       y : pos.top,
-      w : $(element).outerWidth(),
-      h : $(element).outerHeight()
+      w : $(element).outerWidth(true),
+      h : $(element).outerHeight(true)
     };
     if (w == undefined || w == null || w > 0) {
       x = rect.x + rect.w / 2 + 1;
@@ -716,8 +738,8 @@ function showAbove(type, element, url, focusElement, w, h, embedded) {
                 var id = $(this).attr('id');
                 var p = $(this).offset();
                 var pos = $(this).position();
-                var w = $(this).outerWidth();
-                var h = $(this).outerHeight();
+                var w = $(this).outerWidth(true);
+                var h = $(this).outerHeight(true);
                 var l;
                 if (p.left + w / 2 < dw / 2) {
                   l = pos.left + w - 14;
@@ -851,7 +873,7 @@ function updateTimelineWidth() {
   var pos = $("#time").position();
   var from = -pos.left + config.timelineWidth / 2;
   var to = from - config.timelineWidth / 2;
-  config.timelineWidth = $("#timeline").outerWidth();
+  config.timelineWidth = $("#timeline").outerWidth(true);
   if (to < 0)
     to = 0;
   if (to > config.timelineMax + timelineHour - config.timelineWidth)
@@ -865,42 +887,23 @@ function updateTimeline() {
   var now = new Date();
   var before = new Date();
   before.setTime(now.getTime() - timelineMax * 60000);
-
+  var s = Timeline.render(before.getTime(), now.getTime(), 60);
+  $("#timeline").html(s);
   updateTimelineWidth();
-  $("#tHours").html(getHoursHtml());
-  if (isLoggedIn()) {
-    $.ajax({
-      url : domain + "util/ajax.php",
-      type : "POST",
-      async : true,
-      dataType : "html",
-      data : ({
-        "do" : "getTimelineHistory",
-        "token" : token,
-        "now" : getDateTime(now),
-        "before" : getDateTime(before)
-      }),
-      success : function(msg) {
-        if (msg == "logged-out.") {
-          logout();
-          return;
-        }
-        $("#tLine").css({
-          'background-position' : (-before.getMinutes()) + 'px 0px',
-          'left' : (before.getMinutes() - 60) + 'px'
-        });
-        $("#tLine").html(msg);
-
-        if (timelineLastEdit < (new Date()).getTime() - 60000) {
-          moveTimeTo(timelineMax + timelineHour);
-          $("#reportTo").val(getDateTime(new Date()).substr(0, 10));
-        }
-      },
-      error : function(req, status, error) {
-        Progress.showStatus(true, error + " " + status);
-      }
-    });
-  }
+  /*
+   * $("#tHours").html(getHoursHtml()); if (isLoggedIn()) { $.ajax({ url :
+   * domain + "util/ajax.php", type : "POST", async : true, dataType : "html",
+   * data : ({ "do" : "getTimelineHistory", "token" : token, "now" :
+   * getDateTime(now), "before" : getDateTime(before) }), success :
+   * function(msg) { if (msg == "logged-out.") { logout(); return; }
+   * $("#tLine").css({ 'background-position' : (-before.getMinutes()) + 'px
+   * 0px', 'left' : (before.getMinutes() - 60) + 'px' }); $("#tLine").html(msg);
+   * 
+   * if (timelineLastEdit < (new Date()).getTime() - 60000) {
+   * moveTimeTo(timelineMax + timelineHour); $("#reportTo").val(getDateTime(new
+   * Date()).substr(0, 10)); } }, error : function(req, status, error) {
+   * Progress.showStatus(true, error + " " + status); } }); }
+   */
   // are there failed entries to resend?
   processQueue();
 }
@@ -952,7 +955,7 @@ function moveTimeline(x) {
       to = timelineMax + timelineHour - config.timelineWidth;
     $('#time').stop();
     $("#time").animate({
-      left : (-to) + "px"
+      left : Math.floor(-to) + "px"
     }, {
       "queue" : "false",
       "duration" : "slow"
@@ -985,7 +988,7 @@ function setTimelineDateTime(newTimelineDateTime) {
         - ((now.getTime() - before.getTime()) / 60000);
     moveTimeline(x);
     $('#now').animate({
-      left : (x - 9) + "px"
+      left : Math.floor(x - 9) + "px"
     }, {
       "queue" : "false",
       "duration" : "slow",
@@ -1004,7 +1007,7 @@ function setTimelineDateTime(newTimelineDateTime) {
     var x = timelineMax + 20 + now.getMinutes();
     moveTimeline(x);
     $('#now').animate({
-      left : (x - 9) + "px"
+      left : Math.floor(x - 9) + "px"
     }, {
       "queue" : "false",
       "duration" : "slow",
@@ -1153,8 +1156,8 @@ function toggleShowHelp() {
                 var id = $(this).attr('id');
                 var p = $(this).offset();
                 var pos = $(this).position();
-                var w = $(this).outerWidth();
-                var h = $(this).outerHeight();
+                var w = $(this).outerWidth(true);
+                var h = $(this).outerHeight(true);
                 var l;
                 if (p.left + w / 2 < dw / 2) {
                   l = pos.left + w - 14;
@@ -1212,8 +1215,8 @@ function displayHelp(id, z) {
   $("#toggleHelp_" + id).attr("src", domain + "graphics/helping.png");
   $("#toggleHelp_" + id).css("z-index", z + 2);
   var p = $("#toggleHelp_" + id).position();
-  var w = $("#help_" + id).outerWidth();
-  var h = $("#help_" + id).outerHeight();
+  var w = $("#help_" + id).outerWidth(true);
+  var h = $("#help_" + id).outerHeight(true);
   $("#help_" + id).removeClass("docuDir0");
   $("#help_" + id).removeClass("docuDir1");
   $("#help_" + id).removeClass("docuDir2");

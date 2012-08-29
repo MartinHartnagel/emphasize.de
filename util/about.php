@@ -18,7 +18,9 @@ header("Content-Type: text/html;charset=UTF-8");
 		<br /> <br />
 		<i18n key="abo2"> <en>Author</en> <de>Autor</de> <fr>Auteur</fr> <es>Autor</es></i18n>
 		: <a href="http://martin.emphasize.de" target="_blank">Martin
-			Hartnagel</a><br /> <br />
+			Hartnagel</a>
+			&nbsp;<a href="https://plus.google.com/100885612700684695500?rel=author" target="_blank">+</a>
+			<br /> <br />
 
 		<h2>
 			<i18n key="abo3"> <en>Thanks to</en> <de>Dank an</de> <fr>Merci à</fr>
@@ -42,7 +44,7 @@ header("Content-Type: text/html;charset=UTF-8");
 					Grove</a></li>
 			<li><a href="http://piwik.org" target="_blank">Piwik - Web analytics</a>
 			</li>
-			<li><a href="http://code.google.com/p/swfobject" target="_blank">SWFObject - embed Piwik-Flash content on welcome site</a>		
+			<li><a href="http://code.google.com/p/swfobject" target="_blank">SWFObject - embed Piwik-Flash content on welcome site</a>
 			</li>
 			<li>Frank P. (concept)
 			</li>

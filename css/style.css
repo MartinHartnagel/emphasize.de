@@ -36,6 +36,7 @@
  height: 52px;
 }
 .tDiv {
+ background: url("../graphics/grow.jpg") repeat-x scroll left bottom transparent;
  font-family: Arial,Verdana,Helvetica,sans-serif;
  font-size: 10px;
  left: -7600px;
@@ -43,12 +44,16 @@
  top: 0;
  white-space: nowrap;
 }
-.tHour {
+div.tHours > span {
  display: inline-block;
- width: 60px;
+}
+div.tSeparators > span {
+ border-left: 1px solid gray;
+ border-right: 1px dotted gray;
+ display: inline-block;
+ line-height: 60px;
 }
 .tLine {
- background: url("../graphics/grow.jpg") repeat-x scroll left bottom transparent;
  height: 60px;
  margin-left: 20px;
  padding-left: 60px;
@@ -70,7 +75,7 @@
  pointer-events:none;
  height: 58px;
  position: absolute;
- top: 15px;
+ top: 2px;
  width: 19px;
  z-index: 2;
 }

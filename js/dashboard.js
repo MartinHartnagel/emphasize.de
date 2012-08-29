@@ -346,6 +346,9 @@ Dashboard = function() {
   };
 
   Dashboard.prototype.findElement = function(text) {
+    if (this.table == undefined) {
+      this.table = $("#table:visible").get(0);
+    }
     var place = null;
     for ( var r = 0; r < table.rows.length; r++) {
       for ( var c = 0; c < table.rows[r].cells.length; c++) {
@@ -505,14 +508,14 @@ Dashboard = function() {
 
   Dashboard.prototype.findTdAt = function(px, py) {
     var pos = $(table).offset();
-    if ((px > pos.left) && (px < pos.left + $(table).outerWidth())
-        && (py > pos.top) && (py < pos.top + $(table).outerHeight())) {
+    if ((px > pos.left) && (px < pos.left + $(table).outerWidth(true))
+        && (py > pos.top) && (py < pos.top + $(table).outerHeight(true))) {
       for ( var y = 0; y < table.rows.length; y++) {
         for ( var a = 0; a < table.rows[y].cells.length; a++) {
           var td = table.rows[y].cells[a];
           var pos = $(td).offset();
-          if ((px > pos.left) && (px < pos.left + $(td).outerWidth())
-              && (py > pos.top) && (py < pos.top + $(td).outerHeight())) {
+          if ((px > pos.left) && (px < pos.left + $(td).outerWidth(true))
+              && (py > pos.top) && (py < pos.top + $(td).outerHeight(true))) {
             return td;
           }
         }
@@ -674,8 +677,8 @@ Dashboard = function() {
       var pos = $("#color").offset();
       var x = evt.pageX - pos.left;
       var y = evt.pageY - pos.top;
-      var w = $("#color").outerWidth();
-      var h = $("#color").outerHeight();
+      var w = $("#color").outerWidth(true);
+      var h = $("#color").outerHeight(true);
       notify("color", img.src, x / w, y / h, function(color) {
         $(tdo).css("background-color", color);
         $("#cellColor").detach();

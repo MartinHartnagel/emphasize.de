@@ -100,7 +100,7 @@ function getEvents($now, $before) {
 	mysql_free_result($sql);
 
 	// render the actual event which has end=null
-	$sql = @ mysql_query("SELECT e.name, e.color, FLOOR(" . $delta . "-(UNIX_TIMESTAMP('" . p($now) . "')-UNIX_TIMESTAMP(IF(n.start < '" . p($before) . "','" . p($before) . "',n.start)))/60) AS offset, n.start, FLOOR(n.duration/60) as minutes, FLOOR((UNIX_TIMESTAMP('" . p($now) . "')-UNIX_TIMESTAMP(IF(n.start < '" . p($before) . "','" . p($before) . "', n.start)))/60) AS width FROM " . DB_PREFIX . "ENTRY n, " . DB_PREFIX . "EVENT e WHERE n.id_user=" . p($id) . " AND n.id_user=e.id_user AND e.id=n.id_event AND n.end IS NULL");
+	$sql = @ mysql_query("SELECT e.name as event, e.color as color, FLOOR(" . $delta . "-(UNIX_TIMESTAMP('" . p($now) . "')-UNIX_TIMESTAMP(IF(n.start < '" . p($before) . "','" . p($before) . "',n.start)))/60) AS offset, n.start as start, FLOOR(n.duration/60) as minutes, FLOOR((UNIX_TIMESTAMP('" . p($now) . "')-UNIX_TIMESTAMP(IF(n.start < '" . p($before) . "','" . p($before) . "', n.start)))/60) AS width FROM " . DB_PREFIX . "ENTRY n, " . DB_PREFIX . "EVENT e WHERE n.id_user=" . p($id) . " AND n.id_user=e.id_user AND e.id=n.id_event AND n.end IS NULL");
 	if ($row = mysql_fetch_array($sql)) {
 		$event = str_replace('"', '&quot;', $row["event"]);
 		$color = $row["color"];
