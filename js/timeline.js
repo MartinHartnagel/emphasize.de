@@ -48,7 +48,11 @@ var Timeline = {
     var lastEvent = null;
     for ( var i = 0; i < this.list.length; i++) {
       if (this.list[i].time <= time) {
-        lastEvent = this.list[i].event;
+        lastEvent = {
+          from : this.list[i].time,
+          to : this.list.length > i + 1 ? this.list[i + 1].time : null,
+          event : this.list[i].event
+        }
         this.list[i].access = (new Date()).getTime();
       } else {
         break;
@@ -68,7 +72,11 @@ var Timeline = {
     // TODO: optimize with a global i-try counter for iteration
     for ( var i = 0; i < this.list.length; i++) {
       if (this.list[i].time > time) {
-        nextEvent = this.list[i].event;
+        nextEvent = {
+          from : this.list[i].time,
+          to : this.list.length > i + 1 ? this.list[i + 1].time : null,
+          event : this.list[i].event
+        }
         this.list[i].access = (new Date()).getTime();
         break;
       }
@@ -167,27 +175,30 @@ var Timeline = {
     s += sep + '</div>';
     s += '<div id="tLine" class="tLine" unselectable="on">';
     var current = this.getEventAt(from);
-    while (current != null) {
-      next = this.getEventAfter(current.time);
-      var duration;
-      if (next != null) {
-        duration = next.time - current.time;
-      } else {
-        duration = ((new Date()).getTime()) - current.time;
-      }
-      s += '<div title="'
-          + current.event
-          + '" class="block" style="background-color:'
-          + current.event.color
-          + ';left:'
-          + Math.floor((current.time - from) / zoom)
-          + 'px;width:'
-          + Math.floor(duration / zoom)
-          + 'px"><img src="'
-          + domain
-          + '/graphics/seperator.png" width="15" height="12" class="tsep" style="left:52px;"></div>';
-      current = next;
+    if (current == null) {
+      current = this.getEventAfter(from);
     }
+    while (current != null) {
+      var duration;
+      if (current.to != null) {
+        duration = current.to - current.from;
+      } else {
+        duration = ((new Date()).getTime()) - current.from;
+      }
+      s += '<div class="box" style="left:'
+          + Math.floor((current.from - from) * zoom / 3600000)
+          + 'px;width:'
+          + Math.floor(duration * zoom / 3600000)
+          + 'px"><div title="'
+          + current.event.event.replace(/"/g, '&quot;')
+          + '" style="background-color:'
+          + current.event.color
+          + ';"></div><img src="'
+          + domain
+          + '/graphics/seperator.png" width="15" height="12" class="tsep"></div>';
+      current = this.getEventAfter(current.from);
+    }
+    s += '</div>';
     s += '<div id="now" class="tNow">';
     s += '<img id="nowimg" src="graphics/now.png" title="';
     s += '<i18n key="tab43"><en>now</en><de>jetzt</de><fr>maintenant</fr><es>ahora</es></i18n>';
@@ -195,7 +206,6 @@ var Timeline = {
     s += '<div id="help_nowimg" class="docu"';
     s += 'style="width: 180px; height: 18px;">';
     s += '<i18n key="tab44"> <en>Editing time pointer.</en> <de>Editierzeit-Zeiger.</de><fr>Pointeur du temps d\'édition.</fr> <es>Puntero del tiempo edición.</es></i18n>';
-    s += '</div>';
     s += '</div>';
     s += '</div>';
     s += '</div>';
