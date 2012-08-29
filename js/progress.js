@@ -7,6 +7,10 @@
 var Progress = {
   progressVersion : 0,
   init : function() {
+    if (!$("#doing").is(':visible')) {
+      return;
+    }
+
     $("#doing").progressbar({
       value : 59
     });

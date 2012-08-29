@@ -29,7 +29,7 @@ function getFiltered($c) {
 function readFiltered($f) {
 	global $lc;
 	$c=file_get_contents($f);
-	
+
 	return getFiltered($c);
 }
 
@@ -74,7 +74,9 @@ if (!is_file($file)) {
 		} else if ($f=="./includes/blog_config.php"
 				|| $f=="./includes/base_config.php" || (startsWith($f, "./") && strpos(substr($f, 2), "/")===FALSE && $f!="./favicon.ico" && $f!="./style.css" && $f!="./index.php")) {
 			// skip
-		} else if (startsWith($f, "./cache/")
+		} else if (startsWith($f, "./test/")
+				|| (startsWith($f, "./i/") && $f!="./i/.readme.txt")
+				|| (startsWith($f, "./cache/") && $f!="./i/.readme.txt")
 				|| $f=="./util/download.php"
 				|| $f=="./util/load.php"
 				|| $f=="./util/clear.php"

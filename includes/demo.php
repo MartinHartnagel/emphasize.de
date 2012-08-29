@@ -105,7 +105,7 @@ function animate() {
 }
 
 $('a.blog').live('click',function(){
-  url = $(this).attr("href");
+  var url = $(this).attr("href");
   $.post(domain+url, {"ajax":"true", "grep":"bContent"}, function(data) {
     $("#bContent").replaceWith(data);
     window.location.hash = '#' + url.replace('.php','');

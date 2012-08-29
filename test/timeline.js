@@ -36,4 +36,19 @@ testPage('/', function() {
     t.doTimeoutCleanup(1030);
     equal(t.shortDescription(), "c, e", "timeline cleaned up");
   });
+
+  test('getEventAt', function() {
+    t.clear();
+    t.addEvent(5, "a", 1000);
+    t.addEvent(10, "b", 1010);
+    t.addEvent(20, "c", 1062);
+    t.addEvent(30, "d", 1013);
+    t.addEvent(40, "e", 1046);
+
+    equal(t.getEventAt(3), null, "before first entry");
+    equal(t.getEventAt(5), "a", "at first entry");
+    equal(t.getEventAt(7), "a", "after first entry");
+    equal(t.getEventAt(10), "b", "at second entry");
+    equal(t.getEventAt(12), "b", "after second entry");
+  });
 });

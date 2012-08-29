@@ -22,12 +22,15 @@ class DownloadTest extends WebTestCase {
  function testDownload() {
   global $domain;
 
+  $filename="emphasize-".VERSION.".zip";
+  if (file_exists(dirname(__FILE__)."/../".$filename)) {
+   unlink(dirname(__FILE__)."/../".$filename);
+  }
   $this->assertTrue($this->get($domain.'/util/download.php'));
   //$this->showHeaders();
   $this->assertMime(array('application/zip'));
   $this->assertHeader('Content-Description', 'File Transfer');
   $this->assertHeader('Content-Transfer-Encoding', 'binary');
-  $filename="emphasize-".VERSION.".zip";
   $this->assertHeader('Content-Disposition', 'attachment; filename='.$filename.';');
   $file=$this->dest."/".$filename;
   file_put_contents($file, $this->getBrowser()->getContent());
@@ -40,8 +43,10 @@ class DownloadTest extends WebTestCase {
   $this->assertTrue(file_exists($this->dest."/out/emphasize-".VERSION."/favicon.ico"));
   $this->assertTrue(is_dir($this->dest."/out/emphasize-".VERSION."/i"));
 
-  $this->assertEqual(file_grep($this->dest."/out", "/.php/", "/izip/"), array(), "nizip check");
-  $this->assertEqual(file_grep($this->dest."/out", "/./", "/web78/"), array(), "web78 check");
+  $f=file_grep($this->dest."/out", "/.php/", "/izip/");
+  $this->assertEqual($f, array(), "nizip check ".implode($f, ", "));
+  $f=file_grep($this->dest."/out", "/./", "/web78/");
+  $this->assertEqual($f, array(), "web78 check ".implode($f, ", "));
  }
 
  function tearDown() {
