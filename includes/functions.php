@@ -569,7 +569,7 @@ function getTimelineHistory($now, $before) {
   fail("unexpected: load insert failed");
  }
 
- getEvents($now, $before);
+ getEvents($before, $now);
 }
 
 function checkCache() {

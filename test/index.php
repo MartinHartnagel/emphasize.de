@@ -14,6 +14,10 @@ $guiTestPassword="bla";
 class QUnitProceedReporter extends HtmlReporter {
  function paintHeader($test_name) {
   global $domain;
+  global $suite;
+  global $guiTestLogin;
+  global $guiTestPassword;
+
   $this->sendNoCacheHeaders();
   print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
   print "<html>\n<head>\n<title>$test_name</title>\n";
@@ -31,16 +35,19 @@ class QUnitProceedReporter extends HtmlReporter {
   print "<style type=\"text/css\">\n";
   print $this->getCss() . "\n";
   print "</style>\n";
+  print('<script type="text/javascript">
+    var login="'.$guiTestLogin.'";
+    var password="'.$guiTestPassword.'";
+    </script>');
+  foreach($suite->getClientTests() as $js) {
+   print '<script src="test/'.$js.'"></script>';
+  }
   print "</head>\n<body>\n";
   print "<h1>$test_name</h1>\n";
   flush();
  }
 
  function paintFooter($test_name) {
-  global $suite;
-  global $guiTestLogin;
-  global $guiTestPassword;
-
   $failed=($this->getFailCount() + $this->getExceptionCount() > 0);
   $colour = ($failed ? "red" : "green");
   print "<div style=\"";
@@ -52,23 +59,20 @@ class QUnitProceedReporter extends HtmlReporter {
   print "<strong>" . $this->getFailCount() . "</strong> fails and ";
   print "<strong>" . $this->getExceptionCount() . "</strong> exceptions.";
   print "</div><br/>\n";
-  print '<div style="float: right">
-    <iframe height="480" width="800" id="testFrame"></iframe>
-  </div>
+  print '
   <div style="float: left;width:320px;">
     <h2 id="qunit-banner"></h2>
     <div id="qunit-testrunner-toolbar"></div>
     <h2 id="qunit-userAgent"></h2>
     <ol id="qunit-tests"></ol>
     <div id="qunit-fixture">test markup, will be hidden</div>
+  </div>
+  <br clear="all" />
+  <hr />
+  <br/>
+  <div><center>
+    <iframe height="480" width="800" id="testFrame"></iframe></center>
   </div>';
-  print('<script type="text/javascript">
-  var login="'.$guiTestLogin.'";
-  var password="'.$guiTestPassword.'";
-  </script>');
-  foreach($suite->getClientTests() as $js) {
-   print '<script src="test/'.$js.'"></script>';
-  }
   print('<script type="text/javascript">
     $$(document).ready(runTests);
     </script>');

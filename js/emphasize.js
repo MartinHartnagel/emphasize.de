@@ -887,23 +887,45 @@ function updateTimeline() {
   var now = new Date();
   var before = new Date();
   before.setTime(now.getTime() - timelineMax * 60000);
-  var s = Timeline.render(before.getTime(), now.getTime(), 60);
-  $("#timeline").html(s);
-  updateTimelineWidth();
-  /*
-   * $("#tHours").html(getHoursHtml()); if (isLoggedIn()) { $.ajax({ url :
-   * domain + "util/ajax.php", type : "POST", async : true, dataType : "html",
-   * data : ({ "do" : "getTimelineHistory", "token" : token, "now" :
-   * getDateTime(now), "before" : getDateTime(before) }), success :
-   * function(msg) { if (msg == "logged-out.") { logout(); return; }
-   * $("#tLine").css({ 'background-position' : (-before.getMinutes()) + 'px
-   * 0px', 'left' : (before.getMinutes() - 60) + 'px' }); $("#tLine").html(msg);
-   * 
-   * if (timelineLastEdit < (new Date()).getTime() - 60000) {
-   * moveTimeTo(timelineMax + timelineHour); $("#reportTo").val(getDateTime(new
-   * Date()).substr(0, 10)); } }, error : function(req, status, error) {
-   * Progress.showStatus(true, error + " " + status); } }); }
-   */
+
+  if (isLoggedIn()) {
+    $.ajax({
+      url : domain + "util/ajax.php",
+      type : "POST",
+      async : true,
+      dataType : "json",
+      data : ({
+        "do" : "getTimelineHistory",
+        "token" : token,
+        "now" : getDateTime(now),
+        "before" : getDateTime(before)
+      }),
+      success : function(data) {
+        var events = data[0];
+        for ( var i = 0; i < events.length; i++) {
+          var entry = events[i];
+          var time = parseDateTime(entry[0]).getTime();
+          var event = {
+            "type" : 0,
+            "event" : entry[1],
+            "color" : entry[2],
+            "datetime" : entry[0],
+            "link" : "http://martin.emphasize.de"
+          };
+          Timeline.addEvent(time, event);
+        }
+        // TODO infos
+        var s = Timeline.render(before.getTime(), now.getTime(), 60);
+        $("#timeline").html(s);
+        updateTimelineWidth();
+
+      },
+      error : function(req, status, error) {
+        Progress.showStatus(true, error + " " + status);
+      }
+    });
+  }
+
   // are there failed entries to resend?
   processQueue();
 }

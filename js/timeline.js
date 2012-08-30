@@ -16,7 +16,8 @@ var Timeline = {
   init : function() {
   },
   /**
-   * Adds a event to the list of event-objects.
+   * Adds a event to the list of event-objects. An already contained
+   * event-object at the same time will be replaced.
    * 
    * @param time
    *          of the event in the timeline.
@@ -26,6 +27,19 @@ var Timeline = {
    *          if set, the access time in milliseconds, elsewise now.
    */
   addEvent : function(time, event, access) {
+    // TODO optimize with one for-loop
+    for ( var i = 0; i < this.list.length; i++) {
+      if (this.list[i].time == time) {
+        this.list[i].event = event;
+        this.list[i].access = (access == undefined ? (new Date()).getTime()
+            : access);
+        return;
+      }
+      if (this.list[i].time > time) {
+        // TODO insert at i-1 and then return
+        break;
+      }
+    }
     this.list.push({
       "time" : time,
       "event" : event,
@@ -185,6 +199,10 @@ var Timeline = {
       } else {
         duration = ((new Date()).getTime()) - current.from;
       }
+      // TODO infos: <img src="' . $domain . '/graphics/info.png" title="' .
+      // substr($start, 11, 5) . ' ' . $info . '" style="left:' . ($offset +60 -
+      // 2) . 'px;" class="ti" />
+
       s += '<div class="box" style="left:'
           + Math.floor((current.from - from) * zoom / 3600000)
           + 'px;width:'
