@@ -1,142 +1,74 @@
 /**
- * @class Timeline class for displaying of tracked events in time.
+ * @class Timeline class for displaying of tracked events and infos in time.
  * 
  * @author <a href="http://martin.emphasize.de" target="_blank">Martin Hartnagel</a>
  * 
  */
 var Timeline = {
   /**
-   * Sorted list of event-objects currently looked at with the ability to drop
-   * not accessed entries after some timeout.
+   * Zoom-factor, equal to the width of pixels of an hour.
    */
-  list : new Array(),
+  zoom : 100,
+  /**
+   * Currently render offset-time in milliseconds.
+   */
+  renderedFrom : 0,
+  /**
+   * TODO last edited merken für auto-jetzt zurücksetzen.
+   */
+  lastTimeEdit : 0,
+  /**
+   * Time sorted set of eventss currently looked at.
+   */
+  events : new TimeSortedSet(),
+  /**
+   * Time sorted set of infos currently looked at.
+   */
+  infos : new TimeSortedSet(),
   /**
    * Initializes the timeline object.
    */
   init : function() {
-  },
-  /**
-   * Adds a event to the list of event-objects. An already contained
-   * event-object at the same time will be replaced.
-   * 
-   * @param time
-   *          of the event in the timeline.
-   * @param event
-   *          event-object to add.
-   * @param access
-   *          if set, the access time in milliseconds, elsewise now.
-   */
-  addEvent : function(time, event, access) {
-    // TODO optimize with one for-loop
-    for ( var i = 0; i < this.list.length; i++) {
-      if (this.list[i].time == time) {
-        this.list[i].event = event;
-        this.list[i].access = (access == undefined ? (new Date()).getTime()
-            : access);
-        return;
-      }
-      if (this.list[i].time > time) {
-        // TODO insert at i-1 and then return
-        break;
-      }
-    }
-    this.list.push({
-      "time" : time,
-      "event" : event,
-      "access" : (access == undefined ? (new Date()).getTime() : access)
+    $("#time").live('click', function(e) {
+      var pos = $("#time").position();
+      moveTimeTo(-pos.left + e.pageX - 4);
     });
-    this.list.sort(function(a, b) {
-      return a.time - b.time;
+    var timeTip = function(e) {
+      var pos = $("#time").position();
+      var x = -pos.left + e.pageX;
+      var time = Timeline.getTimeAt(x);
+      var tip = new Date();
+      tip.setTime(time);
+      var txt = rightTrimmed("00", tip.getHours()) + ":"
+          + rightTrimmed("00", tip.getMinutes());
+      $("#timetipText").html(txt);
+      $("#timetip").css("left", (x - 40) + "px");
+      $("#timetip").show();
+    };
+    $("#time").live("mousemove", timeTip);
+    $("#time").live("hover", timeTip, function() {
+      $("#timetip").hide();
     });
   },
   /**
-   * Returns the event-object in the timeline which started at or before the
-   * given time.
+   * Sets the zoom-factor, equal to the width of pixels of an hour.
    * 
-   * @param time
-   *          in milliseconds.
-   * @returns the event-object in the timeline which started at or before the
-   *          given time.
+   * @param zoom
+   *          zoom-factor, equal to the width of pixels of an hour.
    */
-  getEventAt : function(time) {
-    var lastEvent = null;
-    for ( var i = 0; i < this.list.length; i++) {
-      if (this.list[i].time <= time) {
-        lastEvent = {
-          from : this.list[i].time,
-          to : this.list.length > i + 1 ? this.list[i + 1].time : null,
-          event : this.list[i].event
-        }
-        this.list[i].access = (new Date()).getTime();
-      } else {
-        break;
-      }
-    }
-    return lastEvent;
+  setZoom : function(zoom) {
+    this.zoom = zoom;
   },
   /**
-   * Returns the subsequent event-object in the timeline after the given time.
+   * Returns the time in milliseconds currently represented at the x-position in
+   * the rendered timeline div.
    * 
-   * @param time
-   *          in milliseconds.
-   * @returns the subsequent event-object in the timeline.
+   * @param x
+   *          x-position in the timeline-div.
+   * @returns {Number} time in milliseconds corresponding to the x-position.
    */
-  getEventAfter : function(time) {
-    var nextEvent = null;
-    // TODO: optimize with a global i-try counter for iteration
-    for ( var i = 0; i < this.list.length; i++) {
-      if (this.list[i].time > time) {
-        nextEvent = {
-          from : this.list[i].time,
-          to : this.list.length > i + 1 ? this.list[i + 1].time : null,
-          event : this.list[i].event
-        }
-        this.list[i].access = (new Date()).getTime();
-        break;
-      }
-    }
-    return nextEvent;
-  },
-  /**
-   * Drops entries out of the timeline which only have been last accessed at or
-   * before timeout.
-   * 
-   * @param timeout
-   *          time in milliseconds.
-   */
-  doTimeoutCleanup : function(timeout) {
-    var i = 0;
-    while (i < this.list.length) {
-      if (this.list[i].access <= timeout) {
-        this.list.splice(i, 1);
-      } else {
-        i++;
-      }
-    }
-  },
-  /**
-   * Returns a short description of the events contained. Format of the string
-   * is descriptive and may change without further notice.
-   * 
-   * @returns {String} a short description of the events contained.
-   */
-  shortDescription : function() {
-    var s = "";
-    for ( var i = 0; i < this.list.length; i++) {
-      if (s != "") {
-        s += ", ";
-      }
-      s += this.list[i].event;
-    }
-    return s;
-  },
-  /**
-   * Clears the list of events so that no entries exist.
-   */
-  clear : function() {
-    if (this.list.length > 0) {
-      this.list.splice(0, this.list.length);
-    }
+  getTimeAt : function(x) {
+    return this.renderedFrom + x * 3600000 / this.zoom;
   },
   /**
    * Renders the timeline contents.
@@ -145,52 +77,51 @@ var Timeline = {
    *          time in milliseconds.
    * @param to
    *          time in milliseconds
-   * @param zoom
-   *          zoom-factor, equal to the width of pixels of an hour.
    * @returns {String} html to be placed in the timeline-div.
    */
-  render : function(from, to, zoom) {
+  render : function(from, to) {
     if (from >= to) {
       return "";
     }
     var s = '';
     s += '<div id="time" class="tDiv" style="width: '
-        + Math.floor((to - from) * zoom / 3600000) + 'px;">';
+        + Math.floor((to - from) * this.zoom / 3600000) + 'px;">';
     s += '<div id="timetip" class="tTip">';
     s += '<span id="timetipText"></span>';
-    s += '</div>';
+    s += '</div>\n';
     var then = new Date();
     then.setTime(from);
     then.setMinutes(0);
     then.setSeconds(0);
     then.setMilliseconds(0);
-    var offset = Math.floor((from - then.getTime()) * zoom / 3600000);
-    s += '<div class="tHours" style="margin-left:' + offset + 'px;">';
+    var offset = Math.floor((from - then.getTime()) * this.zoom / 3600000);
+    s += '<div class="tHours" style="margin-left:' + offset + 'px;">\n';
     var sep = '<div class="tSeparators" style="position:absolute;margin-left:'
-        + (offset - 4) + 'px;">';
+        + (offset - 4) + 'px;">\n';
 
     var c = 0;
     for ( var t = from; t <= to; t += 3600000) {
       then.setTime(t);
       var day = $.datepicker.formatDate("D", then);
-      var w = (Math.floor(c + zoom) - Math.floor(c));
-      c += zoom;
-      s += '<span style="width:' + w + 'px;">';
+      var w = (Math.floor(c + this.zoom) - Math.floor(c));
+      c += this.zoom;
+      s += '\n<span style="width:' + w + 'px;">';
       if (then.getHours() < 10) {
         s += '&nbsp;&nbsp;' + day + " " + then.getHours();
       } else {
         s += '' + day + " " + then.getHours();
       }
       s += ':00</span>';
-      sep += '<span style="width:' + Math.floor((w - 2) / 2)
+      sep += '\n<span style="width:' + Math.floor((w - 2) / 2)
           + 'px;margin-left:' + Math.ceil((w - 2) / 2) + 'px;">&nbsp;</span>';
     }
     s += '</div>';
     s += sep + '</div>';
     s += '<div id="tLine" class="tLine" unselectable="on">';
-    var current = this.getEventAt(from);
+    // events
+    var current = this.events.getAt(from);
     if (current == null) {
-      current = this.getEventAfter(from);
+      current = this.events.getAfter(from);
     }
     while (current != null) {
       var duration;
@@ -199,24 +130,35 @@ var Timeline = {
       } else {
         duration = ((new Date()).getTime()) - current.from;
       }
-      // TODO infos: <img src="' . $domain . '/graphics/info.png" title="' .
-      // substr($start, 11, 5) . ' ' . $info . '" style="left:' . ($offset +60 -
-      // 2) . 'px;" class="ti" />
-
-      s += '<div class="box" style="left:'
-          + Math.floor((current.from - from) * zoom / 3600000)
+      s += '\n<div class="box" style="left:'
+          + Math.floor((current.from - from) * this.zoom / 3600000)
           + 'px;width:'
-          + Math.floor(duration * zoom / 3600000)
+          + Math.floor(duration * this.zoom / 3600000)
           + 'px"><div title="'
-          + current.event.event.replace(/"/g, '&quot;')
+          + current.object.event.replace(/"/g, '&quot;')
           + '" style="background-color:'
-          + current.event.color
+          + current.object.color
           + ';"></div><img src="'
           + domain
           + '/graphics/seperator.png" width="15" height="12" class="tsep"></div>';
-      current = this.getEventAfter(current.from);
+      current = this.events.getAfter(current.from);
     }
-    s += '</div>';
+    // infos
+    current = this.infos.getAt(from);
+    if (current == null) {
+      current = this.infos.getAfter(from);
+    }
+    while (current != null) {
+      var a = new Date(current.from);
+      s += '\n<img src="' + domain + '/graphics/info.png" title="'
+          + (a.getHours() < 10 ? '0' : '') + a.getHours() + ':'
+          + (a.getMinutes() < 10 ? '0' : '') + a.getMinutes() + ' '
+          + current.object.replace(/"/g, '&quot;') + '" style="left:'
+          + Math.floor((current.from - from) * this.zoom / 3600000)
+          + 'px;" class="ti" />';
+      current = this.events.getAfter(current.from);
+    }
+    s += '\n</div>';
     s += '<div id="now" class="tNow">';
     s += '<img id="nowimg" src="graphics/now.png" title="';
     s += '<i18n key="tab43"><en>now</en><de>jetzt</de><fr>maintenant</fr><es>ahora</es></i18n>';
@@ -227,7 +169,8 @@ var Timeline = {
     s += '</div>';
     s += '</div>';
     s += '</div>';
+    renderedFrom = from;
     return s;
-  },
+  }
 
-}
+};

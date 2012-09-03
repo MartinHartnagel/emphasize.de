@@ -583,6 +583,10 @@ function checkCache() {
   return;
  }
  $arg_list = func_get_args();
+ if ($numargs == 1 && is_array($arg_list[0])) {
+  $arg_list=$arg_list[0];
+  $numargs=count($arg_list);
+ }
  global $cache;
  $cache = dirname(__FILE__) . "/../cache/" . $prefix . "_" . $arg_list[0];
  if (!file_exists($cache)) {

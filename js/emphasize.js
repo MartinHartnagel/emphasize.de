@@ -133,6 +133,7 @@ var Presenter = {
 var View = {
   dashboard : undefined,
   init : function() {
+    Timeline.init();
     var tabs = $("#tabs")
         .tabs(
             {
@@ -275,32 +276,6 @@ function initView() {
       Avatar.showIn(currentPlace);
     }
     updateTimelineWidth();
-  });
-  $("#time").live('click', function(e) {
-    var pos = $("#time").position();
-    moveTimeTo(-pos.left + e.pageX - 4);
-  });
-  var timeTip = function(e) {
-    var pos = $("#time").position();
-    var x = -pos.left + e.pageX - 4;
-    var now = new Date();
-    if ((x < timelineMax + 20 + now.getMinutes())
-        && (x > 20 + now.getMinutes())) {
-      var mins = timelineMax + 20 + now.getMinutes() - x;
-      var tip = new Date();
-      tip.setTime(now.getTime() - mins * 60000 - now.getSeconds() * 1000);
-      var txt = rightTrimmed("00", tip.getHours()) + ":"
-          + rightTrimmed("00", tip.getMinutes());
-      $("#timetipText").html(txt);
-      $("#timetip").css("left", (x - 37) + "px");
-      $("#timetip").show();
-    } else {
-      $("#timetip").hide();
-    }
-  };
-  $("#time").live("mousemove", timeTip);
-  $("#time").live("hover", timeTip, function() {
-    $("#timetip").hide();
   });
   addInfoText = $("#info").val();
   $("#info").focus(function(e) {
@@ -516,7 +491,7 @@ function placeUser(element) {
         } else {
           time = new Date().getTime();
         }
-        Timeline.addEvent(time, entry);
+        Timeline.events.add(time, entry);
         processQueue();
       }
     }
@@ -912,9 +887,15 @@ function updateTimeline() {
             "datetime" : entry[0],
             "link" : "http://martin.emphasize.de"
           };
-          Timeline.addEvent(time, event);
+          Timeline.events.add(time, event);
         }
-        // TODO infos
+        var infos = data[1];
+        for ( var i = 0; i < infos.length; i++) {
+          var entry = infos[i];
+          var time = parseDateTime(entry[0]).getTime();
+          var info = entry[1];
+          Timeline.infos.add(time, info);
+        }
         var s = Timeline.render(before.getTime(), now.getTime(), 60);
         $("#timeline").html(s);
         updateTimelineWidth();

@@ -116,10 +116,10 @@ class User {
  }
 
  function deleteUserAvatar($theavatar) {
-  $dir = opendir("avatars");
+  $dir = opendir(dirname(__FILE__).'/../avatars');
   while (($file = readdir($dir)) !== false) {
    if ($file !== '.' && $file !== '..' && (substr($file, 0, strlen($this->id . "_")) == $this->id . "_") && ($file == $theavatar . ".png")) {
-    unlink("avatars/" . $file);
+    unlink(dirname(__FILE__).'/../avatars/' . $file);
     break;
    }
   }
@@ -349,6 +349,20 @@ class User {
  }
 
  public static function deleteUser($id) {
+  $token=null;
+  $sql = @ mysql_query("SELECT token FROM " . DB_PREFIX . "USAGE WHERE id_user=".$id);
+  if ($row = mysql_fetch_array($sql)) {
+   $token = $row["token"];
+  }
+  mysql_free_result($sql);
+  if ($token != null) {
+   if (file_exists(dirname(__FILE__).'/../i/'.$token.'/index.php')) {
+     unlink(dirname(__FILE__).'/../i/'.$token.'/index.php');
+   }
+   if (is_dir(dirname(__FILE__).'/../i/'.$token)) {
+     rmdir(dirname(__FILE__).'/../i/'.$token);
+   }
+  }
   $delete = @mysql_query("DELETE FROM " . DB_PREFIX . "USAGE WHERE id_user=".$id);
 	if (!$delete) {
 		echo("delete failed: "."DELETE FROM " . DB_PREFIX . "USAGE WHERE id_user=".$id."\n");

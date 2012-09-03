@@ -84,7 +84,7 @@ function getEvents($from, $to) {
 
   $infos=array();
 	$sql = @ mysql_query("SELECT info, start FROM " . DB_PREFIX . "INFO ".
-	  "WHERE ID_USER=" . p($id) . " AND start >= '" . p(from) . "' ORDER BY start ASC");
+	  "WHERE ID_USER=" . p($id) . " AND start >= '" . p($from) . "' ORDER BY start ASC");
 	while ($row = mysql_fetch_array($sql)) {
 		$infos[]=array($row["start"], $row["info"]);
 	}
