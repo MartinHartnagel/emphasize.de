@@ -6,7 +6,9 @@ $files=array('js/ajaxfileupload.js', 'js/dashboard.js', 'js/emphasize.js', 'js/p
 $export="js";
 header("Content-Type: application/x-javascript;charset=UTF-8");
 
-$args=array_merge(array("emphasize_".$_GET["lang"].".js", "includes/translations.php"), $files);
+$lang=detectLang();
+
+$args=array_merge(array("emphasize_".$lang.".js", "includes/translations.php"), $files);
 checkCache($args);
 
 $js='';
@@ -19,5 +21,11 @@ require(dirname(__FILE__).'/jsmin.php');
 if ($domain != 'http://next.emphasize.de') {
   $js=JSMin::minify($js);
 }
+readfile(dirname(__FILE__).'/../js/jquery-1.8.1.min.js');
+echo("\n");
+readfile(dirname(__FILE__).'/../js/jquery-ui-1.8.17.custom.min.js');
+echo("\n");
+readfile(dirname(__FILE__).'/../js/jquery.ui.datepicker-'.$lang.'.js');
+echo("\n");
 echo($js);
 ?>

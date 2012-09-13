@@ -39,25 +39,30 @@
  background: url("../graphics/grow.jpg") repeat-x scroll left bottom transparent;
  font-family: Arial,Verdana,Helvetica,sans-serif;
  font-size: 10px;
- left: -7600px;
  position: absolute;
  top: 0;
+ height: 71px;
  white-space: nowrap;
 }
-div.tHours > span {
- display: inline-block;
+div.tHours > div {
+ top: 0px;
+ text-align: center;
+ width: 40px;
+ margin-left: -20px;
+ position: absolute;
 }
-div.tSeparators > span {
+div.tSeparators > div {
  border-left: 1px solid gray;
  border-right: 1px dotted gray;
- display: inline-block;
- line-height: 60px;
+ height: 59px;
+ top: 12px;
+ position: absolute;
 }
 .tLine {
- height: 60px;
- margin-left: 20px;
- padding-left: 60px;
- position: relative;
+ height: 71px;
+ position: absolute;
+ top: 11px;
+ left: 0px;
  width: 100%;
 }
 div.box {
@@ -134,6 +139,7 @@ div.box > div {
 .help {
 }
 .docu {
+ display: none;
  -moz-box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
  -webkit-box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
  box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);

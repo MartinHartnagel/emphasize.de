@@ -198,6 +198,10 @@ function detectLang() {
   $lang = "";
  }
 
+ if (!in_array($lang, $al)) {
+  $lang="";
+ }
+
  if ($lang == "") {
   if (isset($al)) {
    $langs = $al;
@@ -266,9 +270,7 @@ function filter($buffer) {
 
  global $lang;
  global $export;
- global $domain;
  global $cache;
- global $cached;
  global $testing;
  global $testout;
 
@@ -282,51 +284,19 @@ function filter($buffer) {
    header("Content-Type: text/plain;charset=UTF-8");
   } else {
    header("Content-Type: text/html;charset=UTF-8");
+   $buffer = file_get_contents(dirname(__FILE__) . "/head.html").$buffer;
   }
  }
 
- if (isset ($cached)) {
-  return $buffer;
- }
+ $buffer = i18n($buffer);
 
- if (!isset ($export)) {
-  $head = file_get_contents(dirname(__FILE__) . "/head.html");
-  $head = str_replace("<domain/>", $domain, $head);
-
-  if (User::getInstance()->getId() != null) {
-   $script = "  var token='".User::getInstance()->getToken()."';";
-  } else {
-   $script = "  // not logged in";
-  }
-  $script .= "\n  var domain=\"" . $domain . "/\";\n  var user=\"" . User::getInstance()->getName() . "\";\n  var email=\"" . User::getInstance()->getEmail() . "\";\n  var lang=\"<lang/>\";";
-
-  $head = str_replace("<!-- script -->", $script, $head);
-  unset ($script);
-  $buffer = $head . $buffer;
-  unset ($head);
- }
-
- if (strpos($buffer, "<command/>") !== false) {
-  global $command;
-  if (isset ($command)) {
-   $buffer = str_replace("<command/>", $command, $buffer);
-  } else {
-   $buffer = str_replace("<command/>", "", $buffer);
-  }
- }
-
- if (strpos($buffer, "<i18n") !== false) {
-  $buffer = i18n($buffer);
+ if (r("ajax") == "true") {
+  $grep = r("grep");
+  $buffer=between($buffer, "<!--" . $grep . "-->", "<!--/" . $grep . "-->");
  }
 
  if (isset ($cache)) {
   file_put_contents($cache, $buffer);
- }
-
- $buffer = translationWelcome($buffer);
- if (r("ajax") == "true") {
-  $grep = r("grep");
-  return between($buffer, "<!--" . $grep . "-->", "<!--/" . $grep . "-->");
  }
 
  return $buffer;
@@ -338,6 +308,7 @@ if (!isset ($no_ob_start)) {
 
 function i18n($text, $useLang = "") {
  global $i18n;
+ global $domain;
 
  include_once(dirname(__FILE__)."/translations.php");
 
@@ -369,7 +340,7 @@ function i18n($text, $useLang = "") {
   $text = substr_replace($text, $result, $f, $te - $f +2);
  }
 
- return str_replace(array('<lang/>', '<LANG/>'), array($lang, strtoupper($lang)), $text);
+ return str_replace(array('<lang/>', '<LANG/>', '<domain/>'), array($lang, strtoupper($lang), $domain), $text);
 }
 
 function bottom() {
@@ -573,7 +544,10 @@ function getTimelineHistory($now, $before) {
 }
 
 function checkCache() {
+ global $export;
+ global $cache;
  global $domain;
+
  $prefix = substr($domain, strpos($domain, "//") + 2);
  if (strpos($prefix, "/") !== false) {
   $prefix = substr($prefix, 0, strpos($prefix, "/"));
@@ -587,38 +561,73 @@ function checkCache() {
   $arg_list=$arg_list[0];
   $numargs=count($arg_list);
  }
- global $cache;
  $cache = dirname(__FILE__) . "/../cache/" . $prefix . "_" . $arg_list[0];
+
+ if (r("ajax") == "true") {
+  $grep = r("grep");
+  $cache.=".".$grep;
+ }
+
  if (!file_exists($cache)) {
   return;
  }
  $cachetime = filemtime($cache);
  if ($cachetime < time()-86400) {
   // cached objects invalidate after 24 h
-  unlink($cache);
+  if (file_exists($cache)) {
+   unlink($cache);
+  }
+  if (file_exists($cache.".gz")) {
+   unlink($cache.".gz");
+  }
   return;
  }
  for ($i = 1; $i < $numargs; $i++) {
   if ($cachetime < filemtime(dirname(__FILE__) . "/../" . $arg_list[$i])) {
-   unlink($cache);
+   if (file_exists($cache)) {
+    unlink($cache);
+   }
+   if (file_exists($cache.".gz")) {
+    unlink($cache.".gz");
+   }
    return;
   }
  }
 
- $i18n = file_get_contents($cache);
- $i18n = translationWelcome($i18n);
- if (r("ajax") == "true") {
-  $grep = r("grep");
-  $f = strpos($i18n, "<!--" . $grep . "-->") + strlen("<!--" . $grep . "-->");
-  $t = strpos($i18n, "<!--/" . $grep . "-->");
-  echo (substr($i18n, $f, $t - $f));
+ // a valid cached copy exists
+ global $testing;
+ $testing=true;
+ ob_end_clean();
+
+ if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")){
+  if (file_exists($cache) && !file_exists($cache.".gz")) {
+   if($fp_out=gzopen($cache.".gz", 'wb9')){
+    if($fp_in=fopen($cache, 'rb')){
+     while(!feof($fp_in))
+      gzwrite($fp_out,fread($fp_in, 261120));
+     fclose($fp_in);
+    }
+    gzclose($fp_out);
+   }
+  }
+  header("X-Compression: gzip");
+  header("Content-Encoding: gzip");
+  $cache.=".gz";
  } else {
-  echo ($i18n);
+  header("X-Compression: None");
  }
 
- global $cached;
- $cached = true;
- exit ();
+ if (!isset ($export)) {
+  if ($export == "txt") {
+   header("Content-Type: text/plain;charset=UTF-8");
+  } else {
+   header("Content-Type: text/html;charset=UTF-8");
+  }
+ }
+
+ header("Content-Length: ".filesize($cache));
+ readfile($cache);
+ exit();
 }
 
 function getI18NProcess($lang) {
@@ -658,32 +667,6 @@ function writeI18N($lang, $key, $value) {
   fail("insert failed");
  }
  debugMail($lang . "-" . $key . " added " . $value);
-}
-
-function translationWelcome($buffer) {
- global $lang;
- global $al;
- global $lc;
-
- // post-replace after cache && !cached
- if (strpos($buffer, "<!--translationWelcome/-->") !== FALSE) {
-  $translate = detectTranslate();
-  if (!in_array($translate, $al) || $translate == 'fr' || $translate == 'es') {
-   if ($lang == 'de') {
-    $translationWelcome = "<li>Für die Übersetzung ins <a href='#' onclick='if (!isAboveOpen(\"translation\")) showAbove(\"translation\", undefined, \"util/i18n.php?translate=" . $translate . "&from=" . $lang . "\", undefined, 400, 200); return false;'>" . $lc[$translate] . "</a> wird Hilfe benötigt!</li>";
-   } else {
-    $translationWelcome = "<li>Help to translate into <a href='#' onclick='if (!isAboveOpen(\"translation\")) showAbove(\"translation\", undefined, \"util/i18n.php?translate=" . $translate . "&from=en\", undefined, 400, 200); return false;'>" . $lc[$translate] . "</a> is very much welcome!</li>";
-   }
-  } else {
-   $translationWelcome = "";
-  }
-  $buffer = str_replace(array (
-    "<!--translationWelcome/-->"
-  ), array (
-    $translationWelcome
-  ), $buffer);
- }
- return $buffer;
 }
 
 function startsWith($haystack, $needle, $case = true) {

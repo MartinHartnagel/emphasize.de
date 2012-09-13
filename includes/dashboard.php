@@ -3,13 +3,14 @@ function init() {
   initEmphasize();
   initTimeline();
   Progress.showStatus(false, "<i18n key='tab9'><en>Logged in as</en><de>Eingeloggt als</de><fr>Connexion avec</fr><es>Ingresar con</es></i18n>&nbsp;<?php echo(User::getInstance()->getName()); ?>");
-  <command/>
 }
-
 </script>
 <title><?php echo(User::getInstance()->getName()); ?> - Emphasize</title>
 </head>
 <body onload="init()">
+  <input id="user" type="hidden" name="user" value="<?php echo(User::getInstance()->getName()); ?>" />
+	<input id="email" type="hidden" name="email" value="<?php echo(User::getInstance()->getEmail()); ?>" />
+	<input id="token" type="hidden" name="token" value="<?php echo(User::getInstance()->getToken()); ?>" />
 	<div id="dashboard_top"
 		style="margin: 10px 20px 10px 20px; text-align: center;">
 		<form name="report"
@@ -42,7 +43,7 @@ function init() {
 						style="text-align: center;"
 						onblur="checkTimeText(null, this.value)"
 						onkeyup="checkTimeText(event, this.value)" value="<i18n ref='tab43' />" />
-						<img id="closeTimeEditor" onclick="moveTimeTo();" src="graphics/close.png" title="<i18n key='tab8'><en>close time editing</en><de>Zeiteditierung Beenden</de><fr>finir édition des temps</fr><es>final edición del tiempo</es></i18n>" style="display:none;" />
+						<img id="closeTimeEditor" onclick="Timeline.setCursor(null);" src="graphics/close.png" title="<i18n key='tab8'><en>close time editing</en><de>Zeiteditierung Beenden</de><fr>finir édition des temps</fr><es>final edición del tiempo</es></i18n>" style="display:none;" />
 					<div id="help_timeText" class="docu"
 						style="width: 300px; height: 470px;">
 						<i18n key="tab46"> <en>Display and input of the current time

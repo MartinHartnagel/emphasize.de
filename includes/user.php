@@ -133,8 +133,6 @@ class User {
   * @param unknown_type $pw_hash hash of the password. See pw_hash() in functions.php.
   */
  function login($confirmed, $name, $pw_hash) {
-  global $command;
-
   self :: connectDb();
 
   // try to pickup and prolong the token
@@ -166,9 +164,6 @@ class User {
    if (!$insert) {
     fail("unexpected: usage insert failed");
    }
-   if (!$confirmed && $this->confirmed != 't') {
-    $command = "toggleShowHelp();";
-   }
 
    $this->setState($this->id, "");
    return $this->token;
@@ -178,8 +173,6 @@ class User {
  }
 
  function idLogin($userId) {
-  global $command;
-
   if (!is_numeric($userId)) {
    fail("id $userId is not numeric");
   }

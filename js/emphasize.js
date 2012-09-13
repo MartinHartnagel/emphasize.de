@@ -1,9 +1,4 @@
 var currentPlace = undefined;
-var timelineDateTime = getDateTime(new Date());
-var timelineWidth = 600;
-var timelineHour = 120;
-var timelineMax = 1440 * 3;
-var timelineLastEdit = 0;
 var blindPlace = false;
 var queue = new Array();
 var aboves = new Object();
@@ -14,19 +9,11 @@ var currentInfoText = undefined;
 var nowText = "";
 var userPlaceEventVersion = 0;
 var timePlaceUpdates = 0;
-
-/**
- * @class Config holds defaults and settings.
- * 
- * @author <a href="http://martin.emphasize.de" target="_blank">Martin Hartnagel</a>
- * 
- */
-var config = {
-  timelineWidth : 600,
-  timelineHour : 120,
-  timelineMax : 1440 * 3,
-  timelineLastEdit : 0
-};
+var lang = "<lang/>";
+var domain = "<domain/>";
+var email = null;
+var user = null;
+var token = null;
 
 /**
  * @class Model manages server calls.
@@ -40,7 +27,7 @@ var Model = {
   },
   edit : function(tbody, handlers) {
     $.ajax({
-      url : domain + "util/ajax.php",
+      url : domain + "/util/ajax.php",
       type : "POST",
       async : true,
       dataType : "html",
@@ -54,8 +41,8 @@ var Model = {
     });
   },
   color : function(fullSrc, x, y, setColor) {
-    var src = fullSrc.substr(domain.length);
-    $.get(domain + "util/rgb.php", {
+    var src = fullSrc.substr(domain.length + 1);
+    $.get(domain + "/util/rgb.php", {
       "src" : src,
       "x" : x,
       "y" : y
@@ -134,66 +121,68 @@ var View = {
   dashboard : undefined,
   init : function() {
     Timeline.init();
-    var tabs = $("#tabs")
-        .tabs(
-            {
-              show : function(e, ui) {
-                View.sizing();
-                return true;
-              },
-              add : function(e, ui) {
-                $(this).tabs("select", ui.index);
-                View.sizing();
-              },
-              ajaxOptions : {
-                error : function(xhr, status, index, anchor) {
-                  $(anchor.hash).html(
-                      "Couldn't load this tab. We'll try to fix this as soon as possible. "
-                          + "If this wouldn't be a demo.");
-                }
-              },
-              fx : {
-                opacity : 'toggle'
-              },
-              spinner : "...",
-              tabTemplate : '<li><a href="#{href}">#{label}</a><span class="tabicons"><span class="ui-icon ui-icon-pencil"><i18n ref="dbd1" /></span><span class="ui-icon ui-icon-folder-open"><i18n ref="dbd2" /></span><span class="ui-icon ui-icon-disk"><i18n ref="dbd3" /></span><span class="ui-icon ui-icon-trash"><i18n ref="dbd4" /></span></span></li>',
-              panelTemplate : '<div><table id="table" class="dashboard" width="100%" height="100%" border="0" cellspacing="2" cellpadding="0"><tbody><tr><td style="background-color:#f99123"><i18n ref="dbd5" /></td></tr></tbody></table></div>'
-            });
-    $("#tabs span.ui-icon-document")
-        .click(
-            function() {
-              $(
-                  '<div id="dialog-form" title="<i18n ref="dbd5" />">'
-                      + '<form id="tabNameForm"><fieldset>'
-                      + '<label for="tabName"><i18n ref="dbd5" /></label>'
-                      + '<input type="text" name="tabName" id="tabName" class="text ui-widget-content ui-corner-all" />'
-                      + '</fieldset></form></div>').dialog(
-                  {
-                    autoOpen : false,
-                    modal : false,
-                    buttons : {
-                      Add : function() {
-                        tabs.tabs("add", "#tabs-5", $("#tabName").val(), tabs
-                            .tabs("length") - 1);
-                        $(this).dialog("close");
+    if ($("#tabs").is(':visible')) {
+      var tabs = $("#tabs")
+          .tabs(
+              {
+                show : function(e, ui) {
+                  View.sizing();
+                  return true;
+                },
+                add : function(e, ui) {
+                  $(this).tabs("select", ui.index);
+                  View.sizing();
+                },
+                ajaxOptions : {
+                  error : function(xhr, status, index, anchor) {
+                    $(anchor.hash).html(
+                        "Couldn't load this tab. We'll try to fix this as soon as possible. "
+                            + "If this wouldn't be a demo.");
+                  }
+                },
+                fx : {
+                  opacity : 'toggle'
+                },
+                spinner : "...",
+                tabTemplate : '<li><a href="#{href}">#{label}</a><span class="tabicons"><span class="ui-icon ui-icon-pencil"><i18n ref="dbd1" /></span><span class="ui-icon ui-icon-folder-open"><i18n ref="dbd2" /></span><span class="ui-icon ui-icon-disk"><i18n ref="dbd3" /></span><span class="ui-icon ui-icon-trash"><i18n ref="dbd4" /></span></span></li>',
+                panelTemplate : '<div><table id="table" class="dashboard" width="100%" height="100%" border="0" cellspacing="2" cellpadding="0"><tbody><tr><td style="background-color:#f99123"><i18n ref="dbd5" /></td></tr></tbody></table></div>'
+              });
+      $("#tabs span.ui-icon-document")
+          .click(
+              function() {
+                $(
+                    '<div id="dialog-form" title="<i18n ref="dbd5" />">'
+                        + '<form id="tabNameForm"><fieldset>'
+                        + '<label for="tabName"><i18n ref="dbd5" /></label>'
+                        + '<input type="text" name="tabName" id="tabName" class="text ui-widget-content ui-corner-all" />'
+                        + '</fieldset></form></div>').dialog(
+                    {
+                      autoOpen : false,
+                      modal : false,
+                      buttons : {
+                        Add : function() {
+                          tabs.tabs("add", "#tabs-5", $("#tabName").val(), tabs
+                              .tabs("length") - 1);
+                          $(this).dialog("close");
+                        },
+                        Cancel : function() {
+                          $(this).dialog("close");
+                        }
                       },
-                      Cancel : function() {
-                        $(this).dialog("close");
+                      open : function() {
+                        $('#tabName').focus();
                       }
-                    },
-                    open : function() {
-                      $('#tabName').focus();
-                    }
-                  }).dialog("open");
-            });
-    $("#tabs span.ui-icon-disk").live("click", function() {
-      var tabTitle = $(this).parent().parent().find("a").text();
-      exportTempl(tabTitle, View.dashboard.getTableHtml());
-    });
-    $("#tabs span.ui-icon-trash").live("click", function() {
-      var index = $("li", tabs).index($(this).parent().parent());
-      tabs.tabs("remove", index);
-    });
+                    }).dialog("open");
+              });
+      $("#tabs span.ui-icon-disk").live("click", function() {
+        var tabTitle = $(this).parent().parent().find("a").text();
+        exportTempl(tabTitle, View.dashboard.getTableHtml());
+      });
+      $("#tabs span.ui-icon-trash").live("click", function() {
+        var index = $("li", tabs).index($(this).parent().parent());
+        tabs.tabs("remove", index);
+      });
+    }
   },
   addPlaceHandler : function(handler) {
     this.dashboard.setOnPlaced(handler);
@@ -202,33 +191,31 @@ var View = {
     this.dashboard.setOnEdited(handler);
   },
   sizing : function() {
-    var wh = $(window).height();
-    var h = $(".ui-tabs-panel:visible").offset().top
-        + $(".ui-tabs-panel:visible").outerHeight(true)
-        - $(".ui-tabs-panel:visible").height() + 10;
-    $(".ui-tabs-panel").height(Math.floor(wh - h));
+    if ($("#tabs").is(':visible')) {
+      var wh = $(window).height();
+      var h = $(".ui-tabs-panel:visible").offset().top
+          + $(".ui-tabs-panel:visible").outerHeight(true)
+          - $(".ui-tabs-panel:visible").height() + 10;
+      $(".ui-tabs-panel").height(Math.floor(wh - h));
+    }
     View.dashboard.updateEdits();
   }
 };
 
 $(document).ready(function() {
+  user = $("#user").val();
+  email = $("#email").val();
+  token = $("#token").val();
   View.dashboard = new Dashboard($("#table").get(0));
   Presenter.init();
   initView();
 });
 
-function updateTimelineMax(days) {
-  timelineMax = 1440 * days;
-  $('.tDiv').css("width", Math.floor(timelineMax + timelineMax) + "px");
-  $('#now').css("left", Math.floor(timelineMax + timelineMax) + "px");
-  updateTimeline();
-}
-
 function dereferLink(url) {
   $('iframe#derefer').detach();
   var derefer = $('<iframe id="derefer" src="'
       + domain
-      + 'util/derefer.php" width="1" height="1" scrolling="none" marginheight="0" marginwidth="0" frameborder="0"/>');
+      + '/util/derefer.php" width="1" height="1" scrolling="none" marginheight="0" marginwidth="0" frameborder="0"/>');
   $(derefer).appendTo($("body"));
   $('iframe#derefer').load(function() {
     var context = this.contentWindow.document;
@@ -275,7 +262,8 @@ function initView() {
       updateTitle(currentPlace);
       Avatar.showIn(currentPlace);
     }
-    updateTimelineWidth();
+    // updateTimelineWidth
+    Timeline.setCursor(Timeline.cursor);
   });
   addInfoText = $("#info").val();
   $("#info").focus(function(e) {
@@ -301,11 +289,10 @@ function initView() {
   });
   $("#info").keypress(function(e) {
     if (e.which == '13') {
-      var datetime = getTimelineDateTime();
       var entry = {
         "type" : 1,
         "info" : $("#info").val(),
-        "datetime" : datetime
+        "datetime" : Timeline.getDateTime()
       };
       $("#info").val("");
       queue.push(entry);
@@ -346,7 +333,6 @@ function initView() {
     return true;
   });
   nowText = $("#timeText").attr("value");
-  updateTimelineMax(3);
   // disable timeline selection
   $('.timeline').find('*').attr('unselectable', 'on').css('MozUserSelect',
       'none');
@@ -378,7 +364,7 @@ function initPlaceUser(event) {
         '<div class="border" style="padding:15pt 0pt 0pt 0pt;height:35pt;">'
             + event + '</div>');
     $("#blind").css({
-      "background" : "url(" + domain + "graphics/blind.png)",
+      "background" : "url(" + domain + "/graphics/blind.png)",
       "height" : "50pt"
     });
 
@@ -389,75 +375,6 @@ function initPlaceUser(event) {
     Avatar.showIn(currentPlace);
   } else {
     Avatar.hide();
-  }
-}
-
-function getDateTime(now) {
-  if (isNaN(now.getFullYear())) {
-    alert("invalid now time: " + now);
-  }
-  return now.getFullYear() + "-" + rightTrimmed("00", (now.getMonth() + 1))
-      + "-" + rightTrimmed("00", now.getDate()) + " "
-      + rightTrimmed("00", now.getHours()) + ":"
-      + rightTrimmed("00", now.getMinutes()) + ":"
-      + rightTrimmed("00", now.getSeconds());
-}
-
-function parseDateTime(str) {
-  var s = str.toLowerCase().replace(/^[\s\xA0]+/, "").replace(/[\s\xA0]+$/, "");
-  var now = new Date();
-  if (s.charAt(0) == "-") {
-    s = s.substr(1).replace(/^[\s\xA0]+/, "");
-    if (s.match("da?y?s?$")) {
-      var days = s.replace(/ *da?y?s?/g, "") * 1;
-      if (!isNaN(days)) {
-        now.setTime(now.getTime() - days * 86400000);
-        return now;
-      }
-    } else if (s.match("ho?u?r?s?$")) {
-      var hours = s.replace(/ *ho?u?r?s?/g, "") * 1;
-      if (!isNaN(hours)) {
-        now.setTime(now.getTime() - hours * 3600000);
-        return now;
-      }
-    } else if (s.match("mi?n?u?t?e?s?$")) {
-      var mins = s.replace(/ *mi?n?u?t?e?s?/g, "") * 1;
-      if (!isNaN(mins)) {
-        now.setTime(now.getTime() - mins * 60000);
-        return now;
-      }
-    } else if (s.match("se?c?o?n?d?s?$")) {
-      var secs = s.replace(/ *se?c?o?n?d?s?/g, "") * 1;
-      if (!isNaN(secs)) {
-        now.setTime(now.getTime() - secs * 1000);
-        return now;
-      }
-    }
-  } else if (s == nowText) {
-    return now;
-  } else if (s.indexOf(":") == 2 && s.length == 5) {
-    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), s.substr(
-        0, 2) * 1, s.substr(3, 2) * 1, 0);
-  } else if (s.indexOf(":") == 2 && s.indexOf(":", 3) == 5 && s.length == 8) {
-    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), s.substr(
-        0, 2) * 1, s.substr(3, 2) * 1, s.substr(6, 2) * 1);
-  } else if (s.indexOf(":") == 13 && s.length == 16) {
-
-    return new Date(s.substr(0, 4) * 1, s.substr(5, 2) * 1 - 1,
-        s.substr(8, 2) * 1, s.substr(11, 2) * 1, s.substr(14, 2) * 1, 0);
-  } else if (s.indexOf(":") == 13 && s.indexOf(":", 15) == 16 && s.length == 19) {
-    return new Date(s.substr(0, 4) * 1, s.substr(5, 2) * 1 - 1,
-        s.substr(8, 2) * 1, s.substr(11, 2) * 1, s.substr(14, 2) * 1, s.substr(
-            17, 2) * 1);
-  }
-  return null;
-}
-
-function getTimelineDateTime() {
-  if (timelineDateTime != undefined) {
-    return timelineDateTime;
-  } else {
-    return getDateTime(new Date());
   }
 }
 
@@ -475,19 +392,17 @@ function placeUser(element) {
         debug("color-failed of " + $(element).html() + " is " + color);
         alert("failed: color is " + color);
       } else {
-        var datetime = getTimelineDateTime();
-
         var entry = {
           "type" : 0,
           "event" : event,
           "color" : color,
-          "datetime" : datetime,
+          "datetime" : Timeline.getDateTime(),
           "link" : "http://martin.emphasize.de"
         };
         queue.push(entry);
         var time;
-        if (timelineDateTime != undefined) {
-          time = parseDateTime(timelineDateTime).getTime();
+        if (Timeline.cursor != null) {
+          time = Timeline.cursor;
         } else {
           time = new Date().getTime();
         }
@@ -512,7 +427,7 @@ function processQueue() {
       userPlaceEventVersion++;
       $
           .ajax({
-            url : domain + "util/ajax.php",
+            url : domain + "/util/ajax.php",
             type : "POST",
             async : true,
             dataType : "html",
@@ -546,7 +461,7 @@ function processQueue() {
     } else if (entry.type == 1) { // an info
       $
           .ajax({
-            url : domain + "util/ajax.php",
+            url : domain + "/util/ajax.php",
             type : "POST",
             async : true,
             dataType : "html",
@@ -600,7 +515,7 @@ function rightTrimmed(digits, text) {
 
 function debug(text) {
   $.ajax({
-    url : domain + "util/ajax.php",
+    url : domain + "/util/ajax.php",
     type : "POST",
     async : true,
     dataType : "html",
@@ -614,7 +529,7 @@ function debug(text) {
 function logout() {
   $
       .ajax({
-        url : domain + "util/ajax.php",
+        url : domain + "/util/ajax.php",
         type : "POST",
         async : false,
         dataType : "html",
@@ -636,7 +551,7 @@ function logout() {
 }
 
 function updateReportTime() {
-  $("#reportTime").val(getDateTime(new Date()));
+  $("#reportTime").val(Timeline.getDateTime(new Date()));
   return true;
 }
 
@@ -800,86 +715,43 @@ function showAbove(type, element, url, focusElement, w, h, embedded) {
   return false;
 }
 
-function getHoursHtml() {
-  var now = (new Date()).getTime();
-  var s = "";
-  var days = Math.ceil(timelineMax / 1440);
-  for ( var d = days - 1; d >= -1; d--) {
-    for ( var h = 24; h > 0; h--) {
-      var then = new Date();
-      then.setTime(now - (d * 24 + h) * 3600000);
-      var day = $.datepicker.formatDate("D", then);
-      if (then.getHours() < 10) {
-        s += '<span class="tHour">&nbsp;&nbsp;' + day + " " + then.getHours()
-            + ':00</span>';
-      } else {
-        s += '<span class="tHour">' + day + " " + then.getHours()
-            + ':00</span>';
-      }
-      if ((d == -1) && (h == 23)) { // vom aktuellen Tag nur noch die
-        // aktuelle
-        // Stunde+1 anzeigen
-        break;
-      }
-    }
-  }
-  return s;
-}
-
 function initTimeline() {
   updateLoop();
-  moveTimeTo(timelineMax + timelineHour);
+  Timeline.setCursor(null);
 }
 
 function updateLoop() {
   if (isLoggedIn()) {
     updateTimeline();
   } else {
-    updateTimelineWidth();
-    $("#tHours").html(getHoursHtml());
+    // updateTimelineWidth
+    Timeline.setCursor(Timeline.cursor);
   }
   window.setTimeout("updateLoop()", 3 * 60 * 1000);
-}
-
-function updateTimelineWidth() {
-  if (!$("#time").is(':visible')) {
-    return;
-  }
-  var pos = $("#time").position();
-  var from = -pos.left + config.timelineWidth / 2;
-  var to = from - config.timelineWidth / 2;
-  config.timelineWidth = $("#timeline").outerWidth(true);
-  if (to < 0)
-    to = 0;
-  if (to > config.timelineMax + timelineHour - config.timelineWidth)
-    to = config.timelineMax + config.timelineHour - config.timelineWidth;
-  $('#time').stop();
-  $("#time").css("left", (-to) + "px");
-  setTimelineDateTime(timelineDateTime);
 }
 
 function updateTimeline() {
   var now = new Date();
   var before = new Date();
-  before.setTime(now.getTime() - timelineMax * 60000);
+  before.setTime(now.getTime() - 3 * 60000);
 
   if (isLoggedIn()) {
     $.ajax({
-      url : domain + "util/ajax.php",
+      url : domain + "/util/ajax.php",
       type : "POST",
       async : true,
       dataType : "json",
       data : ({
         "do" : "getTimelineHistory",
         "token" : token,
-        "now" : getDateTime(now),
-        "before" : getDateTime(before)
+        "now" : Timeline.getDateTime(now),
+        "before" : Timeline.getDateTime(before)
       }),
       success : function(data) {
         var events = data[0];
         for ( var i = 0; i < events.length; i++) {
           var entry = events[i];
-          var time = parseDateTime(entry[0]).getTime();
+          var time = Timeline.parseDateTime(entry[0]).getTime();
           var event = {
             "type" : 0,
             "event" : entry[1],
@@ -892,14 +764,13 @@ function updateTimeline() {
         var infos = data[1];
         for ( var i = 0; i < infos.length; i++) {
           var entry = infos[i];
-          var time = parseDateTime(entry[0]).getTime();
+          var time = Timeline.parseDateTime(entry[0]).getTime();
           var info = entry[1];
           Timeline.infos.add(time, info);
         }
-        var s = Timeline.render(before.getTime(), now.getTime(), 60);
-        $("#timeline").html(s);
-        updateTimelineWidth();
-
+        Timeline.render(before.getTime(), now.getTime());
+        // updateTimelineWidth
+        Timeline.setCursor(Timeline.cursor);
       },
       error : function(req, status, error) {
         Progress.showStatus(true, error + " " + status);
@@ -911,138 +782,18 @@ function updateTimeline() {
   processQueue();
 }
 
-function moveTimeTo(x) {
-  if (x == undefined) {
-    x = timelineMax + timelineHour;
-  }
-
-  if (!$("#time").is(':visible')) {
-    return;
-  }
-
-  var newTimelineDateTime;
-  var now = new Date();
-
-  if (x > timelineMax + 20 + now.getMinutes()) {
-    x = timelineMax + 20 + now.getMinutes();
-    newTimelineDateTime = undefined;
-    // updateTimelineMax(Math.ceil(timelineMax/1440)+1);
-  } else {
-    if (x < 20 + now.getMinutes()) {
-      x = 20 + now.getMinutes();
-    }
-    var mins = timelineMax + 20 + now.getMinutes() - x;
-    var before = new Date();
-    before.setTime(now.getTime() - mins * 60000 - now.getSeconds() * 1000);
-    newTimelineDateTime = getDateTime(before);
-    // if (x > timelineMax+20+now.getMinutes()-60) {
-    // updateTimelineMax(Math.ceil(timelineMax/1440)+1);
-    // }
-  }
-
-  moveTimeline(x);
-  setTimelineDateTime(newTimelineDateTime);
-}
-
-function moveTimeline(x) {
-  if (!$("#time").is(':visible')) {
-    return;
-  }
-  var pos = $("#time").position();
-  var from = pos.left;
-  if (Math.abs(x + (from - config.timelineWidth / 2)) > config.timelineWidth / 3) {
-    var to = x - config.timelineWidth / 2;
-    if (to < 0)
-      to = 0;
-    if (to > timelineMax + timelineHour - config.timelineWidth)
-      to = timelineMax + timelineHour - config.timelineWidth;
-    $('#time').stop();
-    $("#time").animate({
-      left : Math.floor(-to) + "px"
-    }, {
-      "queue" : "false",
-      "duration" : "slow"
-    });
-  }
-}
-
-function setTimelineDateTime(newTimelineDateTime) {
-
-  var change = false;
-  if (timelineDateTime != newTimelineDateTime) {
-    change = true;
-  }
-
-  timelineDateTime = newTimelineDateTime;
-  $("#now").stop();
-  if (timelineDateTime != undefined) {
-    if (isLoggedIn()) {
-      $("#timeText").attr("value", timelineDateTime);
-    } else {
-      change = false;
-    }
-    var now = new Date();
-    var before = parseDateTime(timelineDateTime);
-    if (before == null) {
-      alert("parsing date-time failed: " + timelineDateTime);
-      return;
-    }
-    var x = timelineMax + 20 + now.getMinutes()
-        - ((now.getTime() - before.getTime()) / 60000);
-    moveTimeline(x);
-    $('#now').animate({
-      left : Math.floor(x - 9) + "px"
-    }, {
-      "queue" : "false",
-      "duration" : "slow",
-      "easing" : "swing"
-    });
-
-    // last edited merken für auto-jetzt zurücksetzen
-    timelineLastEdit = (new Date()).getTime();
-  } else {
-    if (isLoggedIn()) {
-      $("#timeText").attr("value", nowText);
-    } else {
-      change = false;
-    }
-    var now = new Date();
-    var x = timelineMax + 20 + now.getMinutes();
-    moveTimeline(x);
-    $('#now').animate({
-      left : Math.floor(x - 9) + "px"
-    }, {
-      "queue" : "false",
-      "duration" : "slow",
-      "easing" : "swing"
-    });
-  }
-
-  if (timelineDateTime != undefined) {
-    // "X" anzeigen
-    $("#closeTimeEditor").fadeIn();
-  } else {
-    // editor normal anzeigen
-    $("#closeTimeEditor").fadeOut();
-  }
-
-  if (change) {
-    timePlaceUser();
-  }
-}
-
 function timePlaceUser() {
   timePlaceUpdates++;
   var currentPlaceEventVersion = userPlaceEventVersion;
   $.ajax({
-    url : domain + "util/ajax.php",
+    url : domain + "/util/ajax.php",
     type : "POST",
     async : true,
     dataType : "html",
     data : ({
       "do" : "getPlace",
       "token" : token,
-      "time" : getTimelineDateTime()
+      "time" : Timeline.getDateTime()
     }),
     success : function(msg) {
       timePlaceUpdates--;
@@ -1061,7 +812,7 @@ function submitFeedback() {
   $
       .ajax({
         type : "POST",
-        url : domain + "util/feedback.php",
+        url : domain + "/util/feedback.php",
         data : ({
           "type" : $('#feedbackType').get(0).value,
           "message" : $('#feedMessage').get(0).value,
@@ -1091,18 +842,13 @@ function checkTimeText(event, str) {
     code = event.keyCode ? event.keyCode : event.charCode;
   }
   if (event == null || code == 13) {
-    var p = parseDateTime(str);
+    var p = Timeline.parseDateTime(str);
 
     if (p != null) {
       if (p.getTime() >= new Date().getTime()) {
-        setTimelineDateTime(undefined);
+        Timeline.setCursor(null);
       } else {
-        if (p.getTime() < new Date().getTime() - timelineMax * 60000) {
-          updateTimelineMax(Math
-              .ceil((new Date().getTime() - p.getTime()) / 86400000));
-          p.setTime(new Date().getTime() - timelineMax * 60000);
-        }
-        setTimelineDateTime(getDateTime(p));
+        Timeline.setCursor(p.getTime());
       }
     }
   }
@@ -1120,7 +866,7 @@ function switchLang(lang) {
   if (isLoggedIn()) {
     $
         .ajax({
-          url : domain + "util/ajax.php",
+          url : domain + "/util/ajax.php",
           type : "POST",
           async : true,
           dataType : "html",
@@ -1150,7 +896,7 @@ function switchLang(lang) {
 function toggleShowHelp() {
   if ($("#showHelp").attr("src").match("help.png$") == "help.png") {
     swapAltTitle("#showHelp");
-    $("#showHelp").attr("src", domain + "graphics/helping.png");
+    $("#showHelp").attr("src", domain + "/graphics/helping.png");
     var dw = $(document).width();
     $(".help")
         .each(
@@ -1183,7 +929,7 @@ function toggleShowHelp() {
       currentHelpId = undefined;
     }
     swapAltTitle("#showHelp");
-    $("#showHelp").attr("src", domain + "graphics/help.png");
+    $("#showHelp").attr("src", domain + "/graphics/help.png");
     $(".docu").hide();
     $(".help").each(function(index) {
       var id = $(this).attr('id');
@@ -1215,7 +961,7 @@ function displayHelp(id, z) {
     }
   }
 
-  $("#toggleHelp_" + id).attr("src", domain + "graphics/helping.png");
+  $("#toggleHelp_" + id).attr("src", domain + "/graphics/helping.png");
   $("#toggleHelp_" + id).css("z-index", z + 2);
   var p = $("#toggleHelp_" + id).position();
   var w = $("#help_" + id).outerWidth(true);
@@ -1256,7 +1002,7 @@ function displayHelp(id, z) {
 }
 
 function hideHelp(id, z) {
-  $("#toggleHelp_" + id).attr("src", domain + "graphics/help.png");
+  $("#toggleHelp_" + id).attr("src", domain + "/graphics/help.png");
   $("#toggleHelp_" + id).css("z-index", z);
   $("#help_" + id).hide();
 }
@@ -1264,7 +1010,7 @@ function hideHelp(id, z) {
 function setAvatar(avatar) {
   $
       .ajax({
-        url : domain + "util/pawn.php",
+        url : domain + "/util/pawn.php",
         type : "POST",
         async : true,
         dataType : "html",
@@ -1314,7 +1060,7 @@ function setAvatar(avatar) {
 function setBaseHref(baseHref) {
   $
       .ajax({
-        url : domain + "util/ajax.php",
+        url : domain + "/util/ajax.php",
         type : "POST",
         async : true,
         dataType : "html",
@@ -1344,7 +1090,7 @@ function setBaseHref(baseHref) {
 function deleteAvatar(avatar) {
   $
       .ajax({
-        url : domain + "util/pawn.php",
+        url : domain + "/util/pawn.php",
         type : "POST",
         async : true,
         dataType : "html",
@@ -1354,7 +1100,7 @@ function deleteAvatar(avatar) {
           "avatar" : avatar
         }),
         success : function(msg) {
-          $('#avatars').load(domain + "util/avatars.php");
+          $('#avatars').load(domain + "/util/avatars.php");
         },
         error : function(req, status, error) {
           Progress
@@ -1369,8 +1115,7 @@ function deleteAvatar(avatar) {
 }
 
 function isLoggedIn() {
-  return (typeof (window["token"]) != "undefined"
-      && typeof (window["user"]) != "undefined" && user != "");
+  return token != null;
 }
 
 function swapAltTitle(el) {
@@ -1387,7 +1132,7 @@ function createTempl() {
   var tbody = View.dashboard.getTableHtml();
   $
       .ajax({
-        url : domain + "util/templates.php",
+        url : domain + "/util/templates.php",
         type : "POST",
         async : true,
         dataType : "html",
@@ -1426,7 +1171,7 @@ function loadTempl() {
   } else {
     $
         .ajax({
-          url : domain + "util/templates.php",
+          url : domain + "/util/templates.php",
           type : "POST",
           async : true,
           dataType : "html",
@@ -1461,7 +1206,7 @@ function removeTempl() {
   $("#removeTemplate").attr("disabled", true);
   $
       .ajax({
-        url : domain + "util/templates.php",
+        url : domain + "/util/templates.php",
         type : "POST",
         async : true,
         dataType : "html",

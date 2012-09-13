@@ -62,8 +62,9 @@ function initLogin() {
     document.login.password.focus();
   }
   init();
-  <command/>
 }
+
+var currentContent="";
 
 function init() {
   t=new Dashboard(document.getElementById("table"));
@@ -75,12 +76,16 @@ function init() {
     var hash = location.hash;
     if (hash.length > 1) {
       var url=hash.substr(1)+".php";
-      $.post(domain+url, {"ajax":"true", "grep":"bContent"}, function(data) {
-        $("#bContent").replaceWith(data);
-      });
-    } else {
+      if (currentContent != url) {
+       $.post(domain+url, {"ajax":"true", "grep":"bContent"}, function(data) {
+         $("#bContent").replaceWith(data);
+         currentContent=url;
+       });
+      }
+    } else if (currentContent != "") {
       $.post(domain, {"ajax":"true", "grep":"bContent", "lang":lang}, function(data) {
         $("#bContent").replaceWith(data);
+        currentContent="";
       });
     }
   });
@@ -454,7 +459,7 @@ $(document).ready(function() {
 				  <en>_week_users_ active users since one week with _month_users_ active users since one month</en>
 				  <fr>_week_users_ utilisateurs actifs depuis une semaine avec les utilisateurs _month_users_ actifs depuis un mois</fr>
 				  <es>_week_users_ usuarios activos desde una semana con _month_users_ usuarios activos desde un mes</es>
-				  </i18n>.'))); 
+				  </i18n>.')));
                 } ?></span>
 				<br /> <br />
 				<i18n key="demo46"> <en>The server software Emphasize.de is
