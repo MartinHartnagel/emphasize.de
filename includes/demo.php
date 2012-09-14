@@ -20,10 +20,25 @@ if (!(isset($bid) && $bid > 0)) {
 $cacheFile="demo_".$lang."_".$bid.".html";
 // /nizip
 checkCache($cacheFile, "includes/config.php", "includes/demo.php");
-?>
-<title><i18n key="demo0"> <en>The Simple Time Registration</en> <de>Arbeitszeiterfassung
+// nizip
+connectDb();
+$sql = mysql_query("SELECT log_heading AS title FROM emphasize_blog WHERE log_author='".($lang=='de'?'de':'en')."' AND log_id=".p($bid));
+if ($row = mysql_fetch_array($sql)) {
+	$title = $row["title"];
+}
+mysql_free_result($sql);
+
+if (isset($title)) {
+  echo('<title>'.$title.'</title>'."\n");
+} else {
+// /nizip
+  echo('<title><i18n key="demo0"> <en>The Simple Time Registration</en> <de>Arbeitszeiterfassung
 	Ganz Einfach</de> <fr>Gestion Du Temps Tout Simplement</fr> <es>Gestión
-	Del Tiempo Hizo Fáci</es></i18n>&nbsp;- Emphasize</title>
+	Del Tiempo Hizo Fáci</es></i18n>&nbsp;- Emphasize</title>'."\n");
+// nizip
+}
+// /nizip
+?>
 <script type="text/javascript">
 <!--
 var step=0;

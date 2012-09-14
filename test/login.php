@@ -19,9 +19,9 @@ class LoginTest extends UnitTestCase {
   global $registration_from;
   global $feedback_to;
   global $reports;
-  global $testout;
+  global $ob_buffer;
   global $testmail;
-  $testout="";
+  $ob_buffer="";
   $testmail="";
 
   $_POST["do"] = "createUser";
@@ -40,7 +40,7 @@ class LoginTest extends UnitTestCase {
   ob_start("getTestOut");
   require(dirname(__FILE__) . "/../index.php");
   ob_end_flush();
-  $this->assertTrue(strpos($testout, $this->testName." Login mit noch nicht bestätigter Registrierung gültig für eine Stunde") !== false, "missing probe-login-text");
+  $this->assertTrue(strpos($ob_buffer, $this->testName." Login mit noch nicht bestätigter Registrierung gültig für eine Stunde") !== false, "missing probe-login-text");
   $this->assertEqual(substr_count($testmail, "instantMail"), 1);
   $this->assertEqual(substr_count($testmail, "enqueuMail"), 0);
   $this->assertEqual(substr_count($testmail, "Bestätigung der ".$this->testName." Registration"), 1);
@@ -78,14 +78,14 @@ class LoginTest extends UnitTestCase {
  function testConfirmSuccessAndLogin() {
   global $feedback_to;
   global $domain;
-  global $testout;
+  global $ob_buffer;
   global $testmail;
 
   $_SERVER['QUERY_STRING']=User::getInstance()->getConfirmCode();
   ob_start("getTestOut");
   require(dirname(__FILE__) . "/../util/confirm.php");
   ob_end_flush();
-  $this->assertTrue(strpos($testout, "Registration für ".$this->testName." erfolgreich abgeschlossen, bitte mit Passwort einloggen") !== false, $testout);
+  $this->assertTrue(strpos($ob_buffer, "Registration für ".$this->testName." erfolgreich abgeschlossen, bitte mit Passwort einloggen") !== false, $ob_buffer);
 
   User::getInstance()->login(true, $this->testName, pw_hash("bla"));
   $this->assertTrue(User::getInstance()->getId() != null);
@@ -95,9 +95,9 @@ class LoginTest extends UnitTestCase {
  }
 
  function tearDown() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
-  $testout="";
+  $ob_buffer="";
   $testmail="";
 
   if (User::getInstance()->getId() != null) {

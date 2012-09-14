@@ -11,7 +11,7 @@ require_once(dirname(__FILE__)."/../util/securimage.php");
 class RegisterTest extends UnitTestCase {
 
  function testInvalidCode() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
 
   $_POST["do"] = "createUser";
@@ -29,7 +29,7 @@ class RegisterTest extends UnitTestCase {
  }
 
  function testNameTooShort() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
 
   $_POST["do"] = "createUser";
@@ -47,7 +47,7 @@ class RegisterTest extends UnitTestCase {
  }
 
  function testNoPassword() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
 
   $_POST["do"] = "createUser";
@@ -65,7 +65,7 @@ class RegisterTest extends UnitTestCase {
  }
 
  function testPasswordNotVerifying() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
 
   $_POST["do"] = "createUser";
@@ -85,7 +85,7 @@ class RegisterTest extends UnitTestCase {
  }
 
  function testEmailTooShort() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
 
   $_POST["do"] = "createUser";
@@ -106,7 +106,7 @@ class RegisterTest extends UnitTestCase {
  }
 
  function testNoTermsAndConditions() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
 
   $_POST["do"] = "createUser";
@@ -127,7 +127,7 @@ class RegisterTest extends UnitTestCase {
  }
 
  function testFunnyLang() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
   global $lc;
 
@@ -151,7 +151,7 @@ class RegisterTest extends UnitTestCase {
  }
 
  function testSuccess() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
   global $lc;
   global $tbody_value;
@@ -177,16 +177,16 @@ class RegisterTest extends UnitTestCase {
   ob_start("getTestOut");
   require(dirname(__FILE__) . "/../index.php");
   ob_end_flush();
-  $this->assertTrue(strpos($testout, $testName." Login mit noch nicht bestätigter Registrierung gültig für eine Stunde") !== false, "missing probe-login-text");
+  $this->assertTrue(strpos($ob_buffer, $testName." Login mit noch nicht bestätigter Registrierung gültig für eine Stunde") !== false, "missing probe-login-text");
   $this->assertEqual(substr_count($testmail, "instantMail"), 1);
   $this->assertEqual(substr_count($testmail, "enqueuMail"), 0);
   $this->assertEqual(substr_count($testmail, "Bestätigung der ".$testName." Registration"), 1);
  }
 
  function tearDown() {
-  global $testout;
+  global $ob_buffer;
   global $testmail;
-  $testout="";
+  $ob_buffer="";
   $testmail="";
 
   if (User::getInstance()->getId() != null) {

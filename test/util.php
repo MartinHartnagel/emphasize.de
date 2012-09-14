@@ -1,11 +1,12 @@
 <?php
 $no_ob_start = true;
 $testing=true;
+$ob_cancel=true;
 $lang="de";
 
 function getTestOut($buffer) {
- global $testout;
- $testout=i18n($buffer);
+ global $ob_buffer;
+ $ob_buffer=i18n($buffer);
  return "";
 }
 

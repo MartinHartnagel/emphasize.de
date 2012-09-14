@@ -271,21 +271,17 @@ function filter($buffer) {
  global $lang;
  global $export;
  global $cache;
- global $testing;
- global $testout;
+ global $ob_cancel;
+ global $ob_buffer;
 
- if (isset($testing) && $testing) {
-  $testout=$buffer;
+ if (isset($ob_cancel) && $ob_cancel) {
+  $ob_buffer=$buffer;
   return "";
  }
 
  if (!isset ($export)) {
-  if ($export == "txt") {
-   header("Content-Type: text/plain;charset=UTF-8");
-  } else {
    header("Content-Type: text/html;charset=UTF-8");
    $buffer = file_get_contents(dirname(__FILE__) . "/head.html").$buffer;
-  }
  }
 
  $buffer = i18n($buffer);
@@ -348,9 +344,9 @@ function bottom() {
  global $domain;
  global $lc;
  global $al;
- global $testing;
+ global $ob_cancel;
 
- if (isset($testing) && $testing) {
+ if (isset($ob_cancel) && $ob_cancel) {
   return;
  }
 
@@ -451,7 +447,7 @@ function fail($msg) {
  global $domain;
  global $no_ob_start;
  global $testing;
- global $testout;
+ global $ob_buffer;
 
  $message = i18n($msg);
 
@@ -460,7 +456,7 @@ function fail($msg) {
  }
 
  if (isset($testing) && $testing) {
-  $testout=$message;
+  $ob_buffer=$message;
   throw new Exception($message);
  }
 
@@ -595,8 +591,8 @@ function checkCache() {
  }
 
  // a valid cached copy exists
- global $testing;
- $testing=true;
+ global $ob_cancel;
+ $ob_cancel=true;
  ob_end_clean();
 
  if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")){
@@ -618,11 +614,7 @@ function checkCache() {
  }
 
  if (!isset ($export)) {
-  if ($export == "txt") {
-   header("Content-Type: text/plain;charset=UTF-8");
-  } else {
    header("Content-Type: text/html;charset=UTF-8");
-  }
  }
 
  header("Content-Length: ".filesize($cache));
