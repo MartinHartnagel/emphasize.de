@@ -1,4 +1,9 @@
 <?php
+/**
+ * The User class singleton instance is automatically obtained through the token.
+ * @author martin
+ *
+ */
 class User {
  // singleton instance
  private static $instance;
@@ -9,7 +14,7 @@ class User {
  private $id=null;
  private $token=null;
  private $lang=null;
- private $baseHref=null;
+ private $aid=null;
  private $avatar=null;
  private $name=null;
  private $confirmed=false;
@@ -66,8 +71,8 @@ class User {
   return $this->confirmed;
  }
 
- public function getBaseHref() {
-  return $this->baseHref;
+ public function getAid() {
+  return $this->aid;
  }
 
 
@@ -136,7 +141,7 @@ class User {
   self :: connectDb();
 
   // try to pickup and prolong the token
-  $sql = @ mysql_query("SELECT t1.id_user AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang as lang, t2.avatar as avatar, t2.FORMAT_DATE as FORMAT_DATE, t2.BASE_HREF AS BASE_HREF, t1.token AS token FROM " . DB_PREFIX . "USAGE t1, " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t2.name='" . p($name) . "' AND t2.pw_hash='" . p($pw_hash) . "' AND t1.id_user=t2.id");
+  $sql = @ mysql_query("SELECT t1.id_user AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang as lang, t2.avatar as avatar, t2.FORMAT_DATE as FORMAT_DATE, t2.AID AS AID, t1.token AS token FROM " . DB_PREFIX . "USAGE t1, " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t2.name='" . p($name) . "' AND t2.pw_hash='" . p($pw_hash) . "' AND t1.id_user=t2.id");
   if ($sql === FALSE) {
    fail("pickup query failed");
   }
@@ -144,7 +149,7 @@ class User {
    $this->token = $row["token"];
   } else {
    mysql_free_result($sql);
-   $sql = @ mysql_query("SELECT t2.id AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang AS lang, t2.avatar AS avatar, t2.FORMAT_DATE AS FORMAT_DATE, t2.BASE_HREF AS BASE_HREF FROM " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t2.name='" . p($name) . "' AND t2.pw_hash='" . p($pw_hash) . "'");
+   $sql = @ mysql_query("SELECT t2.id AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang AS lang, t2.avatar AS avatar, t2.FORMAT_DATE AS FORMAT_DATE, t2.AID AS AID FROM " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t2.name='" . p($name) . "' AND t2.pw_hash='" . p($pw_hash) . "'");
    if ($sql === FALSE) {
     fail("query failed");
    }
@@ -178,7 +183,7 @@ class User {
   }
 
   // try to pickup and prolong the token
-  $sql = @ mysql_query("SELECT t1.id_user AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang as lang, t2.avatar as avatar, t2.FORMAT_DATE as FORMAT_DATE, t2.BASE_HREF AS BASE_HREF, t1.token AS token FROM " . DB_PREFIX . "USAGE t1, " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t2.id=" . $userId . " AND t2.confirmed='t' AND t1.id_user=t2.id");
+  $sql = @ mysql_query("SELECT t1.id_user AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang as lang, t2.avatar as avatar, t2.FORMAT_DATE as FORMAT_DATE, t2.AID AS AID, t1.token AS token FROM " . DB_PREFIX . "USAGE t1, " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t2.id=" . $userId . " AND t2.confirmed='t' AND t1.id_user=t2.id");
   if ($sql === FALSE) {
    fail("pickup query failed");
   }
@@ -186,7 +191,7 @@ class User {
    $this->token = $row["token"];
   } else {
    mysql_free_result($sql);
-   $sql = @ mysql_query("SELECT t2.id AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang AS lang, t2.avatar AS avatar, t2.FORMAT_DATE AS FORMAT_DATE, t2.BASE_HREF AS BASE_HREF FROM " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t2.confirmed='t' AND t2.id=" . $userId);
+   $sql = @ mysql_query("SELECT t2.id AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang AS lang, t2.avatar AS avatar, t2.FORMAT_DATE AS FORMAT_DATE, t2.AID AS AID FROM " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t2.confirmed='t' AND t2.id=" . $userId);
    if ($sql === FALSE) {
     fail("query failed");
    }
@@ -199,11 +204,11 @@ class User {
   $this->fillUser($row);
   mysql_free_result($sql);
   if ($this->getId() != null) {
-   $insert = @ mysql_query("REPLACE INTO " . DB_PREFIX . "USAGE SET id_user=" . p($this->id) . ", token='" . p(getToken()) . "'");
+   $insert = @mysql_query("REPLACE INTO " . DB_PREFIX . "USAGE SET id_user=" . p($this->id) . ", token='" . p($this->token) . "'");
    if (!$insert) {
     fail("unexpected: usage insert failed");
    }
-   return getToken();
+   return $this->token;
   } else {
    fail("unknown id " . $userId);
   }
@@ -229,12 +234,12 @@ class User {
   $this->lang = $row["lang"];
   $this->avatar = $row["avatar"];
   $this->dateFormat = $row["FORMAT_DATE"];
-  $this->baseHref = $row["BASE_HREF"];
+  $this->aid = $row["AID"];
   $this->confirmed = $row["confirmed"];
  }
 
  function pickup($token) {
-  $sql = @ mysql_query("SELECT t1.id_user AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang as lang, t2.avatar as avatar, t2.FORMAT_DATE as FORMAT_DATE, t2.BASE_HREF AS BASE_HREF FROM " . DB_PREFIX . "USAGE t1, " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t1.token='" . p($token) . "' AND t1.id_user=t2.id");
+  $sql = @ mysql_query("SELECT t1.id_user AS id, t2.name AS name, t2.email AS email, t2.id_template AS id_template, t2.confirmed AS confirmed, t2.lang as lang, t2.avatar as avatar, t2.FORMAT_DATE as FORMAT_DATE, t2.AID AS AID FROM " . DB_PREFIX . "USAGE t1, " . DB_PREFIX . "USER t2, " . DB_PREFIX . "TEMPLATE t3 WHERE t3.id_user=t2.id AND t3.id=t2.id_template AND t1.token='" . p($token) . "' AND t1.id_user=t2.id");
   if ($row = mysql_fetch_array($sql)) {
    $this->fillUser($row);
    $this->token=$token;
@@ -284,14 +289,6 @@ class User {
  function updateTbody($tbody) {
   $this->template->setValue($tbody);
   $this->template->save();
- }
-
- function setBaseHref($newBaseHref) {
-  $update = @ mysql_query("UPDATE " . DB_PREFIX . "USER SET BASE_HREF='" . p($newBaseHref) . "' WHERE id=" . p($this->id));
-  if (!$update) {
-   fail("update failed");
-  }
-  $this->baseHref=$newBaseHref;
  }
 
  function setUserLang($lang) {

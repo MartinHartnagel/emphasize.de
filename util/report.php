@@ -107,7 +107,6 @@ function reportData() {
 	global $height;
 	global $width;
 	global $aligns;
-	global $base_href;
 
 	if ($export == "csv") {
 		echo ("\"");
@@ -170,11 +169,7 @@ function reportData() {
 			}
 			echo (">");
 			if (($i < 2) || (!is_numeric($val))) {
-				if ($i == 1 && strlen($base_href) > 1) {
-					echo ('<a href="' . $base_href . $val . '" target="_blank">' . $val . '</a>');
-				} else {
-					echo ($val);
-				}
+				echo ('<a href="' . $domain."/util/briefing.php?a=".User::getInstance()->getAid()."&q=" . h($val) . '" target="_blank">' . $val . '</a>');
 			} else {
 				echo (duration($val));
 			}

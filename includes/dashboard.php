@@ -6,6 +6,7 @@ function init() {
 }
 </script>
 <title><?php echo(User::getInstance()->getName()); ?> - Emphasize</title>
+<link rel="alternate" type="application/atom+xml" title="<?php echo(User::getInstance()->getName()); ?> - Emphasize (Atom Feed)" href="<domain/>/util/atom.php?a=<?php echo(User::getInstance()->getAid()); ?>">
 </head>
 <body onload="init()">
   <input id="user" type="hidden" name="user" value="<?php echo(User::getInstance()->getName()); ?>" />

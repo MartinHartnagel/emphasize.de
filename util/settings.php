@@ -1,4 +1,4 @@
-<?php 
+<?php
 include_once(dirname(__FILE__).'/../includes/config.php');
 $export="js";
 if (User::getInstance()->getId()==null) {
@@ -108,7 +108,7 @@ header("Content-Type: text/html;charset=UTF-8");
 					alert(e);
 				}
 			});
-		
+
 		return false;
 
 	}
@@ -117,40 +117,6 @@ header("Content-Type: text/html;charset=UTF-8");
 
 <body>
 	<a id="passwdOpen" href="#" onClick="if (!isAboveOpen('passwd')) {return showAbove('passwd', $('#passwdOpen').get(0), '<?php echo($domain.'/util/passwd.php?lang='.$lang); ?>', '#passwdPassword', 240);} else {return false}"><i18n ref="pwd0" /></a><br/>
-	<form name="baseHrefForm" action="" method="POST"
-		onsubmit="return setBaseHref(this.basehref.value);">
-		<i18n key="upl6"> <en>Set a base URL for reports-links</en> <de>Eine
-		Basis-URL für Links in den Berichten setzen</de> <fr>Mis une URL de
-		base pour les liens dans les rapports</fr> <es>Establecidos una
-		dirección URL base para los vínculos en los informes</es></i18n>
-		:<br />
-		<div class="hc">
-			<input type="text" name="basehref" value="<?php echo(User::getInstance()->getBaseHref());?>"
-				style="width: 70%;" maxsize="256" /> <input type="submit"
-				id="buttonBaseHref" class="help" style="width: 30%;"
-				value="<i18n 
-				 key='upl4'>
-			<en>Define</en>
-			<de>Einstellen</de>
-			<fr>Choisir</fr>
-			<es>Elegir</es>
-			</i18n>
-			" />
-			<div id="help_buttonUpload" class="docu"
-				style="width: 240px; height: 128px;">
-				<i18n key="upl5"> <en>If specified, creates a link with this base
-				URL appended by the entry-text. Use to easily connect to a third
-				party webservice.</en> <de>Wenn angegeben, wird eine Verknüpfung mit
-				dieser Basis-URL gefolgt von dem Eintrags-Text im Bericht erzeugt.
-				Dient zur Anbindung eines weiteren Web-Dienstes.</de> <fr>S'il est
-				spécifié, crée un lien avec cette URL de base annexée par l'entrée
-				de texte. Utilisez-la pour se connecter facilement à un webservice
-				tiers.</fr> <es>Si se especifica, crea un enlace con esta URL base
-				del título, por la introducción de texto. Se utiliza para conectar
-				fácilmente a un servicio web de terceros.</es></i18n>
-			</div>
-		</div>
-	</form>
 	<form name="form" action="" method="POST" enctype="multipart/form-data"
 		onsubmit="return fileUpload();">
 		<input type="hidden" name="token" value="<?php echo(User::getInstance()->getToken());?>" />
@@ -162,7 +128,7 @@ header("Content-Type: text/html;charset=UTF-8");
 			type="file" size="25" name="fileToUpload" />
 		<div class="hc">
 			<input type="submit" id="buttonUpload" class="help"
-				value="<i18n 
+				value="<i18n
 				 key='upl1'>
 			<en>Upload</en>
 			<de>Hochladen</de>

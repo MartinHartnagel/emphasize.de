@@ -141,7 +141,6 @@ CREATE TABLE IF NOT EXISTS `EMPHASIZE_USER` (
   `LANG` char(2) NOT NULL default 'de',
   `AVATAR` varchar(30) NOT NULL default 'default',
   `FORMAT_DATE` varchar(12) NOT NULL default '%Y-%m-%d',
-  `BASE_HREF` varchar(256) NOT NULL,
   `STATE` char(3) NOT NULL default '',
   PRIMARY KEY  (`ID`),
   UNIQUE KEY `IX_LOGIN` (`NAME`,`PW_HASH`),

@@ -21,7 +21,7 @@ $cacheFile="demo_".$lang."_".$bid.".html";
 // /nizip
 checkCache($cacheFile, "includes/config.php", "includes/demo.php");
 // nizip
-connectDb();
+ User::connectDb();
 $sql = mysql_query("SELECT log_heading AS title FROM emphasize_blog WHERE log_author='".($lang=='de'?'de':'en')."' AND log_id=".p($bid));
 if ($row = mysql_fetch_array($sql)) {
 	$title = $row["title"];

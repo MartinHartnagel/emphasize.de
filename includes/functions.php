@@ -859,7 +859,7 @@ function mailReport($id_user, $cid, $type, $range, $run) {
   $from = date('Y-m-d', getMailReportFromDate($type, $range));
   $to = date('Y-m-d', getMailReportToDate($from, $type));
 
-  $t = idLogin($id_user);
+  $t = User::getInstance()->idLogin($id_user);
   $sep = sha1(date('r', time()));
 
   $p = getContent($domain . "/util/report.php?cron=true&range=" . $type . "&type=" . $type . "&token=" . $t . "&time=" . date('Y-m-d+H:i:s', time()) . "&from=" . $from . "&to=" . $to . "&Submit=X");

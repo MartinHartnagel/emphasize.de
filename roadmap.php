@@ -66,14 +66,14 @@ Dies ist die weitere Planung der <a href="<?php echo($domain); ?>" title="Erfass
   } else {
   	$v=array();
   }
-  
+
   $c=0;
   $changes=false;
   function printTable($dateText, $a) {
   	global $v;
   	global $c;
   	global $changes;
-  	
+
   	echo('<table class="bodyTable">
   <tbody><tr class="a">
     <th style="width: 50px;">Version</th>
@@ -87,7 +87,7 @@ Dies ist die weitere Planung der <a href="<?php echo($domain); ?>" title="Erfass
   			$v[$e[1].":".$e[2]]=0;
   		}
   		if (isset($_GET["vote"])) {
-  			if ($c==$_GET["vote"] 
+  			if ($c==$_GET["vote"]
   					&& ($v[$e[1].":".$e[2]] == $_GET["o"])) {
   				if ($_GET["type"] == "inc") {
   					$v[$e[1].":".$e[2]]++;
@@ -100,17 +100,17 @@ Dies ist die weitere Planung der <a href="<?php echo($domain); ?>" title="Erfass
   		}
   	  $vote=$v[$e[1].":".$e[2]];
   		echo("<tr class=\"".($even?"even":"odd")."\"><td valign=\"top\">".$e[0]."</td><td valign=\"top\">".$e[1]."</td><td valign=\"top\">".$e[2]."</td><td valign=\"top\" align=\"center\"><a href=\"#\" onclick=\"return inc(".$c.", ".$vote.");\" title=\"increase importance\">+</a>&nbsp;<span id=\"v".$c."\">".$vote."</span>&nbsp;<a href=\"#\" onclick=\"return dec(".$c.", ".$vote.");\" title=\"decrease importance\">-</a></td></tr>\n");
-  		
+
   		$even=!$even;
   		$c++;
   	}
-  	echo('</tbody></table>'."\n");   
+  	echo('</tbody></table>'."\n");
   }
-?>  
-  
-<?php 
+?>
+
+<?php
   $a=array(
-  array("1.x", "2012-06-05", "make a settings-option for automatically set to Pause on browser unload"),  
+  array("1.x", "2012-06-05", "make a settings-option for automatically set to Pause on browser unload"),
   array("1.x", "2012-05-07", "Plausibilitäts-Check einbauen, also wenn ein Eintrag gemacht werden soll, der die Server-Zeit um +25h überschreitet, dass dann eine Warnung kommt."),
   array("1.x", "2012-04-25", "In dem Textfeld zum Springen zu einem Datum würde mit einem Monats-Kalender das springen zu einem zurückliegendem Tag einfacher sein."),
     array("1.x", "2012-04-25", "Pfeile um Event-Start-Weise in der Zeit vor/zurück zu springen."),
@@ -166,7 +166,7 @@ Auf diese Art würde man etliche klicks sparen und auf eine relativ einfache Art
     array("1.x", "2011-02-21", "Pause-Icon anstatt Feld (=Initalstellung für Spielfigur, besetzt/frei)"),
     array("1.x", "2010-12-09", "timeline-fills durch js erzeugen lassen, ohne lücken mit position:absolute plaziert"),
     array("1.x", "2010-12-07", "title, alt etc. mit Großbuchstaben beginnen"),
-    
+
     array("1.x", "2010-11-04", "Logout ohne Speichern-> Warnung, bzw. Nachfrage; Split&Merge abbrechbar machen?"),
   );
   printTable("Found-Date", $a);
@@ -174,7 +174,7 @@ Auf diese Art würde man etliche klicks sparen und auf eine relativ einfache Art
 
 <a name="d">&nbsp;</a>
 <h2>Discussed Features</h2>
-<?php 
+<?php
   $a=array(
     array("2.x", "2010-11-10", "Kugeln/Blasen anstatt Tabellenfelder, kein split/merge, nur noch add."),
     array("2.x", "2010-11-10", "Getting-Things-Done Technik für Felder/Feldgruppen"),
@@ -187,9 +187,10 @@ Auf diese Art würde man etliche klicks sparen und auf eine relativ einfache Art
 
 <a name="s">&nbsp;</a>
 <h2>Solveds</h2>
-<?php 
+<?php
   $a=array(
-  array("1.29.2", "2012-05-10", "Infos in den Stündlichen/Tägliche/Monatlichen Berichten"),  
+    array("2.0.0", "2012-09-15", "Added (shareable) Atom Feed about activities and infos to logged-in time-reporting page."),
+  array("1.29.2", "2012-05-10", "Infos in den Stündlichen/Tägliche/Monatlichen Berichten"),
   array("1.29.1", "2011-12-22", "Vorlagen Speichern schlägt fehl"),
       array("1.29.0", "2011-12-13", "multiple-domain Fähigkeit"),
       array("1.29.0", "2011-09-29", 'error: Hallo, ich wollte die Server-Software auf meinem Rechner ausprobieren. Habe Emphasize in einen XAMPP wie in der install.txt beschrieben installiert. Leider kommen dann nur undefinierbare Fehlermeldungen wenn man die Seite im Browser aufruft :-(. FIX: XAMPP tested'),
@@ -242,8 +243,8 @@ Auf diese Art würde man etliche klicks sparen und auf eine relativ einfache Art
       array("1.19", "2010-11-17", "YouTube-Video erstellen zu \"So einfach geht Emphasize Zeiterfassung\""),
       array("1.18", "2010-11-05", "Das Kalender (scw) Layout & css schick machen ;)"),
       array("1.17", "2010-12-02", "Progress-Loading Anzeige wenn ajax-Request losgeschickt bei Status"),
-      array("1.16", "2010-11-05", "Feldaufteilungs-Vorlagen (anstatt Workspace Tabs). - 
-  Das wäre so für meinen Arbeitsstil super hilfreich. Wenn man also an mehreren Projekten gleichzeitig arbeitet oder in die Pause geschickt wird, wäre es super, wenn man einfach einen neuen Tab aufmachen kann und für das nächste Projekt mit einer \"sauberen\" Zeitfeldmenge neu startet, ohne die alten Konfigurationen zu verlieren, wenn man wieder in das Projekt kommt. 
+      array("1.16", "2010-11-05", "Feldaufteilungs-Vorlagen (anstatt Workspace Tabs). -
+  Das wäre so für meinen Arbeitsstil super hilfreich. Wenn man also an mehreren Projekten gleichzeitig arbeitet oder in die Pause geschickt wird, wäre es super, wenn man einfach einen neuen Tab aufmachen kann und für das nächste Projekt mit einer \"sauberen\" Zeitfeldmenge neu startet, ohne die alten Konfigurationen zu verlieren, wenn man wieder in das Projekt kommt.
   Bleibt die Frage, wie das wechseln von Tabs sich auf das Zeitlogging auswirkt. Vielleicht will man nur kurz mal reinschauen, ohne gleich den Modus zu wechseln..."),
       array("1.15", "2010-11-17", "Eintragen lassen in Directories zum Thema \"Zeiterfassung\""),
       array("1.14", "2010-11-17", "Einsteiger-Hilfe mit Funktionsbeschreibung und Zeigern"),

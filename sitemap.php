@@ -8,6 +8,7 @@ echo('<?xml version=\'1.0\' encoding=\'UTF-8\'?>'."\n"); ?>
 <?php
 include_once(dirname(__FILE__)."/includes/config.php");
 $export="xml";
+$no_ob_start=true;
 if (strpos($domain, "://".$_SERVER['SERVER_NAME']) === false) {
   if (isset($domains)) {
     foreach($domains as $l=>$d) {
@@ -44,7 +45,7 @@ if (strpos($domain, "://".$_SERVER['SERVER_NAME']) === false) {
 <priority>0.4</priority>
 </url>
 <?php
-connectDb();
+User::connectDb();
 $sql = @mysql_query("SELECT log_id, log_heading, log_date, log_author FROM emphasize_blog WHERE TIMESTAMP(log_date, log_time) <= CURRENT_TIMESTAMP ORDER BY log_id ASC");
 while ($row = mysql_fetch_array($sql)){
 	$title=$row["log_heading"];

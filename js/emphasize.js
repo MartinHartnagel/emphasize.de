@@ -1057,36 +1057,6 @@ function setAvatar(avatar) {
       });
 }
 
-function setBaseHref(baseHref) {
-  $
-      .ajax({
-        url : domain + "/util/ajax.php",
-        type : "POST",
-        async : true,
-        dataType : "html",
-        data : ({
-          "do" : "setBaseHref",
-          "token" : token,
-          "baseHref" : baseHref
-        }),
-        success : function(msg) {
-          if (isAboveOpen("settings")) {
-            callAboveClose("settings");
-          }
-        },
-        error : function(req, status, error) {
-          Progress
-              .showStatus(
-                  true,
-                  error
-                      + " "
-                      + status
-                      + ",&nbsp;<i18n key='mph19'><en>setting  failed</en><de>fehlgeschlagen</de><fr>échoué</fr><es>la sustitución no</es></i18n>");
-        }
-      });
-  return false;
-}
-
 function deleteAvatar(avatar) {
   $
       .ajax({

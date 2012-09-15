@@ -1,7 +1,7 @@
-<?php 
+<?php
 include_once(dirname(__FILE__).'/../includes/config.php');
 
-connectDb();
+User::connectDb();
 
 $sql = @mysql_query("SELECT name, tbody FROM " . DB_PREFIX . "USER WHERE 1 GROUP BY TBODY");
 while($row = mysql_fetch_array($sql)) {

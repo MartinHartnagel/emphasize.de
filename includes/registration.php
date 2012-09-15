@@ -44,9 +44,9 @@ if ($valid == true
 
  $aid=generateUniqueId(5, "USER", "aid");
 
- $insert = @mysql_query("INSERT INTO " . DB_PREFIX . "USER SET aid='".p($aid)."', name='".p($name)."', pw_hash='".p($pw_hash)."', email='".p($email)."', id_template=0, lang='".p($plang)."', confirmed='".p($confirmcode)."', base_href='".p($domain."/util/briefing.php?a=".$aid."&q=")."'");
+ $insert = @mysql_query("INSERT INTO " . DB_PREFIX . "USER SET aid='".p($aid)."', name='".p($name)."', pw_hash='".p($pw_hash)."', email='".p($email)."', id_template=0, lang='".p($plang)."', confirmed='".p($confirmcode)."'");
  if (!$insert) {
-  fail("unexpected: user insert failed: "."INSERT INTO " . DB_PREFIX . "USER SET aid='".p($aid)."', name='".p($name)."', pw_hash='".p($pw_hash)."', email='".p($email)."', id_template=0, lang='".p($plang)."', confirmed='".p($confirmcode)."', base_href='".p($domain."/util/briefing.php?a=".$aid."&q=")."'");
+  fail("unexpected: user insert failed: "."INSERT INTO " . DB_PREFIX . "USER SET aid='".p($aid)."', name='".p($name)."', pw_hash='".p($pw_hash)."', email='".p($email)."', id_template=0, lang='".p($plang)."', confirmed='".p($confirmcode)."'");
  }
  $nid=mysql_insert_id();
 

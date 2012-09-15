@@ -10,11 +10,6 @@ include_once(dirname(__FILE__).'/../includes/config.php');
 		$newtbody=r('tbody');
 		$success=User::getInstance()->updateTbody($newtbody);
 		exit($success);
-	} else if (r("do") == "setBaseHref") {
-		$export="json";
-		$newbaseHref=r('baseHref');
-		$success=User::getInstance()->setBaseHref($newbaseHref);
-		exit($success);
 	} else if (r("do") == "trackEvent") {
 		$export="json";
 		$event=r('event');
