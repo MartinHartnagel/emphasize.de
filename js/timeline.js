@@ -125,8 +125,7 @@ var Timeline = {
     }
     this.from = from;
     var s = '';
-    s += '<div id="time" class="tDiv" style="width: ' + this.getWidth()
-        + 'px;">';
+    s += '<div id="time" style="width: ' + this.getWidth() + 'px;">';
     s += '<div id="timetip" class="tTip">';
     s += '<span id="timetipText"></span>';
     s += '</div>\n';
@@ -210,14 +209,16 @@ var Timeline = {
     s += '</div>';
     s += '</div>';
     $("#timeline").html(s);
+    this.setCursor(this.cursor, true);
     return s;
   },
   /**
    * TODO
    * 
    * @param time
+   * @param immediately
    */
-  setCursor : function(time) {
+  setCursor : function(time, immediately) {
     var change = false;
     if (isLoggedIn() && this.cursor != time) {
       change = true;
@@ -245,22 +246,32 @@ var Timeline = {
       var w = $("#time").width();
       var m = $('#timeline').width();
       $('#time').stop();
-      $("#time").animate({
-        "left" : Math.floor(Math.min(Math.max(-x + m / 2, -w + m), 0)) + "px"
-      }, {
-        "queue" : false,
-        "duration" : "slow"
-      });
-
+      if (immediately != undefined && immediately) {
+        $("#time").css({
+          "left" : Math.floor(Math.min(Math.max(-x + m / 2, -w + m), 0)) + "px"
+        });
+      } else {
+        $("#time").animate({
+          "left" : Math.floor(Math.min(Math.max(-x + m / 2, -w + m), 0)) + "px"
+        }, {
+          "queue" : false,
+          "duration" : "slow"
+        });
+      }
       $("#now").stop();
-      $('#now').animate({
-        "left" : Math.floor(x - 10) + "px"
-      }, {
-        "queue" : false,
-        "duration" : "slow",
-        "easing" : "swing"
-      });
-
+      if (immediately != undefined && immediately) {
+        $('#now').css({
+          "left" : Math.floor(x - 10) + "px"
+        });
+      } else {
+        $('#now').animate({
+          "left" : Math.floor(x - 10) + "px"
+        }, {
+          "queue" : false,
+          "duration" : "slow",
+          "easing" : "swing"
+        });
+      }
       if (change) {
         timePlaceUser();
 

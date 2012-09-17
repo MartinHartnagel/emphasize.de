@@ -384,10 +384,8 @@ $(document).ready(function() {
 						!
 					</center>
 				</noscript>
-				<div id="time" class="tDiv">
-					<div id="tHours">
-						<span class="tHour">initializing...</span>
-					</div>
+				<div id="time">
+					<div id="tHours"><i18n ref="bot7" /></div>
 					<div id="tLine" class="tLine">
 						<img style="left: 0px;" src="graphics/void.png" class="te"
 							height="10" width="3961"><img

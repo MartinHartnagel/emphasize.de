@@ -35,13 +35,14 @@
  width: 100%;
  height: 52px;
 }
-.tDiv {
+#time {
  background: url("../graphics/grow.jpg") repeat-x scroll left bottom transparent;
  font-family: Arial,Verdana,Helvetica,sans-serif;
  font-size: 10px;
  position: absolute;
  top: 0;
  height: 71px;
+ width: 600px;
  white-space: nowrap;
 }
 div.tHours > div {
