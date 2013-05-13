@@ -26,6 +26,14 @@ $to_date = $_GET["to"];
 $from = $_GET["from"] . " 00:00:00";
 $to = $_GET["to"] . " 23:59:59";
 
+if(!ini_get('safe_mode') ){
+  $days = floor((strtotime($to)-strtotime($from))/86400);
+  if ($days > 60) {
+    set_time_limit($days);
+    ini_set('memory_limit', $days.'M');
+  }
+}
+
 $id = User :: getInstance()->getId();
 
 $lastFirst = "";
@@ -99,7 +107,7 @@ function reportData() {
 	global $export;
 	global $lastFirst;
 	global $evenRow;
-	global $domain;
+	
 	global $col;
 	global $color;
 	global $value;
@@ -164,12 +172,12 @@ function reportData() {
 				}
 			}
 			if (($i == $col) && ($col != -1)) {
-				echo (" style=\"width:" . ($width -8) . "px;padding: 2px 4px;\" background=\"" . $domain . "/util/col.php?c=$color&v=$value&m=$max&h=$height&w=$width\"");
+				echo (" style=\"width:" . ($width -8) . "px;padding: 2px 4px;\" background=\"" . DOMAIN . "/util/col.php?c=$color&v=$value&m=$max&h=$height&w=$width\"");
 				$col = -1;
 			}
 			echo (">");
 			if (($i < 2) || (!is_numeric($val))) {
-				echo ('<a href="' . $domain."/util/briefing.php?a=".User::getInstance()->getAid()."&q=" . h($val) . '" target="_blank">' . $val . '</a>');
+				echo ('<a href="' . DOMAIN."/util/briefing.php?a=".User::getInstance()->getAid()."&q=" . h($val) . '" target="_blank">' . $val . '</a>');
 			} else {
 				echo (duration($val));
 			}
@@ -228,8 +236,8 @@ if ($export == "csv") {
 ?>
 	</table>
 	<br /> Export
-	<a href="<?php echo($domain.'/util/report.php?'.$export_csv);?>">csv</a>,
-	<a href="<?php echo($domain.'/util/report.php?'.$export_xml);?>">xml</a>
+	<a href="<?php echo(DOMAIN.'/util/report.php?'.$export_csv);?>">csv</a>,
+	<a href="<?php echo(DOMAIN.'/util/report.php?'.$export_xml);?>">xml</a>
 	<br />
 	<?php
 		if (function_exists("getMailReportAbo")) {

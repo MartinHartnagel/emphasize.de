@@ -20,13 +20,13 @@ class DownloadTest extends WebTestCase {
  }
 
  function testDownload() {
-  global $domain;
+  
 
   $filename="emphasize-".VERSION.".zip";
   if (file_exists(dirname(__FILE__)."/../".$filename)) {
    unlink(dirname(__FILE__)."/../".$filename);
   }
-  $this->assertTrue($this->get($domain.'/util/download.php'));
+  $this->assertTrue($this->get(DOMAIN.'/util/download.php'));
   //$this->showHeaders();
   $this->assertMime(array('application/zip'));
   $this->assertHeader('Content-Description', 'File Transfer');

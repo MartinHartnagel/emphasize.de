@@ -20,14 +20,14 @@ class TabTest extends WebTestCase {
  }
 
  function testUpload() {
-  global $domain;
+  
 
   file_put_contents($this->dest."/import.emphasize", 'emphasize-2.0.0 export from http://next.emphasize.de, untouched-lock:879903e2747f1a69ebfd7dfad7209d0c
 
 <emphasize><tr><td style="background-color:#3f57ff">Installation</td></tr><tr><td style="background-color:#6ba163">Dokumentation</td></tr><tr><td style="background-color:#e80068">Datensicherung</td></tr></emphasize>');
 
 
-  $this->assertTrue($this->get($domain.'/util/templates.php?lang=de'));
+  $this->assertTrue($this->get(DOMAIN.'/util/templates.php?lang=de'));
 
   $this->assertTrue($this->setField('fileToImport', $this->dest."/import.emphasize"));
   $this->assertTrue($this->click('Importieren'));

@@ -32,7 +32,7 @@ function termsAccepted() {
 }
 -->
 </script>
-	<form action="<?php echo($domain.'/');?>" name="register" method="POST"
+	<form action="<?php echo(DOMAIN.'/');?>" name="register" method="POST"
 		onsubmit="return termsAccepted();">
 		<table border="0" width="560">
 			<tr>
@@ -140,7 +140,7 @@ function termsAccepted() {
 							mismo, con los humanos (es decir, no automatizados) El registro
 							estará asegurado.</es></i18n>
 						</div>
-					</div> <br /> <?php echo(str_replace(array("_agb_href_"), array($domain.'/agb.php'), i18n("<i18n key='rtr11'><en>I have read, understood	and accept the <a href=\"_agb_href_\"
+					</div> <br /> <?php echo(str_replace(array("_agb_href_"), array(DOMAIN.'/agb.php'), i18n("<i18n key='rtr11'><en>I have read, understood	and accept the <a href=\"_agb_href_\"
 							target=\"_blank\">Terms & Conditions</a></en> <de>Ich habe die <a
 							href=\"_agb_href_\" target=\"_blank\">AGB</a>s
 							gelesen	und akzeptiere diese</de> <fr>J'ai lu et j'accepte

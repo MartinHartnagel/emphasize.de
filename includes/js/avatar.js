@@ -105,4 +105,4 @@ var Avatar = {
     $("#avatar").hide();
     $("#shadow").hide();
   }
-}
+};

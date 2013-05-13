@@ -50,8 +50,8 @@ header("Content-Type: text/html;charset=UTF-8");
 </head>
 <body>
 <h1>Time-Reporting Emphasize Roadmap</h1>
-<p>This is the roadmap for the <a href="<?php echo($domain); ?>" title="track and report your working time with the free tool emphasize">time-reporting tool emphasize</a>.<br/>
-Dies ist die weitere Planung der <a href="<?php echo($domain); ?>" title="Erfasse Deine Arbeitszeit mit dem kostenlosen Webdienst Emphasize">Arbeits-Zeit-Erfassung Emphasize</a>.</p>
+<p>This is the roadmap for the <a href="<?php echo(DOMAIN); ?>" title="track and report your working time with the free tool emphasize">time-reporting tool emphasize</a>.<br/>
+Dies ist die weitere Planung der <a href="<?php echo(DOMAIN); ?>" title="Erfasse Deine Arbeitszeit mit dem kostenlosen Webdienst Emphasize">Arbeits-Zeit-Erfassung Emphasize</a>.</p>
 <ul>
   <li><a href="roadmap.php#t">Tasks</a></li>
   <li><a href="roadmap.php#d">Discussed Features</a></li>

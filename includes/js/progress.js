@@ -50,4 +50,4 @@ var Progress = {
     }
   }
 
-}
+};

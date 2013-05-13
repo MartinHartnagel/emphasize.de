@@ -95,7 +95,7 @@ class User {
  }
 
  function getUserAvatar($specific=null) {
-  global $domain;
+
   global $max_avatar_width;
   global $max_avatar_height;
 
@@ -105,9 +105,9 @@ class User {
    $a=$this->avatar;
   }
 
-  return '<img id="shadow" src="' . $domain . '/util/shadow.php?../avatars/' . $a . '.png" style="pointer-events:none;position:absolute;z-index:107;top:0px;left:' . ($max_avatar_width * -2) . 'px;" />' .
+  return '<img id="shadow" src="' . DOMAIN . '/util/shadow.php?../avatars/' . $a . '.png" style="pointer-events:none;position:absolute;z-index:107;top:0px;left:' . ($max_avatar_width * -2) . 'px;" />' .
     '<div id="avatar" style="pointer-events:none;position:absolute; z-index:108; top:100px;left:' . ($max_avatar_width * -2 - 3) . 'px;width:1px;height:1px;">' .
-    '<img id="user" class="help" src="' . $domain . '/avatars/' . $a . '.png" title="' . $this->name . '" style="pointer-events:none;" /><div id="help_user" class="docu" style="width:220px;height:44px;">' . "<i18n key='con25'><en><a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">Character</a> placed on the current activity by clicking on the corresponding field.</en><de><a href=\"javascript:tubeTutorial('R1XmQ9pioJU')\">Spielfigur</a> die jeweils auf die aktuelle Aktivität durch Klick auf das entsprechende Feld gesetzt wird.</de><fr>Le <a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">caractère</a> en cours à chaque activité en cliquant sur le coffret.</fr><es>El <a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">carácter</a> actual de cada actividad haciendo clic en la caja.</es></i18n>" . '</div></div>';
+    '<img id="user" class="help" src="' . DOMAIN . '/avatars/' . $a . '.png" title="' . $this->name . '" style="pointer-events:none;" /><div id="help_user" class="docu" style="width:220px;height:44px;">' . "<i18n key='con25'><en><a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">Character</a> placed on the current activity by clicking on the corresponding field.</en><de><a href=\"javascript:tubeTutorial('R1XmQ9pioJU')\">Spielfigur</a> die jeweils auf die aktuelle Aktivität durch Klick auf das entsprechende Feld gesetzt wird.</de><fr>Le <a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">caractère</a> en cours à chaque activité en cliquant sur le coffret.</fr><es>El <a href=\"javascript:tubeTutorial('akZ90qEgKEQ')\">carácter</a> actual de cada actividad haciendo clic en la caja.</es></i18n>" . '</div></div>';
  }
 
  function setUserAvatar($avatar) {
@@ -258,11 +258,10 @@ class User {
   if (self ::$dbcnx) { // already connected
    return;
   }
-
   //CONNECT TO DB
-  self ::$dbcnx = @ mysql_connect($db_host, $db_username, $db_password);
+  self ::$dbcnx = mysql_connect($db_host, $db_username, $db_password);
   if (!self ::$dbcnx) {
-   fail("Datenbank nicht erreichbar, bitte später erneut versuchen");
+   header("Location: ".DOMAIN."/install"); /* Redirect browser */
   }
   mysql_query("SET NAMES 'utf8'");
   //Select the database

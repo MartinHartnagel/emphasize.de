@@ -2,7 +2,7 @@
 $lang=detectLang();
 $cacheFile="demo_".$lang.".html";
 // nizip
-
+include_once(INC.'/news.php');
 if (!(isset($bid) && $bid > 0)) {
  User::connectDb();
  if ($lang=='de') {
@@ -10,11 +10,6 @@ if (!(isset($bid) && $bid > 0)) {
  } else {
   $blang="en";
  }
- $sql = mysql_query("SELECT log_id AS bid FROM emphasize_blog WHERE log_author='$blang' AND TIMESTAMP(log_date, log_time) <= CURRENT_TIMESTAMP ORDER BY TIMESTAMP(log_date, log_time) DESC");
- if ($row = mysql_fetch_array($sql)) {
-  $latestId = $row["bid"];
- }
- mysql_free_result($sql);
  $bid=$latestId;
 }
 $cacheFile="demo_".$lang."_".$bid.".html";
@@ -155,9 +150,9 @@ function track(url, title) {
 	src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
 <script
 	type="text/javascript"
-	src="<?php echo($domain.'/js/jquery.ba-hashchange.min.js'); ?>"></script>
+	src="<?php echo(DOMAIN.'/js/jquery.ba-hashchange.min.js'); ?>"></script>
 <script
-	type="text/javascript" src="<?php echo($domain.'/js/swfobject.js'); ?>"></script>
+	type="text/javascript" src="<?php echo(DOMAIN.'/js/swfobject.js'); ?>"></script>
 <script type="text/javascript">
 $(document).ready(function() {
  var flashvars = false;
@@ -183,7 +178,7 @@ $(document).ready(function() {
                wmode: "opaque",
                bgcolor: "#FFFFFF",
                allowfullscreen: "true",
-                      flashvars: "dataUrl=<?php echo($domain.'/util/delegate.php');?>&hueMin=0&hueMax=40&satMin=0.5&satMax=0.9&lgtMin=0.97&lgtMax=0.44&iconOffset=0&defaultMetric=nb_visits&txtLoading=........loading...&txtLoadingData=loading%20data...&txtToggleFullscreen=Fullscreen&txtExportImage=Export"
+                      flashvars: "dataUrl=<?php echo(DOMAIN.'/util/delegate.php');?>&hueMin=0&hueMax=40&satMin=0.5&satMax=0.9&lgtMin=0.97&lgtMax=0.44&iconOffset=0&defaultMetric=nb_visits&txtLoading=........loading...&txtLoadingData=loading%20data...&txtToggleFullscreen=Fullscreen&txtExportImage=Export"
  };
  var attributes = {
                style: "z-index:1"
@@ -197,7 +192,7 @@ $(document).ready(function() {
 <body onload="initLogin()">
 	<div id="login_top"
 		style="margin: 10px 20px 10px 20px; text-align: center;">
-		<form name="login" action="<?php echo($domain.'/');?>" method="post">
+		<form name="login" action="<?php echo(DOMAIN.'/');?>" method="post">
 			<span style="text-align: left;white-space:nowrap;"> <input type="hidden" name="do"
 				value="login" /> <i18n key="demo14"> <en>login</en> <de>Login</de> <fr>login</fr>
 				<es>iniciar sesión</es></i18n> :
@@ -257,7 +252,7 @@ $(document).ready(function() {
 						<es>Gestión Del Tiempo Hizo Fáci</es> </i18n>"
 						class="blog">Emphasize</a></span>:</span>
 					<g:plusone size="medium" annotation="inline" width="180"></g:plusone>
-					<fb:like href="<?php echo($domain);?>" layout="button_count"
+					<fb:like href="<?php echo(DOMAIN);?>" layout="button_count"
 						show_faces="false" height="30" font=""></fb:like>
 					<div id="help_recommend" class="docu"
 						style="width: 120px; height: 44px;">
@@ -295,11 +290,11 @@ $(document).ready(function() {
 					<fr>Cacher l'aide</fr> <es>Esconder la ayuda</es></i18n>"
 					border="0" width="24" height="24" />
 			</span><span> <a id="feedLink"
-					href="<?php echo($domain."/util/feedform.php"); ?>"
+					href="<?php echo(DOMAIN."/util/feedform.php"); ?>"
 					title="<i18n ref='fdf0'></i18n>" onclick="return showAbove('feedback',
-						$('#feedback').get(0), '<?php echo($domain."/util/feedform.php?lang=".$lang); ?>',
+						$('#feedback').get(0), '<?php echo(DOMAIN."/util/feedform.php?lang=".$lang); ?>',
 						'#feedMessage', -300, -320);"><img id="feedback" class="help"
-						src="<?php echo($domain."/graphics/feedback.png"); ?>" style="vertical-align:bottom;" /> </a>
+						src="<?php echo(DOMAIN."/graphics/feedback.png"); ?>" style="vertical-align:bottom;" /> </a>
 					<div id="help_feedback" class="docu"
 						style="width: 200px; height: 44px;">
 						<i18n key="bot6"> <en>Report a spelling error, a malfunction or
@@ -330,7 +325,7 @@ $(document).ready(function() {
 			<div class="hc">
 				<input id="register" class="button help" style="float: left;"
 					type="button"
-					onclick="track('/util/register.php', 'Register');return showAbove('register', $('#register').get(0), '<?php echo($domain."/util/register.php?lang=".$lang); ?>', '#registerName');"
+					onclick="track('/util/register.php', 'Register');return showAbove('register', $('#register').get(0), '<?php echo(DOMAIN."/util/register.php?lang=".$lang); ?>', '#registerName');"
 					value="<i18n key='demo49'>
 				<en>register user</en>
 				<de>Benutzer anlegen</de>
@@ -355,7 +350,7 @@ $(document).ready(function() {
 			<div class="hc">
 				<input id="tryout" class="button help"
 					style="float: right; background: #BEE6F2;" type="button"
-					onclick="location.href='<?php echo($domain.'?tryout'.substr('00000000000000'.md5(time()), -14));?>';"
+					onclick="location.href='<?php echo(DOMAIN.'?tryout'.substr('00000000000000'.md5(time()), -14));?>';"
 					value="<i18n key='gast3'>
 				<en>Test it</en>
 				<de>Ausprobieren</de>
@@ -389,11 +384,11 @@ $(document).ready(function() {
 					<div id="tLine" class="tLine">
 						<img style="left: 0px;" src="graphics/void.png" class="te"
 							height="10" width="3961"><img
-							src="<?php echo($domain."/util/i.php?bdc406"); ?>"
+							src="<?php echo(DOMAIN."/util/i.php?bdc406"); ?>"
 							title="<i18n ref="con5"></i18n>" class="te" height="10" width="133"><img
-							src="<?php echo($domain."/util/i.php?6ba163"); ?>"
+							src="<?php echo(DOMAIN."/util/i.php?6ba163"); ?>"
 							title="<i18n ref="con6"></i18n>" class="te" height="10" width="74"><img
-							src="<?php echo($domain."/util/i.php?a16363"); ?>"
+							src="<?php echo(DOMAIN."/util/i.php?a16363"); ?>"
 							title="<i18n ref='con7'></i18n>" class="te" height="10" width="113">
 					</div>
 					<img id="now" src="graphics/now.png"
@@ -461,7 +456,7 @@ $(document).ready(function() {
 				:
 				<div
 					style="width: 420px; height: 70px; background: url('graphics/grow.jpg') repeat-x scroll left bottom transparent;">
-					<img src="<?php echo($domain.'/util/load.php');?>"
+					<img src="<?php echo(DOMAIN.'/util/load.php');?>"
 						alt="<i18n ref="demo45" />" width="420" height="70" />
 				</div>
 				<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/aggregaterating">
@@ -492,7 +487,7 @@ $(document).ready(function() {
             ?>
           </form>
         </div>
-        <?php echo('<a href="'.$domain.'/util/download.php" alt="download zip" onclick="track(\'/util/download.php\', \'Download\')" title="download emphasize.de-<?php echo(VERSION);?>.zip" class="download"<span itemprop="download" itemscope itemtype="http://schema.org/WebApplication">emphasize.de</span>&nbsp;'.VERSION.'</a>'); ?>
+        <?php echo('<a href="'.DOMAIN.'/util/download.php" alt="download zip" onclick="track(\'/util/download.php\', \'Download\')" title="download emphasize.de-<?php echo(VERSION);?>.zip" class="download"<span itemprop="download" itemscope itemtype="http://schema.org/WebApplication">emphasize.de</span>&nbsp;'.VERSION.'</a>'); ?>
         <br /> <br /><br />
 				<i18n key="demo50"> <en>Do you need support for this, then please
 				contact</en> <de>Benötigen Sie Support hierzu, dann kontaktieren Sie</de>

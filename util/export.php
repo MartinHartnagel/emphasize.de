@@ -5,7 +5,7 @@ if (r("do") == "export") {
  // deliver it
  $tbody="<emphasize>".stripslashes(r("tbody"))."</emphasize>";
  $lock=md5("mph".$tbody);
- $s="emphasize-".VERSION." export from $domain, untouched-lock:$lock\n\n".$tbody;
+ $s="emphasize-".VERSION." export from DOMAIN, untouched-lock:$lock\n\n".$tbody;
  header("Content-type: application/emphasize");
  header("Pragma: public");
  header("Expires: 0");

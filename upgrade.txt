@@ -1,0 +1,1 @@
+update LOG_USER set base_href=CONCAT('http://emphasize.de/util/briefing.php?a=', aid, '&q=') WHERE base_href=''

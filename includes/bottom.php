@@ -1,5 +1,5 @@
 <!-- nizip -->
-<?php if (endsWith($domain, "emphasize.de") && !endsWith($domain, "next.emphasize.de")) { ?>
+<?php if (endsWith(DOMAIN, "emphasize.de") && !endsWith(DOMAIN, "next.emphasize.de")) { ?>
 <!-- Piwik -->
 <script type="text/javascript">
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://pi.emphasize.de/" : "http://pi.emphasize.de/");

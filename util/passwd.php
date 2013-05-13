@@ -42,7 +42,7 @@ function submitPassword() {
 </script>
 </head>
 <body>
-	<form action="<?php echo($domain.'/util/ajax.php');?>" id="passwdForm" name="passwd" method="POST" onsubmit="return submitPassword();">
+	<form action="<?php echo(DOMAIN.'/util/ajax.php');?>" id="passwdForm" name="passwd" method="POST" onsubmit="return submitPassword();">
 		<table border="0">
 			<tr>
 				<td valign="top"><input type="hidden" name="do" value="passwd" />

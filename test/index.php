@@ -13,7 +13,7 @@ $guiTestPassword="bla";
 
 class QUnitProceedReporter extends HtmlReporter {
  function paintHeader($test_name) {
-  global $domain;
+  
   global $suite;
   global $guiTestLogin;
   global $guiTestPassword;
@@ -22,7 +22,7 @@ class QUnitProceedReporter extends HtmlReporter {
   print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
   print "<html>\n<head>\n<title>$test_name</title>\n";
   print "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=\"UTF-8\"\">\n";
-  print '<base href="'.$domain.'" />';
+  print '<base href="'.DOMAIN.'" />';
   print '<script src="js/jquery-1.6.4.min.js"></script>
   <link rel="stylesheet" href="lib/qunit/qunit-git.css" type="text/css" media="screen" />
   <script type="text/javascript" src="lib/qunit/qunit-git.js"></script>

@@ -15,12 +15,12 @@ function init() {
 	<div id="dashboard_top"
 		style="margin: 10px 20px 10px 20px; text-align: center;">
 		<form name="report"
-			action="<?php echo($domain.'/util/report.php'); ?>" method="GET"
+			action="<?php echo(DOMAIN.'/util/report.php'); ?>" method="GET"
 			onsubmit="return updateReportTime();" target="_blank">
 			<span style="text-align: left; white-space: nowrap;">
 				<div class="hc">
-					<a href="<?php echo($domain.'/util/settings.php');?>"
-						onclick="return showAbove('settings', $('#config').get(0), '<?php echo($domain."/util/settings.php?lang=".$lang); ?>', '#fileToUpload', 460, null);"
+					<a href="<?php echo(DOMAIN.'/util/settings.php');?>"
+						onclick="return showAbove('settings', $('#config').get(0), '<?php echo(DOMAIN."/util/settings.php?lang=".$lang); ?>', '#fileToUpload', 460, null);"
 						title="<i18n key='tab19'><en>Settings</en> <de>Einstellungen</de>
 						<fr>Paramètres</fr> <es>Configuración</es> </i18n>"><img
 						id="config" class="help" src="graphics/config.png" align="top"
@@ -194,11 +194,11 @@ function init() {
 					onclick="toggleShowHelp()" title="<i18n ref='bot0' />"
 					border="0" width="24" height="24" />
 			</span><span> <a id="feedLink"
-					href="<?php echo($domain."/util/feedform.php"); ?>"
+					href="<?php echo(DOMAIN."/util/feedform.php"); ?>"
 					title="<i18n ref='fdf0'></i18n>" onclick="return showAbove('feedback',
-						$('#feedback').get(0), '<?php echo($domain."/util/feedform.php?lang=".$lang); ?>',
+						$('#feedback').get(0), '<?php echo(DOMAIN."/util/feedform.php?lang=".$lang); ?>',
 						'#feedMessage', -300, -320);"><img id="feedback" class="help"
-						src="<?php echo($domain."/graphics/feedback.png"); ?>"
+						src="<?php echo(DOMAIN."/graphics/feedback.png"); ?>"
 						style="vertical-align: bottom;" /> </a>
 					<div id="help_feedback" class="docu"
 						style="width: 200px; height: 44px;">

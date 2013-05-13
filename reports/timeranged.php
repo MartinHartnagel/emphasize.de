@@ -28,7 +28,7 @@ while (strtotime($date) < strtotime($to)) {
 		// infos
 		$infos = "";
 		$infoCount = 0;
-		$sql2 = @ mysql_query("SELECT i.info, i.start FROM " . DB_PREFIX . "INFO i " .
+		$sql2 = @ mysql_unbuffered_query("SELECT i.info, i.start FROM " . DB_PREFIX . "INFO i " .
 		"LEFT JOIN  " . DB_PREFIX . "ENTRY n ON i.id_user=n.id_user " .
 		"LEFT JOIN " . DB_PREFIX . "EVENT e ON e.id_user=i.id_user AND e.id=n.id_event " .
 		"WHERE i.id_user=" . p($id) . " AND e.name='" . p($previousEvent) . "' AND i.start >= '" . p($date) . "' AND i.start < '" . p($next) . "' AND i.start>=n.start AND (i.start<n.end OR (i.start<'$next' AND n.end IS NULL)) ORDER BY i.start ASC");
@@ -52,13 +52,13 @@ while (strtotime($date) < strtotime($to)) {
 			elseif ($export == "xml") {
 				$infos .= getInfoDateTimeRange($start) . ' ' . $info;
 			} else {
-				$infos .= '<img id="infoIcon" src="' . $domain . '/graphics/info.png"/> ' . getInfoDateTimeRange($start) . ' ' . $info;
+				$infos .= '<img id="infoIcon" src="' . DOMAIN . '/graphics/info.png"/> ' . getInfoDateTimeRange($start) . ' ' . $info;
 			}
 			$infoCount++;
 		}
 		if ($infoCount > 0) {
 			if ($export != "csv" && $export != "xml" && !isset($cron)) {
-				$infos = '<img src="' . $domain . '/graphics/info.png" title="' . $infoCount . '" onclick="showAbove(\'info\', this, null, null, null, null, $(\'#i' . $infoElement . '\').html())" style="cursor:pointer;"/><div id="i' . $infoElement . '" style="display:none;"><title><i18n ref="inf2"></i18n>&nbsp;' . $previousEvent . ' ' . $previousDate . '</title>' . $infos . '</div>';
+				$infos = '<img src="' . DOMAIN . '/graphics/info.png" title="' . $infoCount . '" onclick="showAbove(\'info\', this, null, null, null, null, $(\'#i' . $infoElement . '\').html())" style="cursor:pointer;"/><div id="i' . $infoElement . '" style="display:none;"><title><i18n ref="inf2"></i18n>&nbsp;' . $previousEvent . ' ' . $previousDate . '</title>' . $infos . '</div>';
 			}
 		}
 		mysql_free_result($sql2);

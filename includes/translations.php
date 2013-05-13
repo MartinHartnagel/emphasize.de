@@ -1,4 +1,39 @@
 <?php
+function i18n($text, $useLang = "") {
+ global $i18n;
+ 
+
+ if ($useLang != "") {
+  $lang = $useLang;
+ } else {
+  $lang = detectLang();
+ }
+
+ $text = preg_replace('/<i18n\s+?key=/imsU', "<i18n ref=", $text);
+ $text = preg_replace('/>\s*?<\/i18n>\s*?/imsU', "/>", $text);
+ $text = preg_replace('/\s*?<i18n/imsU', '<i18n', $text);
+ $text = preg_replace('/<i18n \s+?/imsU', '<i18n ', $text);
+
+ while (($f = strpos($text, "<i18n ref=")) !== false) {
+  $sep = substr($text, $f +10, 1);
+  $e = strpos($text, $sep, $f +11);
+  $key = substr($text, $f +11, $e - $f -11);
+  if (!isset ($i18n[$key . "." . $lang]) || $i18n[$key . "." . $lang] == "") {
+   if (!isset ($i18n[$key . ".en"]) || $i18n[$key . ".en"] == "") {
+    $result = "[undefined i18n ref='" . $key . ".en']";
+   } else {
+    $result = trim($i18n[$key . ".en"]);
+   }
+  } else {
+   $result = trim($i18n[$key . "." . $lang]);
+  }
+  $te = strpos($text, "/>", $f);
+  $text = substr_replace($text, $result, $f, $te - $f +2);
+ }
+
+ return str_replace(array('<lang/>', '<LANG/>', '<domain/>'), array($lang, strtoupper($lang), DOMAIN), $text);
+}
+
 $i18n=array(
 "demo0.de"=>'Arbeitszeiterfassung Ganz Einfach',
 "demo0.en"=>'The Simple Time Registration',

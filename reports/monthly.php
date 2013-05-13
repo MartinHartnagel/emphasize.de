@@ -24,10 +24,10 @@ function getInfoDateTimeRange($start) {
 
 function getMailReportAbo() {
 	global $rangeReports;
-	global $domain;
+	
 	$type="monthly";
 
-	return '<form action="'.$domain.'/util/crons.php" method="GET" target="_blank"><input name="token" type="hidden" value="'.User::getInstance()->getToken().'"><input name="type" type="hidden" value="'.$type.'"><select name="add"><option value="nextmonth=0">am 1. Tag des Folgemonats</option><option value="nextmonth=2">am 2. Tag des Folgemonats</option></select> Versand des "'.$rangeReports[$type] . '" per Email <input type="submit" value="abonnieren" /></form>';
+	return '<form action="'.DOMAIN.'/util/crons.php" method="GET" target="_blank"><input name="token" type="hidden" value="'.User::getInstance()->getToken().'"><input name="type" type="hidden" value="'.$type.'"><select name="add"><option value="nextmonth=0">am 1. Tag des Folgemonats</option><option value="nextmonth=2">am 2. Tag des Folgemonats</option></select> Versand des "'.$rangeReports[$type] . '" per Email <input type="submit" value="abonnieren" /></form>';
 }
 
 

@@ -3,12 +3,12 @@ dir=`dirname $0`
 process=$1
 domain=$2
 # extract host, port and path
-host=`echo $domain|sed "s/.*\/\///g"|sed "s/\(\.[^\/\"]*\).*/\1/g"`
-path=`echo $domain|sed "s/.*$host//g"|cut -c2-9999`
-port=`echo $domain|sed "s/.*://g"|sed "s/\/.*//g"`
+host=`echo DOMAIN|sed "s/.*\/\///g"|sed "s/\(\.[^\/\"]*\).*/\1/g"`
+path=`echo DOMAIN|sed "s/.*$host//g"|cut -c2-9999`
+port=`echo DOMAIN|sed "s/.*://g"|sed "s/\/.*//g"`
 if [ "$port" = "" ]
 then 
-  if [ `echo $domain|grep "https://"`= ""]
+  if [ `echo DOMAIN|grep "https://"`= ""]
   then
     port=80
   else

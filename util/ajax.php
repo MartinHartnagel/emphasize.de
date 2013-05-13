@@ -39,7 +39,7 @@ include_once(dirname(__FILE__).'/../includes/config.php');
 		User::getInstance()->setPasswd(r("password"), r("verify"));
 	} else if (r("do") == "logout") {
 		User::getInstance()->logout();
-		include_once(dirname(__FILE__)."/../includes/demo.php");
+		include_once(INC."/demo.php");
 	} else if (r("do") == "debug") {
 		// nizip
 		debugMail(r('txt'));

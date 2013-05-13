@@ -64,33 +64,6 @@ $rangeReports["monthly"] = i18n("<i18n key='con40'><en>Report of Month</en><de>B
 $rangeReports["weekly"] = i18n("<i18n key='con41'><en>Report of Week</en><de>Bericht der Woche</de><fr>Rapport de la Semaine</fr><es>Informe de la Semana</es></i18n>");
 $rangeReports["daily"] = i18n("<i18n key='con42'><en>Report of Day</en><de>Bericht des Tages</de><fr>Rapport de la Journée</fr><es>Informe del Día</es></i18n>");
 
-// redirect and determin localized domain
-$redirect = false;
-if (!isCli() && strpos($domain, "://" . $_SERVER['SERVER_NAME']) === false) {
- $redirect = true;
- if (isset ($domains)) {
-  foreach ($domains as $l => $d) {
-   if (strpos($d, "://" . $_SERVER['SERVER_NAME']) !== false) {
-    $domain = $d;
-    $redirect = false;
-    break;
-   }
-  }
- }
-} else {
- if (isset ($domains)) {
-  $lang = detectLang();
-  foreach ($domains as $l => $d) {
-   if ($l == $lang) {
-    $domain = $d;
-    if (strpos($domain, "://" . $_SERVER['SERVER_NAME']) === false) {
-     $redirect = true;
-    }
-   }
-  }
- }
-}
-
 // current not-user vars
 $max_import_filesize = 81920;
 
@@ -117,13 +90,9 @@ function isCli() {
  * @return the value or <code>null</code> if not defined.
  */
 function r($param) {
- if (!empty($_POST)) {
-  if (isset($_POST[$param])) {
-   return $_POST[$param];
-  }
- } elseif (!empty($_GET)) {
-  if (isset($_GET[$param])) {
-   return $_GET[$param];
+ if (!empty($_REQUEST)) {
+  if (isset($_REQUEST[$param])) {
+   return $_REQUEST[$param];
   }
  }
  return null;
@@ -283,7 +252,6 @@ function filter($buffer) {
    header("Content-Type: text/html;charset=UTF-8");
    $buffer = file_get_contents(dirname(__FILE__) . "/head.html").$buffer;
  }
-
  $buffer = i18n($buffer);
 
  if (r("ajax") == "true") {
@@ -302,46 +270,9 @@ if (!isset ($no_ob_start)) {
  ob_start("filter");
 }
 
-function i18n($text, $useLang = "") {
- global $i18n;
- global $domain;
-
- include_once(dirname(__FILE__)."/translations.php");
-
- if ($useLang != "") {
-  $lang = $useLang;
- } else {
-  $lang = detectLang();
- }
-
- $text = preg_replace('/<i18n\s+?key=/imsU', "<i18n ref=", $text);
- $text = preg_replace('/>\s*?<\/i18n>\s*?/imsU', "/>", $text);
- $text = preg_replace('/\s*?<i18n/imsU', '<i18n', $text);
- $text = preg_replace('/<i18n \s+?/imsU', '<i18n ', $text);
-
- while (($f = strpos($text, "<i18n ref=")) !== false) {
-  $sep = substr($text, $f +10, 1);
-  $e = strpos($text, $sep, $f +11);
-  $key = substr($text, $f +11, $e - $f -11);
-  if (!isset ($i18n[$key . "." . $lang]) || $i18n[$key . "." . $lang] == "") {
-   if (!isset ($i18n[$key . ".en"]) || $i18n[$key . ".en"] == "") {
-    $result = "[undefined i18n ref='" . $key . ".en']";
-   } else {
-    $result = trim($i18n[$key . ".en"]);
-   }
-  } else {
-   $result = trim($i18n[$key . "." . $lang]);
-  }
-  $te = strpos($text, "/>", $f);
-  $text = substr_replace($text, $result, $f, $te - $f +2);
- }
-
- return str_replace(array('<lang/>', '<LANG/>', '<domain/>'), array($lang, strtoupper($lang), $domain), $text);
-}
-
 function bottom() {
  global $export;
- global $domain;
+
  global $lc;
  global $al;
  global $ob_cancel;
@@ -364,26 +295,8 @@ function debugMail($txt) {
  enqueueMail($feedback_to, "[Emphasize] debug", $txt, "From: debug@emphasize.de\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
 }
 
-function entry($lang, $bid) {
- global $author;
- global $domain;
-
- $sql = mysql_query("SELECT log_heading, log_text, log_day, log_date, log_time FROM emphasize_blog WHERE log_author='" . p($lang) . "' AND log_id=" . p($bid));
- if ($row = mysql_fetch_array($sql)) {
-  $header = stripslashes($row["log_heading"]);
-  echo ("<p><h1><a href=\"" . longUrl($header, $bid) . "\" title=\"link\">" . $header . "</a></h1>\n");
-  $text = stripslashes($row["log_text"]);
-  echo ($text . "</p><br clear=\"all\" />\n");
- } else {
-  echo ("missing entry " . $bid . " lang=" . $lang);
- }
- mysql_free_result($sql);
-}
-
 function longUrl($header, $bid) {
- global $domain;
-
- return $domain . "/" . longLink(stripslashes(str_replace(array (
+ return DOMAIN . "/" . longLink(stripslashes(str_replace(array (
    "&amp;",
    "'",
    "#252;",
@@ -444,7 +357,7 @@ function addInfo($info, $time) {
 
 function fail($msg) {
  global $error;
- global $domain;
+
  global $no_ob_start;
  global $testing;
  global $ob_buffer;
@@ -462,7 +375,7 @@ function fail($msg) {
 
  echo ('<title>Emphasize - "' . substr($message, 0, 40) . '"</title>');
  echo ('<body><p class=\"red\"><center>' . $message . '</center></p>' . "\n");
- echo ('<form action="' . $domain . '/" method="POST"><input type="submit" value="Re-Login" /></form>');
+ echo ('<form action="' . DOMAIN . '/" method="POST"><input type="submit" value="Re-Login" /></form>');
  echo ("<!-- " . mysql_error() . " -->");
 
  exit ();
@@ -542,9 +455,9 @@ function getTimelineHistory($now, $before) {
 function checkCache() {
  global $export;
  global $cache;
- global $domain;
 
- $prefix = substr($domain, strpos($domain, "//") + 2);
+
+ $prefix = substr(DOMAIN, strpos(DOMAIN, "//") + 2);
  if (strpos($prefix, "/") !== false) {
   $prefix = substr($prefix, 0, strpos($prefix, "/"));
  }
@@ -557,7 +470,7 @@ function checkCache() {
   $arg_list=$arg_list[0];
   $numargs=count($arg_list);
  }
- $cache = dirname(__FILE__) . "/../cache/" . $prefix . "_" . $arg_list[0];
+ $cache = CACHE . "/" . $prefix . "_" . $arg_list[0];
 
  if (r("ajax") == "true") {
   $grep = r("grep");
@@ -600,7 +513,7 @@ function checkCache() {
    if($fp_out=gzopen($cache.".gz", 'wb9')){
     if($fp_in=fopen($cache, 'rb')){
      while(!feof($fp_in))
-      gzwrite($fp_out,fread($fp_in, 261120));
+      gzwrite($fp_out,fread($fp_in, 2048));
      fclose($fp_in);
     }
     gzclose($fp_out);
@@ -851,7 +764,7 @@ function getMailReportToDate($from, $type) {
 }
 
 function mailReport($id_user, $cid, $type, $range, $run) {
- global $domain;
+
  global $lang;
  global $feedback_to;
 
@@ -862,11 +775,11 @@ function mailReport($id_user, $cid, $type, $range, $run) {
   $t = User::getInstance()->idLogin($id_user);
   $sep = sha1(date('r', time()));
 
-  $p = getContent($domain . "/util/report.php?cron=true&range=" . $type . "&type=" . $type . "&token=" . $t . "&time=" . date('Y-m-d+H:i:s', time()) . "&from=" . $from . "&to=" . $to . "&Submit=X");
+  $p = getContent(DOMAIN . "/util/report.php?cron=true&range=" . $type . "&type=" . $type . "&token=" . $t . "&time=" . date('Y-m-d+H:i:s', time()) . "&from=" . $from . "&to=" . $to . "&Submit=X");
 
   $title = str_replace("&nbsp;", " ", between($p[2], "<title>", "</title>"));
 
-  $style = getContent($domain . "/style.css");
+  $style = getContent(DOMAIN . "/style.css");
 
   $offset = strpos($p[2], "<body onload=\"initReport()\">") + strlen('<body onload="initReport()">');
   $end = strpos($p[2], "</table>") - $offset;
@@ -875,8 +788,8 @@ function mailReport($id_user, $cid, $type, $range, $run) {
 
   $poweredBy = i18n("<i18n key='mai1'><en>Powered by</en><de>Ein Dienst von </de><fr>Propulsé par</fr><es>Desarrollado por</es></i18n>");
 
-  $c = str_replace($domain . '/graphics/info.png', "cid:info", $c);
-  $c = "<html><head><title></title><style type=\"text/css\">\n" . $style[2] . "\n</style>\n</head><body bgcolor=\"#dddddd\">" . '<div align="center">' . substr($p[2], $offset, $end) . "</table></div>\n<br><br/><a href=\"" . $domain . "/util/crons.php?cid=" . $cid . "\">" . $removeText . "</a><br><i>" . $poweredBy . " <a href=\"" . $domain . "\">" . $domain . "</a>.</i></body>";
+  $c = str_replace(DOMAIN . '/graphics/info.png', "cid:info", $c);
+  $c = "<html><head><title></title><style type=\"text/css\">\n" . $style[2] . "\n</style>\n</head><body bgcolor=\"#dddddd\">" . '<div align="center">' . substr($p[2], $offset, $end) . "</table></div>\n<br><br/><a href=\"" . DOMAIN . "/util/crons.php?cid=" . $cid . "\">" . $removeText . "</a><br><i>" . $poweredBy . " <a href=\"" . DOMAIN . "\">" . DOMAIN . "</a>.</i></body>";
   $bgs = replaceInline($c, "id=\"\"infoIcon", "bg");
 
   $c = $bgs[0];
@@ -892,7 +805,7 @@ function mailReport($id_user, $cid, $type, $range, $run) {
    $body .= chunk_split(base64_encode($bg[2]));
   }
 
-  $url = $domain . '/graphics/info.png';
+  $url = DOMAIN . '/graphics/info.png';
   $key = "info";
   $bg = getContent($url);
   $body .= "\r\n\r\n--PHP-001-{$sep}\r\nContent-Type: " . $bg[1]["Content-Type"] . "\r\nContent-Transfer-Encoding: base64\r\nContent-ID: <" . $key . ">\r\n\r\n";

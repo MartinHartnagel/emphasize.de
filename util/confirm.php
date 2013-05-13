@@ -54,7 +54,7 @@ function initLogin() {
 
 		if (!(isset($testing) && $testing)) {
 		 // inform admin
-		 enqueueMail($feedback_to, "[Emphasize] Confirmed: $name", "$name on $domain", "From: $feedback_to\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
+		 enqueueMail($feedback_to, "[Emphasize] Confirmed: $name", "$name on DOMAIN", "From: $feedback_to\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
 		}
 	} else {
 		fail("Confirmation failed");
@@ -67,7 +67,7 @@ function initLogin() {
 	?>
 <body onload="initLogin()">
 	<div class="top">
-		<form name="login" action="<?php echo($domain.'/'); ?>" method="POST"
+		<form name="login" action="<?php echo(DOMAIN.'/'); ?>" method="POST"
 			onsubmit="setName()">
 			<input type="hidden" name="do" value="login" /><input id="loginName"
 				type="hidden" name="name" value="<?php echo($name);?>" size="8" />

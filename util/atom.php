@@ -52,7 +52,7 @@ mysql_free_result($sql);
 krsort($entries);
 // first entry
 $lastUpdate=array_shift(array_keys($entries));
-$tagPrefix=substr($domain, strpos($domain, "://")+3).",";
+$tagPrefix=substr(DOMAIN, strpos(DOMAIN, "://")+3).",";
 ?>
 <feed xml:lang="<?php echo('<lang/>-<LANG/>'); ?>" xmlns="http://www.w3.org/2005/Atom">
   <title><?php echo(User::getInstance()->getName()); ?> - Emphasize Activity Feed</title>

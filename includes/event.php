@@ -65,7 +65,7 @@ function addEvent($event, $color, $time, $link) {
 }
 
 function getEvents($from, $to) {
-	global $domain;
+	
 
 	$id=User :: getInstance()->getId();
 

@@ -116,7 +116,7 @@ header("Content-Type: text/html;charset=UTF-8");
 </head>
 
 <body>
-	<a id="passwdOpen" href="#" onClick="if (!isAboveOpen('passwd')) {return showAbove('passwd', $('#passwdOpen').get(0), '<?php echo($domain.'/util/passwd.php?lang='.$lang); ?>', '#passwdPassword', 240);} else {return false}"><i18n ref="pwd0" /></a><br/>
+	<a id="passwdOpen" href="#" onClick="if (!isAboveOpen('passwd')) {return showAbove('passwd', $('#passwdOpen').get(0), '<?php echo(DOMAIN.'/util/passwd.php?lang='.$lang); ?>', '#passwdPassword', 240);} else {return false}"><i18n ref="pwd0" /></a><br/>
 	<form name="form" action="" method="POST" enctype="multipart/form-data"
 		onsubmit="return fileUpload();">
 		<input type="hidden" name="token" value="<?php echo(User::getInstance()->getToken());?>" />
