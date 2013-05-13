@@ -15,9 +15,7 @@ class PrepareGuiTests extends UnitTestCase {
   global $lc;
   global $tbody_value;
   global $tbody_names;
-  
-  global $registration_from;
-  global $feedback_to;
+
   global $reports;
   global $guiTestLogin;
   global $guiTestPassword;
@@ -56,8 +54,6 @@ class PrepareGuiTests extends UnitTestCase {
  }
 
  function testConfirmSuccessAndLogin() {
-  global $feedback_to;
-  
   global $ob_buffer;
   global $testmail;
   global $guiTestLogin;

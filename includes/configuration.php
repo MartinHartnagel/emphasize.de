@@ -12,7 +12,6 @@ $db_prefix = "EMPHASIZE"; //Prefix for tables (use different for multiple instal
 // installation setup
 $domain = "http://next.emphasize.de";
 $feedback_to = "admin@emphasize.de";
-$registration_from = "registration@emphasize.de";
 
 // configuration-replace
 // installed db-configuration (overriding example above)
@@ -23,9 +22,7 @@ include_once(dirname(__FILE__).'/../../../files/db1.php');
 
 define("DB_PREFIX", ($db_prefix==""?"":$db_prefix."_"));
 define("DOMAIN", $domain);
-
 define("FEEDBACK_TO", $feedback_to);
-define("REGISTRATION_FROM", $registration_from);
 
 // directory defines
 define("CACHE", dirname(__FILE__)."/../cache");

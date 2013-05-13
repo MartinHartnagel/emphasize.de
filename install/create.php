@@ -15,7 +15,6 @@ $db_password = "'.stripslashes($_REQUEST["db_password"]).'";
 $db_prefix = "'.stripslashes($_REQUEST["db_prefix"]).'";
 $domain = "'.stripslashes($_REQUEST["domain"]).'";
 $feedback_to = "'.stripslashes($_REQUEST["feedback_to"]).'";
-$registration_from = "'.stripslashes($_REQUEST["registration_from"]).'";
 // /nizip
 // /configuration-replace';
 $c=preg_replace("/\/\/ configuration-replace.*\/\/ \/configuration-replace/msU", $n, $c);

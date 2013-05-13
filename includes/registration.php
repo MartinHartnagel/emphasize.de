@@ -79,11 +79,11 @@ if ($valid == true
    Por favor, haga clic en el siguiente enlace (o copiar la dirección en su navegador):\r\n\r\n_confirm_url_ \r\nUn inicio de sesión con el nombre _name_ de cuenta de usuario y contraseña es elegido posible.\r\n
    Por favor, no haga clic en el hipervínculo, si no se ha registrado.\r\n
    Le saluda atentamente,</es></i18n>\r\n  Martin Hartnagel."));
- instantMail($email, $title, $body, "From: $registration_from\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n");
+ instantMail($email, $title, $body, "From: ".FEEDBACK_TO."\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n");
  echo(str_replace("_name_", $name, i18n("<i18n key='reg3'><en>pre confirmed login with _name_ valid for one hour</en><de>_name_ Login mit noch nicht bestätigter Registrierung gültig für eine Stunde</de><fr>Connexion avec _name_ pas encore confirmées d'enregistrement valide pour une heure</fr><es>Ingresar con _name_ el registro aún no confirmados válidos durante una hora</es></i18n>")));
  if (!(isset($testing) && $testing)) {
   // inform admin
-  enqueueMail($feedback_to, "[Emphasize] Registration: $name", "$name on DOMAIN with $email", "From: $feedback_to\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
+  enqueueMail(FEEDBACK_TO, "[Emphasize] Registration: $name", "$name on DOMAIN with $email", "From: ".FEEDBACK_TO."\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
  }
 } else {
  fail("Sorry, the code \"".r('code')."\" you entered was invalid");

@@ -15,9 +15,7 @@ class LoginTest extends UnitTestCase {
   global $lc;
   global $tbody_value;
   global $tbody_names;
-  
-  global $registration_from;
-  global $feedback_to;
+
   global $reports;
   global $ob_buffer;
   global $testmail;
@@ -76,8 +74,7 @@ class LoginTest extends UnitTestCase {
  }
 
  function testConfirmSuccessAndLogin() {
-  global $feedback_to;
-  
+
   global $ob_buffer;
   global $testmail;
 

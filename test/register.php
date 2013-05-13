@@ -156,9 +156,7 @@ class RegisterTest extends UnitTestCase {
   global $lc;
   global $tbody_value;
   global $tbody_names;
-  
-  global $registration_from;
-  global $feedback_to;
+
   global $reports;
 
   $_POST["do"] = "createUser";

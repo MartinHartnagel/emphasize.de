@@ -2,26 +2,20 @@
 $lang=detectLang();
 $cacheFile="demo_".$lang.".html";
 // nizip
-include_once(INC.'/news.php');
 if (!(isset($bid) && $bid > 0)) {
- User::connectDb();
  if ($lang=='de') {
   $blang=$lang;
  } else {
   $blang="en";
  }
+ include_once(INC.'/news.php');
  $bid=$latestId;
+ $title=title($blang, $bid);
 }
 $cacheFile="demo_".$lang."_".$bid.".html";
 // /nizip
-checkCache($cacheFile, "includes/config.php", "includes/demo.php");
+checkCache($cacheFile);
 // nizip
- User::connectDb();
-$sql = mysql_query("SELECT log_heading AS title FROM emphasize_blog WHERE log_author='".($lang=='de'?'de':'en')."' AND log_id=".p($bid));
-if ($row = mysql_fetch_array($sql)) {
-	$title = $row["title"];
-}
-mysql_free_result($sql);
 
 if (isset($title)) {
   echo('<title>'.$title.'</title>'."\n");
@@ -506,7 +500,7 @@ $(document).ready(function() {
 				<!--bContent-->
 				<div id="bContent">
 					<?php
-					User::connectDb();
+					include_once(INC.'/news.php');
 					if ($lang=='de') {
 					 entry($lang, $bid);
 					} else {

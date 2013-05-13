@@ -33,19 +33,6 @@ function readFiltered($f) {
 	return getFiltered($c);
 }
 
-function readDelogin($f) {
-	$c=file_get_contents($f);
-	if (strlen($c)==0) return "file not found: ".$f;
-	$c=getFiltered($c);
-
-	$c=preg_replace('/domain *\= *\".*\";/', "domain = \"http://myhost/inst_dir\";", $c);
-	$c=preg_replace('/db_prefix *\= *\".*\";/', "db_prefix = \"LOG_\";", $c);
-	$c=preg_replace('/usr_web78_./', "host_database", $c);
-	$c=preg_replace('/db_username *\= *\".*\";/', "db_username = \"mysql_login\";", $c);
-	$c=preg_replace('/db_password *\= *\".*\";/', "db_password = \"mysql_password\";", $c);
-	return $c;
-}
-
 function replaceTagContent($tag, $content, $buffer) {
 	return preg_replace("/<" . $tag . ">.*?<\/" . $tag . ">/msU", "<" . $tag . ">".$content."</" . $tag . ">", $buffer);
 }
@@ -65,18 +52,14 @@ if (!is_file($file)) {
 	recurseFiles(".");
 	foreach($files as $f) {
 		// files with special treatments:
-		if (startsWith($f,"./includes/config.php")) {
-			$zip->addFromString("emphasize-".VERSION.substr($f, 1), readDelogin($f));
-		} else if ($f=="./install.txt" || $f=="./license.txt") {
-			$zip->addFromString(substr($f, 2), readDelogin($f));
-		} else if ($f=="./drop.txt" || $f=="./create.txt" || $f=="./peek.txt") {
-			$zip->addFromString(substr($f, 2, -4).".php", readDelogin($f));
-		} else if ($f=="./includes/blog_config.php"
-				|| $f=="./includes/base_config.php" || (startsWith($f, "./") && strpos(substr($f, 2), "/")===FALSE && $f!="./favicon.ico" && $f!="./style.css" && $f!="./index.php")) {
+		if ($f=="./includes/configuration.php") {
+			$zip->addFromString("emphasize-".VERSION.substr($f, 1), readFiltered($f));
+		} else if ($f=="./includes/news.php" || (startsWith($f, "./") && strpos(substr($f, 2), "/")===FALSE && $f!="./favicon.ico" && $f!="./style.css" && $f!="./index.php")) {
 			// skip
 		} else if (startsWith($f, "./test/")
 				|| (startsWith($f, "./i/") && $f!="./i/.readme.txt")
 				|| startsWith($f, "./cache/")
+		    || $f=="./install/.htaccess"
 				|| $f=="./util/download.php"
 				|| $f=="./util/load.php"
 				|| $f=="./util/clear.php"
@@ -96,10 +79,7 @@ if (!is_file($file)) {
 				|| $f=="./avatars/_dice.png"
 				|| $f=="./avatars/_viking.png")) {
 			// skip
-		} else if (startsWith($f, "./author") || startsWith($f, "./.git")) {
-			// skip
 		} else {
-			//$zip->addFile($f, "emphasize-".VERSION.substr($f, 1));
 			$zip->addFromString("emphasize-".VERSION.substr($f, 1), readFiltered($f));
 		}
 	}

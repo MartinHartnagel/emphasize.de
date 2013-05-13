@@ -235,6 +235,11 @@ function detectTranslate() {
  return "en";
 }
 
+/**
+ * Output-buffer filter.
+ * @param string $buffer contents outputted so far.
+ * @return string the filtered final output.
+ */
 function filter($buffer) {
 
  global $lang;
@@ -259,7 +264,7 @@ function filter($buffer) {
   $buffer=between($buffer, "<!--" . $grep . "-->", "<!--/" . $grep . "-->");
  }
 
- if (isset ($cache)) {
+ if (!DEV && isset ($cache)) {
   file_put_contents($cache, $buffer);
  }
 
@@ -291,8 +296,7 @@ function bottom() {
 
 // nizip
 function debugMail($txt) {
- global $feedback_to;
- enqueueMail($feedback_to, "[Emphasize] debug", $txt, "From: debug@emphasize.de\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
+ enqueueMail(FEEDBACK_TO, "[Emphasize] debug", $txt, "From: debug@emphasize.de\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
 }
 
 function longUrl($header, $bid) {
@@ -452,25 +456,20 @@ function getTimelineHistory($now, $before) {
  getEvents($before, $now);
 }
 
-function checkCache() {
+/**
+ * Checks if a cache file $cacheFile exists and delivers the contents if existing.
+ * Otherwise output-buffering will be used in {@link filter()} to create the $cacheFile.
+ * @param string $cacheFile name of a file in the cache specific for a certain context content.
+ */
+function checkCache($cacheFile) {
  global $export;
  global $cache;
-
 
  $prefix = substr(DOMAIN, strpos(DOMAIN, "//") + 2);
  if (strpos($prefix, "/") !== false) {
   $prefix = substr($prefix, 0, strpos($prefix, "/"));
  }
- $numargs = func_num_args();
- if ($numargs == 0) {
-  return;
- }
- $arg_list = func_get_args();
- if ($numargs == 1 && is_array($arg_list[0])) {
-  $arg_list=$arg_list[0];
-  $numargs=count($arg_list);
- }
- $cache = CACHE . "/" . $prefix . "_" . $arg_list[0];
+ $cache = CACHE . "/" . $prefix . "_" . $cacheFile;
 
  if (r("ajax") == "true") {
   $grep = r("grep");
@@ -491,16 +490,14 @@ function checkCache() {
   }
   return;
  }
- for ($i = 1; $i < $numargs; $i++) {
-  if ($cachetime < filemtime(dirname(__FILE__) . "/../" . $arg_list[$i])) {
-   if (file_exists($cache)) {
-    unlink($cache);
-   }
-   if (file_exists($cache.".gz")) {
-    unlink($cache.".gz");
-   }
-   return;
+ if (DEV) {
+  if (file_exists($cache)) {
+   unlink($cache);
   }
+  if (file_exists($cache.".gz")) {
+   unlink($cache.".gz");
+  }
+  return;
  }
 
  // a valid cached copy exists
@@ -766,7 +763,6 @@ function getMailReportToDate($from, $type) {
 function mailReport($id_user, $cid, $type, $range, $run) {
 
  global $lang;
- global $feedback_to;
 
  if ($run == date('Y-m-d')) {
   $from = date('Y-m-d', getMailReportFromDate($type, $range));
@@ -813,7 +809,7 @@ function mailReport($id_user, $cid, $type, $range, $run) {
 
   $body .= "\r\n\r\n--PHP-001-{$sep}--";
 
-  if (enqueueMail(User::getInstance()->getEmail(), "[Emphasize] " . $title, $body, "From: " . $feedback_to . "\r\nX-Mailer: PHP mail\r\nContent-Type: multipart/related; boundary=\"PHP-001-{$sep}\"\r\nMIME-Version: 1.0\r\n\r\n")) {
+  if (enqueueMail(User::getInstance()->getEmail(), "[Emphasize] " . $title, $body, "From: " . FEEDBACK_TO . "\r\nX-Mailer: PHP mail\r\nContent-Type: multipart/related; boundary=\"PHP-001-{$sep}\"\r\nMIME-Version: 1.0\r\n\r\n")) {
    echo ("$cid email-report $title sent to ".User::getInstance()->getEmail()."\n");
   } else {
    echo ("$cid email-report $title to ".User::getInstance()->getEmail()." failed\n");

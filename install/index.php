@@ -10,7 +10,7 @@ form {
 }
 input {
   position: absolute;
-  left: 220px;
+  left: 300px;
   margin-top: 2px;
 }
 -->
@@ -44,11 +44,8 @@ Prefix for emphasize-tables:
 Domain:
 <input type="text" name="domain" value="<?php echo($domain); ?>" />
 <br/>
-Send feedback to:
+Send registration-emails from and feedback to:
 <input type="text" name="feedback_to" value="<?php echo($feedback_to); ?>" />
-<br/>
-Send registration-emails from:
-<input type="text" name="registration_from" value="<?php echo($registration_from); ?>" />
 <br/>
 <br/>
 <input type="submit" value="Configure" />
