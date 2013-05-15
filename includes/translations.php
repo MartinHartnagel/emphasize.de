@@ -1,39 +1,4 @@
 <?php
-function i18n($text, $useLang = "") {
- global $i18n;
- 
-
- if ($useLang != "") {
-  $lang = $useLang;
- } else {
-  $lang = detectLang();
- }
-
- $text = preg_replace('/<i18n\s+?key=/imsU', "<i18n ref=", $text);
- $text = preg_replace('/>\s*?<\/i18n>\s*?/imsU', "/>", $text);
- $text = preg_replace('/\s*?<i18n/imsU', '<i18n', $text);
- $text = preg_replace('/<i18n \s+?/imsU', '<i18n ', $text);
-
- while (($f = strpos($text, "<i18n ref=")) !== false) {
-  $sep = substr($text, $f +10, 1);
-  $e = strpos($text, $sep, $f +11);
-  $key = substr($text, $f +11, $e - $f -11);
-  if (!isset ($i18n[$key . "." . $lang]) || $i18n[$key . "." . $lang] == "") {
-   if (!isset ($i18n[$key . ".en"]) || $i18n[$key . ".en"] == "") {
-    $result = "[undefined i18n ref='" . $key . ".en']";
-   } else {
-    $result = trim($i18n[$key . ".en"]);
-   }
-  } else {
-   $result = trim($i18n[$key . "." . $lang]);
-  }
-  $te = strpos($text, "/>", $f);
-  $text = substr_replace($text, $result, $f, $te - $f +2);
- }
-
- return str_replace(array('<lang/>', '<LANG/>', '<domain/>'), array($lang, strtoupper($lang), DOMAIN), $text);
-}
-
 $i18n=array(
 "demo0.de"=>'Arbeitszeiterfassung Ganz Einfach',
 "demo0.en"=>'The Simple Time Registration',
@@ -71,10 +36,10 @@ $i18n=array(
 "bot7.en"=>'Simple Time Registration',
 "bot7.es"=>'Gestión Del Tiempo Hizo Fáci',
 "bot7.fr"=>'Gestion Du Temps Tout Simplement',
-"demo78.de"=>'Emphasize in einem Sozialen Netzwerk weiterempfehlen.',
-"demo78.en"=>'Recommend Emphasize in social networks.',
-"demo78.es"=>'Hacer Emphasize en las redes sociales.',
-"demo78.fr"=>'Mettre l\'Emphasize sur les réseaux sociaux.',
+"demo78.de"=>'<app_name/> in einem Sozialen Netzwerk weiterempfehlen.',
+"demo78.en"=>'Recommend <app_name/> in social networks.',
+"demo78.es"=>'Hacer <app_name/> en las redes sociales.',
+"demo78.fr"=>'Mettre l\'<app_name/> sur les réseaux sociaux.',
 "bot3.de"=>'Sprache wählen.',
 "bot3.en"=>'Select the language.',
 "bot3.es"=>'Seleccione el idioma.',
@@ -111,18 +76,18 @@ $i18n=array(
 "gast4.en"=>'Test it for 20 minutes',
 "gast4.es"=>'Pruébelo durante 20 minutos',
 "gast4.fr"=>'Essayez-le pendant 20 minutes',
-"tab56.de"=>'Skripte sind deaktiviert im Browser, bitte aktivieren, um Emphasize zu verwenden',
-"tab56.en"=>'Scripts disabled in browser, enable to use Emphasize',
-"tab56.es"=>'Scripts con discapacidad en el navegador, permiten utilizar en Emphasize',
-"tab56.fr"=>'Scripts désactivé dans le navigateur, permettant d\'utiliser Emphasize',
+"tab56.de"=>'Skripte sind deaktiviert im Browser, bitte aktivieren, um <app_name/> zu verwenden!',
+"tab56.en"=>'Scripts disabled in browser, enable to use <app_name/>!',
+"tab56.es"=>'Scripts con discapacidad en el navegador, permiten utilizar en <app_name/>!',
+"tab56.fr"=>'Scripts désactivé dans le navigateur, permettant d\'utiliser <app_name/>!',
 "demo31.de"=>'Tätigkeiten im Projekt mit Zeiterfassung nachverfolgen',
 "demo31.en"=>'Attend activities in the project with time tracking',
 "demo31.es"=>'Actividades en el proyecto con el tiempo y la asistencia de seguimiento',
 "demo31.fr"=>'Suivi des présences des activités du projet avec une gestion du temps',
-"demo44.de"=>'Emphasize Benutzer kommen aus',
-"demo44.en"=>'Emphasize users come from',
-"demo44.es"=>'Emphasize usuarios provienen de',
-"demo44.fr"=>'Emphasize utilisateurs proviennent de',
+"demo44.de"=>'<app_name/> Benutzer kommen aus',
+"demo44.en"=>'<app_name/> users come from',
+"demo44.es"=>'<app_name/> usuarios provienen de',
+"demo44.fr"=>'<app_name/> utilisateurs proviennent de',
 "demo45.de"=>'Aktive Zeiterfassungs-Benutzer dieses Webdienstes',
 "demo45.en"=>'Active time-tracking users of this Web service',
 "demo45.es"=>'Active los usuarios de gestión del tiempo de este servicio web',
@@ -131,10 +96,10 @@ $i18n=array(
 "demo71.en"=>'_week_users_ active users since one week with _month_users_ active users since one month',
 "demo71.es"=>'_week_users_ usuarios activos desde una semana con _month_users_ usuarios activos desde un mes',
 "demo71.fr"=>'_week_users_ utilisateurs actifs depuis une semaine avec les utilisateurs _month_users_ actifs depuis un mois',
-"demo46.de"=>'Die Server-Software von Emphasize.de zum selbst Installieren herunterladen',
-"demo46.en"=>'The server software Emphasize.de is available as a download to install for yourself',
-"demo46.es"=>'El software del servidor se Emphasize.de para descargar e instalar',
-"demo46.fr"=>'Le logiciel serveur lui-même Emphasize.de pour télécharger et installer',
+"demo46.de"=>'Die Server-Software von <app_name/> zum selbst Installieren herunterladen',
+"demo46.en"=>'The server software <app_name/> is available as a download to install for yourself',
+"demo46.es"=>'El software del servidor se <app_name/> para descargar e instalar',
+"demo46.fr"=>'Le logiciel serveur lui-même <app_name/> pour télécharger et installer',
 "demo70.de"=>'kostenlos',
 "demo70.en"=>'free',
 "demo70.es"=>'gratuito',
@@ -283,10 +248,10 @@ $i18n=array(
 "tab12.en"=>'<a href="javascript:tubeTutorial(\'gP9O8lLCleU\')">Change distribution, description, reportables and color of the fields</a>.',
 "tab12.es"=>'<a href="javascript:tubeTutorial(\'gP9O8lLCleU\')">Distribución, descripción, notificables y cambian de color de los campos</a>.',
 "tab12.fr"=>'<a href="javascript:tubeTutorial(\'gP9O8lLCleU\')">Changement de distribution, description, rapportables et la couleur des champs</a>.',
-"tab17.de"=>'eine Farbe für das Feld wählen',
-"tab17.en"=>'pick a color for the field',
-"tab17.es"=>'elegir un color para el campo',
-"tab17.fr"=>'choisir une couleur pour le domaine',
+"tab17.de"=>'eine Farbe für das Feld wählen.',
+"tab17.en"=>'pick a color for the field.',
+"tab17.es"=>'elegir un color para el campo.',
+"tab17.fr"=>'choisir une couleur pour le domaine.',
 "tab18.de"=>'Zum Editieren die Maus über die Felder bewegen.',
 "tab18.en"=>'Editing is possible by moving the mouse over the fields.',
 "tab18.es"=>'Mover el ratón sobre los campos de edición.',
@@ -295,10 +260,10 @@ $i18n=array(
 "hed0.en"=>'time management, tracking, projects, reporting, work, acquisition, log, implementation, block, pay, employment Employed, Freelance, Report',
 "hed0.es"=>'La gestión del tiempo, gestión del tiempo, los proyectos, el trabajo, adquisición, registro, ejecución, bloque, pagar, por cuenta ajena, autónomos, Informe',
 "hed0.fr"=>'La gestion du temps, gestion du temps, les projets, le travail, l\'acquisition, journal, journaux, mise en œuvre, le bloc, salaires, l\'emploi occupées, Freelance, Rapport',
-"hed1.de"=>'Emphasize ist ein kostenloser, webbasierter Zeiterfassungs-Dienst zum Selbstmanagement',
-"hed1.en"=>'Emphasize is a web based, free &amp; simple time reporting service for self-management',
-"hed1.es"=>'Emphasize es una red basada, libre y sencilla servicios de seguir su tiempo por autogestión',
-"hed1.fr"=>'Emphasize est une service en ligne, libre et simple pour des rapports de temps pour l\'autogestion',
+"hed1.de"=>'<app_name/> ist ein kostenloser, webbasierter Zeiterfassungs-Dienst zum Selbstmanagement',
+"hed1.en"=>'<app_name/> is a web based, free &amp; simple time reporting service for self-management',
+"hed1.es"=>'<app_name/> es una red basada, libre y sencilla servicios de seguir su tiempo por autogestión',
+"hed1.fr"=>'<app_name/> est une service en ligne, libre et simple pour des rapports de temps pour l\'autogestion',
 "reg0.de"=>'Bestätigung der _name_ Registration',
 "reg0.en"=>'Confirm _name_ Registration',
 "reg0.es"=>'La confirmación de inscripción _name_',
@@ -786,22 +751,6 @@ $i18n=array(
 "tab63.en"=>'set planned time for activity',
 "tab63.es"=>'ajustar la hora prevista para la actividad',
 "tab63.fr"=>'régler l\'heure prévue pour l\'activité',
-"tab3.de"=>'horizontal schneiden',
-"tab3.en"=>'split horizontally',
-"tab3.es"=>'división horizontal',
-"tab3.fr"=>'fissure horizontale',
-"tab4.de"=>'vertikal schneiden',
-"tab4.en"=>'split vertically',
-"tab4.es"=>'división vertical',
-"tab4.fr"=>'fissure verticale',
-"tab5.de"=>'horizontal kleben',
-"tab5.en"=>'glue horizontally',
-"tab5.es"=>'cola horizontal',
-"tab5.fr"=>'colle horizontale',
-"tab6.de"=>'vertikal kleben',
-"tab6.en"=>'glue vertically',
-"tab6.es"=>'cola vertical',
-"tab6.fr"=>'colle verticale',
 "day0.de"=>'Tag',
 "day0.en"=>'Day',
 "day0.es"=>'Día',

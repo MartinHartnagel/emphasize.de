@@ -1,6 +1,10 @@
 Emphasize can be tested on the official website: http://emphasize.de
 Return and check for updates regularly! Feedback welcome: admin@emphasize.de
 
+Prerequisites:
+# required packages for example on ubuntu run:
+sudo apt-get install apache2 php5 mysql-server php5-mysql sendmail-bin 
+
 Installation:
 
 1.) Unzip "emphasize-*.*.*" folder to webserver-hosted path supporting php with access to mySQL-DB
@@ -106,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `EMPHASIZE_TEMPLATE` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `ID_USER` int(11) NOT NULL default '0',
   `NAME` varchar(30) NOT NULL default '',
-  `TBODY` text NOT NULL,
+  `CONTENT` text NOT NULL,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 

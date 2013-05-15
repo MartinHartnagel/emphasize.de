@@ -1,6 +1,6 @@
 <?php
 $no_ob_start = true;
-$testing=true;
+define("TESTING", true);
 $ob_cancel=true;
 $lang="de";
 

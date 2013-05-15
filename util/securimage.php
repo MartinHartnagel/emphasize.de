@@ -505,8 +505,7 @@ class Securimage {
   */
  function Securimage()
  {
-  global $testing;
-  if (!(isset($testing) && $testing)) {
+  if (!defined('TESTING')) {
    // Initialize session or attach to existing
    if ( session_id() == '' ) { // no session has been started yet, which is needed for validation
     if (trim($this->session_name) != '') {

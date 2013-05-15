@@ -13,8 +13,6 @@ class LoginTest extends UnitTestCase {
 
  function setUp() {
   global $lc;
-  global $tbody_value;
-  global $tbody_names;
 
   global $reports;
   global $ob_buffer;

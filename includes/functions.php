@@ -38,20 +38,20 @@ $e = new Exception;
 error_log(var_export($e->getTraceAsString(), true));
 }*/
 
-if (!isset($testing)) {
+if (!defined('TESTING')) {
  $old_error_handler = set_error_handler("myErrorHandler");
 }
 
-$tbody_names = array ();
-$tbody_value = array ();
-$tbody_names["work"] = i18n("<i18n key='con0'><en>Work</en><de>Arbeit</de><fr>Travail</fr><es>Trabajo</es></i18n>");
-$tbody_value["work"] = i18n('<tr><td style="background-color:#e88013"><i18n key="con2"><en>Work</en><de>Arbeit</de><fr>Travail</fr><es>Trabajo</es></i18n></td></tr>');
-$tbody_names["dev"] = i18n("<i18n key='con3'><en>Software Development</en><de>Software Entwicklung</de><fr>Software Development</fr><es>Desarrollo de Software</es></i18n>");
-$tbody_value["dev"] = i18n('<tr><td rowspan="2" style="background-color:#bdc406"><i18n key="con5"><en>Implementation</en><de>Implementierung</de><fr>La mise en œuvre</fr><es>Aplicación</es></i18n></td><td style="background-color:#6ba163"><i18n key="con6"><en>Documentation</en><de>Dokumentation</de><fr>Documentation</fr><es>Documentación</es></i18n></td></tr><tr><td style="background-color:#a16363"><i18n key="con7"><en>Test</en><de>Testen</de><fr>Test</fr><es>Prueba</es></i18n></td></tr>');
-$tbody_names["support"] = i18n("<i18n key='con8'><en>Support</en><de>Support</de><fr>Support</fr><es>Apoyo</es></i18n>");
-$tbody_value["support"] = i18n('<tr><td style="background-color:#ecfe32" colspan="2"><i18n key="con10"><en>Training</en><de>Schulung</de><fr>Formation</fr><es>Capacitación</es></i18n></td></tr><tr><td style="background-color:#001ff7"><i18n key="con11"><en>Consultation</en><de>Beratung</de><fr>Conseils</fr><es>Consulta</es></i18n></td><td style="background-color:#ff0b1f"><i18n key="con12"><en>Troubleshooting</en><de>Fehlerbehebung</de><fr>Dépannage</fr><es>Solución de problemas</es></i18n></td></tr>');
-$tbody_names["admin"] = i18n("<i18n key='con13'><en>Administration</en><de>Administration</de><fr>Administration</fr><es>Administración</es></i18n>");
-$tbody_value["admin"] = i18n('<tr><td style="background-color:#3f57ff"><i18n key="con15"><en>Installation</en><de>Installation</de><fr>Installation</fr><es>Instalación</es></i18n></td></tr><tr><td style="background-color:#6ba163"><i18n ref="con6"></i18n></td></tr><tr><td style="background-color:#e80068"><i18n key="con17"><en>Data Backup</en><de>Datensicherung</de><fr>Sauvegarde des données</fr><es>Copia de seguridad</es></i18n></td></tr>');
+$content_names = array ();
+$content_value = array ();
+$content_names["work"] = i18n("<i18n key='con0'><en>Work</en><de>Arbeit</de><fr>Travail</fr><es>Trabajo</es></i18n>");
+$content_value["work"] = i18n('<tr><td style="background-color:#e88013"><i18n key="con2"><en>Work</en><de>Arbeit</de><fr>Travail</fr><es>Trabajo</es></i18n></td></tr>');
+$content_names["dev"] = i18n("<i18n key='con3'><en>Software Development</en><de>Software Entwicklung</de><fr>Software Development</fr><es>Desarrollo de Software</es></i18n>");
+$content_value["dev"] = i18n('<tr><td rowspan="2" style="background-color:#bdc406"><i18n key="con5"><en>Implementation</en><de>Implementierung</de><fr>La mise en œuvre</fr><es>Aplicación</es></i18n></td><td style="background-color:#6ba163"><i18n key="con6"><en>Documentation</en><de>Dokumentation</de><fr>Documentation</fr><es>Documentación</es></i18n></td></tr><tr><td style="background-color:#a16363"><i18n key="con7"><en>Test</en><de>Testen</de><fr>Test</fr><es>Prueba</es></i18n></td></tr>');
+$content_names["support"] = i18n("<i18n key='con8'><en>Support</en><de>Support</de><fr>Support</fr><es>Apoyo</es></i18n>");
+$content_value["support"] = i18n('<tr><td style="background-color:#ecfe32" colspan="2"><i18n key="con10"><en>Training</en><de>Schulung</de><fr>Formation</fr><es>Capacitación</es></i18n></td></tr><tr><td style="background-color:#001ff7"><i18n key="con11"><en>Consultation</en><de>Beratung</de><fr>Conseils</fr><es>Consulta</es></i18n></td><td style="background-color:#ff0b1f"><i18n key="con12"><en>Troubleshooting</en><de>Fehlerbehebung</de><fr>Dépannage</fr><es>Solución de problemas</es></i18n></td></tr>');
+$content_names["admin"] = i18n("<i18n key='con13'><en>Administration</en><de>Administration</de><fr>Administration</fr><es>Administración</es></i18n>");
+$content_value["admin"] = i18n('<tr><td style="background-color:#3f57ff"><i18n key="con15"><en>Installation</en><de>Installation</de><fr>Installation</fr><es>Instalación</es></i18n></td></tr><tr><td style="background-color:#6ba163"><i18n ref="con6"></i18n></td></tr><tr><td style="background-color:#e80068"><i18n key="con17"><en>Data Backup</en><de>Datensicherung</de><fr>Sauvegarde des données</fr><es>Copia de seguridad</es></i18n></td></tr>');
 
 $reports = array ();
 $reports["daily"] = i18n("<i18n key='con18'><en>Daily Report</en><de>Täglicher Bericht</de><fr>Rapport journalier</fr><es>Informe día a día</es></i18n>");
@@ -318,14 +318,17 @@ function longUrl($header, $bid) {
 function longLink($title, $bid) {
  global $lang;
  $file = str_replace(array (
+   "<app_name/>",
+   "<domain/>",
    "\\",
    "/",
    " - ",
    " ",
    "&",
    ".",
-   "'"
  ), array (
+   APP_NAME,
+   DOMAIN,
    "\\",
    "_",
    "-",
@@ -363,7 +366,6 @@ function fail($msg) {
  global $error;
 
  global $no_ob_start;
- global $testing;
  global $ob_buffer;
 
  $message = i18n($msg);
@@ -372,7 +374,7 @@ function fail($msg) {
   ob_end_clean();
  }
 
- if (isset($testing) && $testing) {
+ if (defined('TESTING')) {
   $ob_buffer=$message;
   throw new Exception($message);
  }
@@ -820,10 +822,9 @@ function mailReport($id_user, $cid, $type, $range, $run) {
 }
 
 function instantMail($address, $title, $body, $additionals) {
- global $testing;
  global $testmail;
 
- if (isset($testing) && $testing) {
+ if (defined('TESTING')) {
   $testmail.="instantMail: ".$address .",".$title.",".$body.",".$additionals."\n\n";
   return true;
  }
@@ -831,10 +832,9 @@ function instantMail($address, $title, $body, $additionals) {
 }
 
 function enqueueMail($address, $title, $body, $additionals) {
- global $testing;
  global $testmail;
 
- if (isset($testing) && $testing) {
+ if (defined('TESTING')) {
   $testmail.="enqueueMail: ".$address .",".$title.",".$body.",".$additionals."\n\n";
   return true;
  }

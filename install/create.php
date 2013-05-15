@@ -2,6 +2,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 ini_set('memory_limit', '16M');
+
+if ($_REQUEST["db_password"] != $_REQUEST["reconfirm_password"]) {
+ die("Password mismatch");
+}
+
 $export="none";
 // rewrite configuration.php
 $c=file_get_contents(dirname(__FILE__)."/../includes/configuration.php");

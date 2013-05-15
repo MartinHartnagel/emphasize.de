@@ -53,8 +53,8 @@ if ($valid == true
  $lang=detectLang();
  $id_template=0;
  // create initial template entries
- foreach($tbody_value as $k=>$v) {
-  $key=i18n($tbody_names[$k]);
+ foreach($content_value as $k=>$v) {
+  $key=i18n($content_names[$k]);
   $value=i18n($v);
   $template=new Template($nid);
   $template->setName($key);
@@ -74,16 +74,16 @@ if ($valid == true
 
  $confirm_url=DOMAIN."/util/confirm.php?".$confirmcode;
 
- $title=str_replace("_name_", $name, "[Emphasize] ".i18n("<i18n key='reg0'><en>Confirm _name_ Registration</en><de>Bestätigung der _name_ Registration</de><fr>Confirmation d'inscription _name_</fr><es>La confirmación de inscripción _name_</es></i18n>"));
- $body=str_replace(array("_name_", "_domain_", "_confirm_url_"), array($name, DOMAIN, $confirm_url), i18n("<i18n key='reg1'><en>Hello _name_,\r\nthis email has automatically been sent to you to confirm your registration for a user _name_ on _domain_.\r\nPlease click on the following link to confirm your registration (or copy and paste it to your browser):\r\n\r\n_confirm_url_ \r\nYou will be able to login to the _name_ account with your given password thereafter.\r\nIf for any reason you did not apply for registration then just ignore this email and don't click on the link above.\r\nKind regards,</en><de>Guten Tag _name_,\r\ndiese Email wurde automatisch an Sie verschickt, um die Registration des Benutzers _name_ auf _domain_ zu bestätigen.\r\nBitte Klicken sie auf den folgenden Hyperlink (oder Kopieren Sie die Adresse in Ihren Browser):\r\n_confirm_url_ \r\nEin Login mit dem Benutzerkonto _name_ und dem von Ihnen gewählten Passwort ist dann möglich.\r\nBitte klicken Sie nicht auf den Hyperlink, wenn Sie sich nicht registriert haben.\r\nMit freundlichen Grüssen,</de><fr>Bonjour _name_,\r\nce courriel a été envoyé automatiquement au nom de l'enregistrement de l'utilisateur de confirmer le nom _name_ en _domain_.\r\nS'il vous plaît cliquer sur le lien suivant (ou de copier l'adresse dans votre navigateur):\r\n\r\n_confirm_url_ \r\nAlors il est possible de utiliser le compte du _name_ avec votre mot de passe.\r\nS'il vous plaît ne pas cliquer sur le lien hypertexte, si vous n'êtes pas inscrit.\r\nCordialement,</fr><es>Hola _name_,\r\neste correo electrónico fue enviado automáticamente a usted el nombre _name_ del registro del usuario para confirmar en _domain_.\r\n
+ $title=str_replace("_name_", $name, i18n("[<app_name/>] <i18n key='reg0'><en>Confirm _name_ Registration</en><de>Bestätigung der _name_ Registration</de><fr>Confirmation d'inscription _name_</fr><es>La confirmación de inscripción _name_</es></i18n>"));
+ $body=str_replace(array("_name_", "_confirm_url_"), array($name, $confirm_url), i18n("<i18n key='reg1'><en>Hello _name_,\r\nthis email has automatically been sent to you to confirm your registration for a user _name_ on <domain/>.\r\nPlease click on the following link to confirm your registration (or copy and paste it to your browser):\r\n\r\n_confirm_url_ \r\nYou will be able to login to the _name_ account with your given password thereafter.\r\nIf for any reason you did not apply for registration then just ignore this email and don't click on the link above.\r\nKind regards,</en><de>Guten Tag _name_,\r\ndiese Email wurde automatisch an Sie verschickt, um die Registration des Benutzers _name_ auf <domain/> zu bestätigen.\r\nBitte Klicken sie auf den folgenden Hyperlink (oder Kopieren Sie die Adresse in Ihren Browser):\r\n_confirm_url_ \r\nEin Login mit dem Benutzerkonto _name_ und dem von Ihnen gewählten Passwort ist dann möglich.\r\nBitte klicken Sie nicht auf den Hyperlink, wenn Sie sich nicht registriert haben.\r\nMit freundlichen Grüssen,</de><fr>Bonjour _name_,\r\nce courriel a été envoyé automatiquement au nom de l'enregistrement de l'utilisateur de confirmer le nom _name_ en <domain/>.\r\nS'il vous plaît cliquer sur le lien suivant (ou de copier l'adresse dans votre navigateur):\r\n\r\n_confirm_url_ \r\nAlors il est possible de utiliser le compte du _name_ avec votre mot de passe.\r\nS'il vous plaît ne pas cliquer sur le lien hypertexte, si vous n'êtes pas inscrit.\r\nCordialement,</fr><es>Hola _name_,\r\neste correo electrónico fue enviado automáticamente a usted el nombre _name_ del registro del usuario para confirmar en <domain/>.\r\n
    Por favor, haga clic en el siguiente enlace (o copiar la dirección en su navegador):\r\n\r\n_confirm_url_ \r\nUn inicio de sesión con el nombre _name_ de cuenta de usuario y contraseña es elegido posible.\r\n
    Por favor, no haga clic en el hipervínculo, si no se ha registrado.\r\n
    Le saluda atentamente,</es></i18n>\r\n  Martin Hartnagel."));
  instantMail($email, $title, $body, "From: ".FEEDBACK_TO."\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n");
  echo(str_replace("_name_", $name, i18n("<i18n key='reg3'><en>pre confirmed login with _name_ valid for one hour</en><de>_name_ Login mit noch nicht bestätigter Registrierung gültig für eine Stunde</de><fr>Connexion avec _name_ pas encore confirmées d'enregistrement valide pour une heure</fr><es>Ingresar con _name_ el registro aún no confirmados válidos durante una hora</es></i18n>")));
- if (!(isset($testing) && $testing)) {
+ if (!defined('TESTING')) {
   // inform admin
-  enqueueMail(FEEDBACK_TO, "[Emphasize] Registration: $name", "$name on DOMAIN with $email", "From: ".FEEDBACK_TO."\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
+  enqueueMail(FEEDBACK_TO, i18n("[<app_name/>] Registration: $name"), "$name on <domain/> with $email", "From: ".FEEDBACK_TO."\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
  }
 } else {
  fail("Sorry, the code \"".r('code')."\" you entered was invalid");

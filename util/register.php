@@ -6,7 +6,7 @@ header("Content-Type: text/html;charset=UTF-8");
 <title><i18n key="rtr0"> <en>Register for time-tracking with</en> <de>Konto
 	Anlegen zur Zeiterfassung mit</de> <fr>Créer un compte pour
 	l'enregistrement du temps avec</fr> <es>Crear una cuenta de tiempo de
-	grabación con</es></i18n>&nbsp;Emphasize</title>
+	grabación con</es></i18n> <app_name/></title>
 </head>
 
 <body>

@@ -10,8 +10,8 @@ $news=array(
 </ul>
 <p>Alles andere, Zettel mit Start/Stop-Zeiten, intelligente Excel-Sheets die alles automatisch machen sollen oder das Zeiterfassungssystem XYZ welches mir nur lange Listen von Input-Feldern anbietet, habe ich nicht wirklich über einen längeren Zeitraum konsequent benutzen können: zu starr waren die vorgegebenen Kategorien, zu schmerzhaft das notieren einer Zeit, zu viele Klicks um halbwegs präzise zu bleiben.<br/>
 So eine Herangehensweise bezeichne ich heute als <b>unbewusst</b> <strike>gefälschte</strike> erfolgte Arbeitszeiterfassung.</p>
-<p>Heute bin ich ehrlicher. Heute weiß ich wann ich fälsche! Bin immer eingeloggt in <a href="Arbeitszeiterfassung-Benutze_Emphasize.php" title="Web-Dienst zur Arbeitszeiterfassung" class="blog">Emphasize als Webdienst zur Zeiterfassung</a> und rücke meine Figur weiter, wenn ich eine neue Tätigkeit anfange oder eine liegengelassene wieder aufnehme. Dafür brauche ich: nur einen Klick! Das tut nicht weh, sieht auch noch schick aus, wenn die Figur durch die Luft schwebt. Wenn ich mal vergessen hab die Figur umzusetzen, stelle ich einfach die Zeit zurück und setzt sie dann um. Ich bin kein penibler Stoppuhr-Liebhaber. Wie spät es gerade ist, ist mir fast den ganzen Arbeitstag egal, nur wenn ich dann gehe will ich wissen, wie viele Überstunden/Unterstunden ich gerade akzeptiere. Das liefert mir der "Tägliche Bericht". Mein System von Feldern, in denen ich buche ändert sich andauernd, genau so wie ich es gerade brauche. Und dann, wenn ich die Arbeitszeiterfassung in einem System des Kunden ausfüllen soll, dann bin ich mit einem Klick bei der Aufgabe (gerade arbeite ich mit JIRA) und kopiere die Zeit rüber. Oder ich <strike>fälsche</strike> passe die Zeit nochmal selbst an, aber zumindest weiß ich wann ich es tue!</p>
-<p>Aus der Sicht der Projektleitung kann ich jetzt besser <a href="Arbeitszeiterfassung-Warum_Emphasize.php" title="Die Bedeutung von Emphasize" class="blog">deutlich machen</a>, was ich wann wirklich gemacht habe, ohne mich besonders anstrengen zu müssen. Aus Sicht des Kunden sind die Zahlen die er bekommt wirklich etwas Wert. Ich denke ich nähere mich dem Punkt, wo sich Berichtspflicht und freiwillige Selbstkontrolle ergänzen.</p>'),
+<p>Heute bin ich ehrlicher. Heute weiß ich wann ich fälsche! Bin immer eingeloggt in <a href="Arbeitszeiterfassung-Benutze_Emphasize.php" title="Web-Dienst zur Arbeitszeiterfassung" class="blog"><app_name/> als Webdienst zur Zeiterfassung</a> und rücke meine Figur weiter, wenn ich eine neue Tätigkeit anfange oder eine liegengelassene wieder aufnehme. Dafür brauche ich: nur einen Klick! Das tut nicht weh, sieht auch noch schick aus, wenn die Figur durch die Luft schwebt. Wenn ich mal vergessen hab die Figur umzusetzen, stelle ich einfach die Zeit zurück und setzt sie dann um. Ich bin kein penibler Stoppuhr-Liebhaber. Wie spät es gerade ist, ist mir fast den ganzen Arbeitstag egal, nur wenn ich dann gehe will ich wissen, wie viele Überstunden/Unterstunden ich gerade akzeptiere. Das liefert mir der "Tägliche Bericht". Mein System von Feldern, in denen ich buche ändert sich andauernd, genau so wie ich es gerade brauche. Und dann, wenn ich die Arbeitszeiterfassung in einem System des Kunden ausfüllen soll, dann bin ich mit einem Klick bei der Aufgabe (gerade arbeite ich mit JIRA) und kopiere die Zeit rüber. Oder ich <strike>fälsche</strike> passe die Zeit nochmal selbst an, aber zumindest weiß ich wann ich es tue!</p>
+<p>Aus der Sicht der Projektleitung kann ich jetzt besser <a href="Arbeitszeiterfassung-Warum_Emphasize.php" title="Die Bedeutung von <app_name/>" class="blog">deutlich machen</a>, was ich wann wirklich gemacht habe, ohne mich besonders anstrengen zu müssen. Aus Sicht des Kunden sind die Zahlen die er bekommt wirklich etwas Wert. Ich denke ich nähere mich dem Punkt, wo sich Berichtspflicht und freiwillige Selbstkontrolle ergänzen.</p>'),
     2 => array('Arbeitszeiterfassung - Keywords', 'deutsch:
 <pre>
 Zeitmanagement, timemanagement, projekte, arbeitszeiterfassung, arbeitszeiten, erfassung, stoppuhr, arbeitszeit, zeiterfassung, reporting, projektmanagement, projektplanung, projektverwaltung, projektzeiterfassung, projekt, projektcontrolling, projektabrechnung, timer, Projektüberblick, flexibel, Kommentieren, Tätigkeiten, Briefing, Ruhezeit
@@ -68,7 +68,7 @@ http://www.projektron.de/ Projektron BCS 6.18
 <li>Wird "Feedback übermittelt" als Status angezeigt?</li>
 <li>Klick auf "Hilfe ausblenden".</li>
 </ol>'),
-    6 => array('Arbeitszeiterfassung - Benutze Emphasize', 'schneide Deinen <a href="Arbeitszeiterfassung-unbewusst_oder_selbst_gefälscht.php" title="Wie nah an der Wirklichkeit ist das, was ich als Arbeitszeit angebe" class="blog">realen Zeitaufwand</a> über <a href="Arbeitszeiterfassung-Warum_Emphasize.php" title="Wofür steht der Name?" class="blog">Emphasize</a> mit ...
+    6 => array('Arbeitszeiterfassung - Benutze <app_name/>', 'schneide Deinen <a href="Arbeitszeiterfassung-unbewusst_oder_selbst_gefälscht.php" title="Wie nah an der Wirklichkeit ist das, was ich als Arbeitszeit angebe" class="blog">realen Zeitaufwand</a> über <a href="Arbeitszeiterfassung-Warum_Emphasize.php" title="Wofür steht der Name?" class="blog"><app_name/></a> mit ...
 <h2>neuen Benutzer anlegen</h2>
 <ul>
 <li>die <a href="#" onclick="tubeTutorial(\'jVxjkfQj6UE\')">Registrierung</a> ist einfach und geht schnell</li>
@@ -92,30 +92,30 @@ Kostenlose
  <a href="#" onclick="$(\'#register\').slice(0, 1).click()" title="neuen Benutzer anlegen">Registrierung und Verwendung</a> hier als Web-Dienst!
 </div>
 <br/>
-Über <a href="util/about.php" title="Aktuelle Versionshinweise" class="blog">Emphasize</a> lesen auf ...<br/>
-<a href="https://twitter.com/emphasizede" target="_blank" title="Über Emphasize auf Twitter lesen"><img src="http://emphasize.de/graphics/twitter.png" alt="Über Emphasize auf Twitter lesen" height="44" width="44"></a>
-<a title="Emphasize, Download bei heise" href="http://www.heise.de/software/download/emphasize/77625"><img alt="Emphasize, Download bei heise" title="Emphasize, Download bei heise" align="top" src="http://www.heise.de/software/icons/download_logo2.png" /></a>
+Über <a href="util/about.php" title="Aktuelle Versionshinweise" class="blog"><app_name/></a> lesen auf ...<br/>
+<a href="https://twitter.com/emphasizede" target="_blank" title="Über <app_name/> auf Twitter lesen"><img src="http://emphasize.de/graphics/twitter.png" alt="Über <app_name/> auf Twitter lesen" height="44" width="44"></a>
+<a title="<app_name/>, Download bei heise" href="http://www.heise.de/software/download/emphasize/77625"><img alt="<app_name/>, Download bei heise" title="<app_name/>, Download bei heise" align="top" src="http://www.heise.de/software/icons/download_logo2.png" /></a>
 
-<a href="http://www.arbeitszeit-erfassung.net" target="_blank" title="Über Emphasize auf arbeitszeit-erfassung.net lesen" title="Über Emphasize auf arbeitszeit-erfassung.net lesen">Zeiterfassung</a>
+<a href="http://www.arbeitszeit-erfassung.net" target="_blank" title="Über <app_name/> auf arbeitszeit-erfassung.net lesen" title="Über <app_name/> auf arbeitszeit-erfassung.net lesen">Zeiterfassung</a>
 
-<h2>Emphasize Verbessern</h2>
+<h2><app_name/> Verbessern</h2>
 <ul>
 <li>Mit einem Klick auf das <a href="#" title="Feedback geben" onclick="$(\'#feedLink\').slice(0, 1).click()"><img src="graphics/feedback.png" align="bottom"></a> Icon unten links kann man schnell Feedback über einen Fehler oder eine Verbesserung abgeben.</li>
 <!--translationWelcome/-->
-<li>Die wichtigsten Funktionen von Emphasize können <a href="test/" title="automatische Tests starten" target="_blank" class="newWindow" >in einer Test-Suite getestet</a> werden, um die Fehlerfreiheit für diesen Browser abzusichern. Die Ergebnisse werden anschließend automatisch an den Entwickler übermittelt.</li>
-<li>Der komplette Source-Code, inklusive Bestandteile dieser Webseite, ist als Open-Source einsehbar unter <a href="http://github.com/MartinHartnagel/emphasize.de" title="Open-Source-Code Emphasize.de auf github" target="_blank" class="newWindow">github</a>. Hier können bestehende Sicherheitslücken entdeckt werden, die dann umgehend nach einem <a href="#" title="Feedback geben" onclick="$(\'#feedLink\').slice(0, 1).click()">Feedback</a> geschlossen werden können.</li>
+<li>Die wichtigsten Funktionen von <app_name/> können <a href="test/" title="automatische Tests starten" target="_blank" class="newWindow" >in einer Test-Suite getestet</a> werden, um die Fehlerfreiheit für diesen Browser abzusichern. Die Ergebnisse werden anschließend automatisch an den Entwickler übermittelt.</li>
+<li>Der komplette Source-Code, inklusive Bestandteile dieser Webseite, ist als Open-Source einsehbar unter <a href="http://github.com/MartinHartnagel/emphasize.de" title="Open-Source-Code <app_name/>.de auf github" target="_blank" class="newWindow">github</a>. Hier können bestehende Sicherheitslücken entdeckt werden, die dann umgehend nach einem <a href="#" title="Feedback geben" onclick="$(\'#feedLink\').slice(0, 1).click()">Feedback</a> geschlossen werden können.</li>
 
-<li>Die <a href="roadmap.php" title="Planung zur weiteren Entwicklung der Zeiterfassung Emphasize" target="_blank" class="newWindow">Roadmap</a> (weitere Planung) ist nun öffentlich einsehbar mit der Möglichkeit für einzelne Funktionen zu stimmen. Dopplungen von Fehlerberichten und Verbesserungswünschen können so vermieden werden.</li></ul>'),
-    9 => array('Arbeitszeiterfassung - Warum Emphasize', 'Im <i>deutschen</i> hat das <i>englische</i> Verb "to emphasize" die Bedeutung "betonen", "unterstreichen", "hervorheben", "herausstellen", "akzentuieren", "pointieren", "hervorkehren", "deutlich machen", "Nachdruck legen auf", "Wert legen auf" oder auch "auf etw. abheben" (siehe auch <a href="http://en.wiktionary.org/wiki/emphasize" title="Emphasize Eintrag bei Wiktionary" class="newWindow" target="_blank">weitere Schreibweisen</a> und <a href="http://www.thefreedictionary.com/emphasize" title="Redewendungen mit Emphasize" class="newWindow" target="_blank">übliche Redewendungen</a>).<br/>
-Was soll mit der <a href="Arbeitszeiterfassung-Benutze_Emphasize.php" title="Web-Dienst zur Arbeitszeiterfassung" class="blog">Arbeitszeiterfassung Emphasize</a> nun betont, hervorgehoben und deutlich gemacht werden?
-Es geht vor allem bei diesem Web-Dienst darum die <b>Einfachheit</b> dieses Aufgabe hervorzuheben. Dadurch dass sich dieses Tool eben nur auf diese eine Aufgabe konzentriert, wird ein Ansatz gewählt, der zumindest die Erfassung so einfach wie möglich macht. Im Gegensatz dazu stehen <a href="http://en.wikipedia.org/wiki/Comparison_of_time_tracking_software" title="weitere Anwendungen zur Zeiterfassung auf Wikipedia" class="newWindow" target="_blank">die vielen anderen Anwendungen zur Arbeitszeiterfassung</a>, die zwar <a href="Arbeitszeiterfassung-Abgrenzung.php" title="Was kann Emphasize und was nicht" class="blog">unglaublich viele Features bieten</a>, jedoch eine nur wenig anwenderfreundliche Erfassung bieten.
-Dieser Philosophie folgend, soll es zukünftig bei der weiteren Entwicklung von Emphasize nur um die Verbesserung dieser Kernkompetenz gehen.'),
+<li>Die <a href="roadmap.php" title="Planung zur weiteren Entwicklung der Zeiterfassung <app_name/>" target="_blank" class="newWindow">Roadmap</a> (weitere Planung) ist nun öffentlich einsehbar mit der Möglichkeit für einzelne Funktionen zu stimmen. Dopplungen von Fehlerberichten und Verbesserungswünschen können so vermieden werden.</li></ul>'),
+    9 => array('Arbeitszeiterfassung - Warum <app_name/>', 'Im <i>deutschen</i> hat das <i>englische</i> Verb "to emphasize" die Bedeutung "betonen", "unterstreichen", "hervorheben", "herausstellen", "akzentuieren", "pointieren", "hervorkehren", "deutlich machen", "Nachdruck legen auf", "Wert legen auf" oder auch "auf etw. abheben" (siehe auch <a href="http://en.wiktionary.org/wiki/emphasize" title="<app_name/> Eintrag bei Wiktionary" class="newWindow" target="_blank">weitere Schreibweisen</a> und <a href="http://www.thefreedictionary.com/emphasize" title="Redewendungen mit <app_name/>" class="newWindow" target="_blank">übliche Redewendungen</a>).<br/>
+Was soll mit der <a href="Arbeitszeiterfassung-Benutze_Emphasize.php" title="Web-Dienst zur Arbeitszeiterfassung" class="blog">Arbeitszeiterfassung <app_name/></a> nun betont, hervorgehoben und deutlich gemacht werden?
+Es geht vor allem bei diesem Web-Dienst darum die <b>Einfachheit</b> dieses Aufgabe hervorzuheben. Dadurch dass sich dieses Tool eben nur auf diese eine Aufgabe konzentriert, wird ein Ansatz gewählt, der zumindest die Erfassung so einfach wie möglich macht. Im Gegensatz dazu stehen <a href="http://en.wikipedia.org/wiki/Comparison_of_time_tracking_software" title="weitere Anwendungen zur Zeiterfassung auf Wikipedia" class="newWindow" target="_blank">die vielen anderen Anwendungen zur Arbeitszeiterfassung</a>, die zwar <a href="Arbeitszeiterfassung-Abgrenzung.php" title="Was kann <app_name/> und was nicht" class="blog">unglaublich viele Features bieten</a>, jedoch eine nur wenig anwenderfreundliche Erfassung bieten.
+Dieser Philosophie folgend, soll es zukünftig bei der weiteren Entwicklung von <app_name/> nur um die Verbesserung dieser Kernkompetenz gehen.'),
     10 => array('Arbeitszeiterfassung - Linkbait', 'Linkbait Ideen:
 - Witzige Feldaufteilung, in der kein Logout möglich ist public rumschicken
 - Top-News-Themen, Gadaffi-Feldaufteilung'),
     11 => array('Arbeitszeiterfassung - Agile', 'Rally, Scrumworks, XPlanner, Mingle, VersionOne, TargetProcess, xProcess, Extreme Planner,ProjectCards,CardMeeting,XP Story Studio,
 Planning p oker'),
-    12 => array('Arbeitszeiterfassung - Abgrenzung', '<h2>Das kann Emphasize</h2>
+    12 => array('Arbeitszeiterfassung - Abgrenzung', '<h2>Das kann <app_name/></h2>
 <ul>
 <li>dient zur einfachen, schnellen Zeiterfassung</li>
 <li>funktioniert wie mehrere Stoppuhren</li>
@@ -128,13 +128,13 @@ Planning p oker'),
 <li>bietet einen einfachen Kundenzugang über das Tätigkeits-Briefing</li>
 </ul>
 
-<h2>Es ist geplant Emphasize zu erweitern</h2>
+<h2>Es ist geplant <app_name/> zu erweitern</h2>
 <ul>
 <li>mit automatischen Benachrichtigungen per E-Mail</li>
 <li>um Aufgabendiagramme</li>
 </ul>
 
-<h2>Dafür ist Emphasize nicht gedacht</h2>
+<h2>Dafür ist <app_name/> nicht gedacht</h2>
 <ul>
 <li>zur Projektdefinition</li>
 <li>zur Abschätzung von Risiken</li>
@@ -180,7 +180,7 @@ Planning p oker'),
 '),
   ),
   'en' => array(
-    7 => array('Time-Reporting - Use Emphasize', 'tracking your <a href="Time-Reporting-unwittingly_or_deliberately_faking_.php" title="Honestly, how close to reality are my times reported" class="blog">real time</a> with <a href="Time-Reporting-Why_Emphasize.php" title="Why is this time-tracking tool called Emphasize?" class="blog">Emphasize</a> spent for activities ...
+    7 => array('Time-Reporting - Use <app_name/>', 'tracking your <a href="Time-Reporting-unwittingly_or_deliberately_faking_.php" title="Honestly, how close to reality are my times reported" class="blog">real time</a> with <a href="Time-Reporting-Why_Emphasize.php" title="Why is this time-tracking tool called <app_name/>?" class="blog"><app_name/></a> spent for activities ...
 <h2>register new user</h2>
 <ul>
 <li><a href="#" onclick="tubeTutorial(\'A1wF8aVZOfg\')">Registration</a> is fast and simple</li>
@@ -200,20 +200,20 @@ Planning p oker'),
 Free
  <a href="#" onclick="$(\'#register\').slice(0, 1).click()" title="register new user">registration and usage</a>!
 <br/><br/>
-Read about Emphasize on ...<br/>
-<a href="https://twitter.com/emphasizede" target="_blank" title="Read about Emphasize on Twitter"><img src="http://emphasize.de/graphics/twitter.png" alt="Read about Emphasize on Twitter" height="44" width="44"></a>
- <a title="Emphasize, Download bei heise" href="http://www.heise.de/software/download/emphasize/77625"><img alt="Emphasize, Download bei heise" title="Emphasize, Download bei heise" align="top" src="http://www.heise.de/software/icons/download_logo2.png" /></a>
- <a href="http://www.arbeitszeit-erfassung.net" target="_blank" title="Read about Emphasize on arbeitszeit-erfassung.net" title="Read about Emphasize on arbeitszeit-erfassung.net">time-reporting</a><br/>
+Read about <app_name/> on ...<br/>
+<a href="https://twitter.com/emphasizede" target="_blank" title="Read about <app_name/> on Twitter"><img src="http://emphasize.de/graphics/twitter.png" alt="Read about <app_name/> on Twitter" height="44" width="44"></a>
+ <a title="<app_name/>, Download bei heise" href="http://www.heise.de/software/download/emphasize/77625"><img alt="<app_name/>, Download bei heise" title="<app_name/>, Download bei heise" align="top" src="http://www.heise.de/software/icons/download_logo2.png" /></a>
+ <a href="http://www.arbeitszeit-erfassung.net" target="_blank" title="Read about <app_name/> on arbeitszeit-erfassung.net" title="Read about <app_name/> on arbeitszeit-erfassung.net">time-reporting</a><br/>
  <a href="http://www.filemapper.com">Free software downloads -- Filemapper.com </a>
 
-<h2>Improve Emphasize</h2>
+<h2>Improve <app_name/></h2>
 <ul>
 <li>With a click on the <a href="#" title="give feedback" onclick="$(\'#feedLink\').slice(0, 1).click()"><img src="graphics/feedback.png" align="bottom"></a> Icon positioned bottom right you may quickly give feedback about an error or suggest an improvement.</li>
 <!--translationWelcome/-->
-<li>The features of Emphasize can <a href="test/" title="run automatic tests" target="_blank" class="newWindow" >be tested in a test suite</a> to verify determinacy for this browser. The results will be automatically transmitted to the developer thereafter.</li>
-<li>All source-code, including parts used for this website, is browsable as open-source on <a href="http://github.com/MartinHartnagel/emphasize.de" title="open source code Emphasize.de on github" target="_blank" class="newWindow">github</a>. Existing vulnerabilities may be discovered that way and can be fixed after reporting them via a <a href="#" title="give feedback" onclick="$(\'#feedLink\').slice(0, 1).click()">feedback</a>.</li>
+<li>The features of <app_name/> can <a href="test/" title="run automatic tests" target="_blank" class="newWindow" >be tested in a test suite</a> to verify determinacy for this browser. The results will be automatically transmitted to the developer thereafter.</li>
+<li>All source-code, including parts used for this website, is browsable as open-source on <a href="http://github.com/MartinHartnagel/emphasize.de" title="open source code <app_name/>.de on github" target="_blank" class="newWindow">github</a>. Existing vulnerabilities may be discovered that way and can be fixed after reporting them via a <a href="#" title="give feedback" onclick="$(\'#feedLink\').slice(0, 1).click()">feedback</a>.</li>
 
-<li>The <a href="roadmap.php" title="development planned  for the time-reporting tool emphasize" target="_blank" class="newWindow">roadmap</a> is public now with the ability to vote for certain functionalities. Duplicates of bug reports and improvements can be avoided that way, too.</li>
+<li>The <a href="roadmap.php" title="development planned  for the time-reporting tool <app_name/>" target="_blank" class="newWindow">roadmap</a> is public now with the ability to vote for certain functionalities. Duplicates of bug reports and improvements can be avoided that way, too.</li>
 </ul>'),
     13 => array('Time-Reporting - unwittingly or deliberately faking ', '<p>Some time ago I did my time-reporting <i>somewhat different</i>. The project-leader approached me and demanded what I had been up to last month for our client. In order to do so he set up some time-accounts for us to book on to. Well, then I stopped developping for two hours to invent some reasonable looking figures for these time-accounts. It didn\'t take long to find out that there was a discrepancy between the existing time-accounts and the ones I should have booked on, at least for the passed month and as far as I could remember. But don\'t bother I thought, our client only seems to want the time-reporting in the categories available and that\'s what really counts. I obviously have no idea if what I had recorded as activities were any close to accurate. How should I, there were only a few sources to make assumptions of what I had been up to that month:
 <ul>
@@ -223,13 +223,13 @@ Read about Emphasize on ...<br/>
 </ul>
 Anything else, short notices with starting- and stopping-times, intelligent Excel-Sheets which are supposed to do things automatically or any other time-reporting system XYZ which just offers long rows of input-fields, have not really sustained my task over the long run consiquently enough: too fixed in categories, too painful for entering times, too many clicks to achive at least a decent accuracy.<br/>I tend to call these kind of approaches <b>unwittingly</b> <strike>faking</strike> time-reporting.</p>
 <p>
-Nowadays I am more honest. I know when I fake! I\'m constantly logged in to the <a href="Time-Reporting-Use_Emphasize.php" title="time-reporting web-service" class="blog">emphasize web-service for time-reporting</a> and move my pawn as soon as I start a new activity or resume a paused one. For this I need: one single click! That does not hurt, looks nifty as the figure hovers in mid-air. If I for once forgot to set my figure, I just turn back time and correct it. I\'m not a fussy stopwatch-lover. I tend to forget the current time when I\'m working, just when I\'m leaving my desk I want to know if I did any surplus or not. This is optained through the "daily report". My system of fields where I do my booking on is changing very frequently, just to fit any current need. And then, when I\'m supposed to fill in the other time-reporting tool of a client, I switch into that with a click on the activity (just now I am working with JIRA) and copy\'n\'paste the duration. Or I <strike>fake</strike> adjust the duration deliberately, but at least I know what I\'m up to!</p>
+Nowadays I am more honest. I know when I fake! I\'m constantly logged in to the <a href="Time-Reporting-Use_Emphasize.php" title="time-reporting web-service" class="blog"><app_name/> web-service for time-reporting</a> and move my pawn as soon as I start a new activity or resume a paused one. For this I need: one single click! That does not hurt, looks nifty as the figure hovers in mid-air. If I for once forgot to set my figure, I just turn back time and correct it. I\'m not a fussy stopwatch-lover. I tend to forget the current time when I\'m working, just when I\'m leaving my desk I want to know if I did any surplus or not. This is optained through the "daily report". My system of fields where I do my booking on is changing very frequently, just to fit any current need. And then, when I\'m supposed to fill in the other time-reporting tool of a client, I switch into that with a click on the activity (just now I am working with JIRA) and copy\'n\'paste the duration. Or I <strike>fake</strike> adjust the duration deliberately, but at least I know what I\'m up to!</p>
 <p>From a project-leading point of view I am now more capable to justify what I have really done without to much bothering about. From the client point of view the numbers which sum up are actually worthy now. I think this is just the point where the duty of having to report and a voluntary control done by oneself approach and supplement each other.</p>'),
-    14 => array('Time-Reporting - Why Emphasize', 'The <i>english</i> verb "to emphasize" has the meaning "stressing sth.", "prominence", "distinguish", "highlighting", "accentuating" and also "to get to the heart of sth." (see <a href="http://en.wiktionary.org/wiki/emphasize" title="Emphasize entry on Wiktionary" class="newWindow" target="_blank">further spellings</a> and <a href="http://www.thefreedictionary.com/emphasize" title="phrases with Emphasize" class="newWindow" target="_blank">common phrases</a>).<br/>
-What is it that <a href="Time-Reporting-Use_Emphasize.php" title="web service for time tracking" class="blog">time-reporting Emphasize</a> accentuates, highlights and gets to the heart of?
-The main aim of this web service is to focus on the <b>simplicity</b> of one functionality: that of tracking time itself. By concentrating just on this task, the tool follows an approach which makes gathering extremely easy. In comparison to this approach there are <a href="http://en.wikipedia.org/wiki/Comparison_of_time_tracking_software" title="further tools for tracking time on Wikipedia" class="newWindow" target="_blank">many other tools for time-tracking</a>, which may <a href="Time-Reporting-Limitations.php" title="What does Emphasize support and what is it not designed to do" class="blog">provide an amazing set of features</a>, but mostly provide a less usable acquisition.
-Following this idea, further development of Emphasize will concentrate on improving this core capability.'),
-    15 => array('Time-Reporting - Limitations', '<h2>Emphasize is designed</h2>
+    14 => array('Time-Reporting - Why <app_name/>', 'The <i>english</i> verb "to <app_name/>" has the meaning "stressing sth.", "prominence", "distinguish", "highlighting", "accentuating" and also "to get to the heart of sth." (see <a href="http://en.wiktionary.org/wiki/emphasize" title="<app_name/> entry on Wiktionary" class="newWindow" target="_blank">further spellings</a> and <a href="http://www.thefreedictionary.com/emphasize" title="phrases with <app_name/>" class="newWindow" target="_blank">common phrases</a>).<br/>
+What is it that <a href="Time-Reporting-Use_Emphasize.php" title="web service for time tracking" class="blog">time-reporting <app_name/></a> accentuates, highlights and gets to the heart of?
+The main aim of this web service is to focus on the <b>simplicity</b> of one functionality: that of tracking time itself. By concentrating just on this task, the tool follows an approach which makes gathering extremely easy. In comparison to this approach there are <a href="http://en.wikipedia.org/wiki/Comparison_of_time_tracking_software" title="further tools for tracking time on Wikipedia" class="newWindow" target="_blank">many other tools for time-tracking</a>, which may <a href="Time-Reporting-Limitations.php" title="What does <app_name/> support and what is it not designed to do" class="blog">provide an amazing set of features</a>, but mostly provide a less usable acquisition.
+Following this idea, further development of <app_name/> will concentrate on improving this core capability.'),
+    15 => array('Time-Reporting - Limitations', '<h2><app_name/> is designed</h2>
 <ul>
 <li>for simple and fast time tracking</li>
 <li>to work like several stop-watches</li>
@@ -242,13 +242,13 @@ Following this idea, further development of Emphasize will concentrate on improv
 <li>to be used as customer-access for transparent reporting</li>
 </ul>
 
-<h2>There are plans to extend Emphasize with</h2>
+<h2>There are plans to extend <app_name/> with</h2>
 <ul>
 <li>an automated email-notification</li>
 <li>task diagrams</li>
 </ul>
 
-<h2>Emphasize does not support</h2>
+<h2><app_name/> does not support</h2>
 <ul>
 <li>defining of projects</li>
 <li>estimation of risks</li>

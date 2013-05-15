@@ -48,6 +48,7 @@ Send registration-emails from and feedback to:
 <input type="text" name="feedback_to" value="<?php echo($feedback_to); ?>" />
 <br/>
 <br/>
+<button type="button" onclick="window.open('drop.php');">Delete Tables</button>
 <input type="submit" value="Configure" />
 </form>
 </body>

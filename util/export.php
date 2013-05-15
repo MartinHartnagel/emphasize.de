@@ -3,9 +3,9 @@ include_once(dirname(__FILE__).'/../includes/config.php');
 $export='js';
 if (r("do") == "export") {
  // deliver it
- $tbody="<emphasize>".stripslashes(r("tbody"))."</emphasize>";
- $lock=md5("mph".$tbody);
- $s="emphasize-".VERSION." export from DOMAIN, untouched-lock:$lock\n\n".$tbody;
+ $content="<emphasize>".stripslashes(r("content"))."</emphasize>";
+ $lock=md5("mph".$content);
+ $s="emphasize-".VERSION." export from DOMAIN, untouched-lock:$lock\n\n".$content;
  header("Content-type: application/emphasize");
  header("Pragma: public");
  header("Expires: 0");
@@ -23,7 +23,7 @@ if (r("do") == "export") {
 	<input type="hidden" id="exporterDo" name="do" value="export" /> <input
 		type="hidden" id="exporterKey" name="key" value="" /> <input
 		type="hidden" id="exporterToken" name="token" value="" />
-	<textarea id="exporterTbody" name="tbody"></textarea>
+	<textarea id="exporterContent" name="content"></textarea>
 	<input type="submit" id="exporterSubmit" name="submit" value="Submit" />
 </form>
 </body>

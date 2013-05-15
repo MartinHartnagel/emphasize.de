@@ -25,16 +25,16 @@ var Model = {
   place : function(element, handlers) {
     placeUser(element);
   },
-  edit : function(tbody, handlers) {
+  edit : function(content, handlers) {
     $.ajax({
       url : domain + "/util/ajax.php",
       type : "POST",
       async : true,
       dataType : "html",
       data : ({
-        "do" : "updateTbody",
+        "do" : "updateContent",
         "token" : token,
-        "tbody" : tbody
+        "content" : content
       }),
       success : handlers.success,
       error : handlers.error
@@ -79,15 +79,9 @@ var Presenter = {
     });
   },
   edit : function() {
-    if (!View.dashboard.isValid()) {
-      Progress
-          .showStatus(
-              true,
-              "<i18n key='mph1'><en>Storing invalid partitioning of fields denied</en><de>Speichern ungültiger Feldaufteilung abgewiesen</de><fr>Stockage de partitionnement invalide de domaines privés</fr><es>Almacenamiento de partición no válida de los campos negado</es></i18n>");
-    }
     Model
         .edit(
-            View.dashboard.getTableHtml(),
+            View.dashboard.metaballs.save(),
             {
               success : function(data) {
                 Progress
@@ -102,7 +96,7 @@ var Presenter = {
                         error
                             + " "
                             + status
-                            + ",&nbsp;<i18n key='mph0'><en>Storing partitioning of fields failed</en><de>Speichern der Feldaufteilung fehlgeschlagen</de><fr>Sauvegarder les partitions a échoué</fr><es>Guardar las particiones no</es></i18n>");
+                            + ", <i18n key='mph0'><en>Storing partitioning of fields failed</en><de>Speichern der Feldaufteilung fehlgeschlagen</de><fr>Sauvegarder les partitions a échoué</fr><es>Guardar las particiones no</es></i18n>");
               }
             });
   },
@@ -145,7 +139,7 @@ var View = {
                 },
                 spinner : "...",
                 tabTemplate : '<li><a href="#{href}">#{label}</a><span class="tabicons"><span class="ui-icon ui-icon-pencil"><i18n ref="dbd1" /></span><span class="ui-icon ui-icon-folder-open"><i18n ref="dbd2" /></span><span class="ui-icon ui-icon-disk"><i18n ref="dbd3" /></span><span class="ui-icon ui-icon-trash"><i18n ref="dbd4" /></span></span></li>',
-                panelTemplate : '<div><table id="table" class="dashboard" width="100%" height="100%" border="0" cellspacing="2" cellpadding="0"><tbody><tr><td style="background-color:#f99123"><i18n ref="dbd5" /></td></tr></tbody></table></div>'
+                panelTemplate : '<div id="fields" class="help"></div>'
               });
       $("#tabs span.ui-icon-document")
           .click(
@@ -174,11 +168,11 @@ var View = {
                       }
                     }).dialog("open");
               });
-      $("#tabs span.ui-icon-disk").live("click", function() {
+      $("#tabs span.ui-icon-disk").on("click", function() {
         var tabTitle = $(this).parent().parent().find("a").text();
-        exportTempl(tabTitle, View.dashboard.getTableHtml());
+        exportTempl(tabTitle, View.dashboard.metaballs.save());
       });
-      $("#tabs span.ui-icon-trash").live("click", function() {
+      $("#tabs span.ui-icon-trash").on("click", function() {
         var index = $("li", tabs).index($(this).parent().parent());
         tabs.tabs("remove", index);
       });
@@ -206,7 +200,7 @@ $(document).ready(function() {
   user = $("#user").val();
   email = $("#email").val();
   token = $("#token").val();
-  View.dashboard = new Dashboard($("#table").get(0));
+  View.dashboard = new Dashboard();
   Presenter.init();
   initView();
 });
@@ -255,7 +249,6 @@ function initView() {
   $('.docu').hide();
 
   View.dashboard.setDebug(debug);
-  View.dashboard.showActions();
   $(window).resize(function() {
     View.sizing();
     if (currentPlace != undefined) {
@@ -304,10 +297,10 @@ function initView() {
   });
 
   $("#shadow").bind('click', function(e) {
-    clickThrough(e.pageX, e.pageY);
+    clickThrough({x: e.pageX, y: e.pageY});
   });
   $("#avatar").bind('click', function(e) {
-    clickThrough(e.pageX, e.pageY);
+    clickThrough({x: e.pageX, y: e.pageY});
   });
   $("#shadow").load(function() {
     if (currentPlace != undefined) {
@@ -321,7 +314,7 @@ function initView() {
       Avatar.showIn(currentPlace);
     }
   });
-  $('a').live('click', function() {
+  $('a').on('click', function() {
     var url = $(this).attr("href");
     if (url.indexOf(":/") != -1 && url.indexOf(domain) == -1) {
       dereferLink(url);
@@ -340,7 +333,7 @@ function initView() {
 
 function initReport() {
   $('.docu').hide();
-  $('a').live('click', function() {
+  $('a').on('click', function() {
     url = $(this).attr("href");
     if (url.indexOf(":/") != -1 && url.indexOf(domain) == -1) {
       dereferLink(url);
@@ -354,8 +347,8 @@ function initPlaceUser(event) {
     $("#blind").hide();
     blindPlace = false;
   }
-  var element = View.dashboard.findElement(event);
-  if (element != undefined && element != null) {
+  var element = View.dashboard.metaballs.find(event);
+  if (element != null) {
     currentPlace = element;
     updateTitle(element);
     Avatar.showIn(element);
@@ -385,30 +378,24 @@ function placeUser(element) {
   }
 
   if ((element != currentPlace) || (timePlaceUpdates > 0)) {
-    var event = View.dashboard.getEntry(element);
-    if (event != null) {
-      var color = View.dashboard.getColor(element);
-      if (("" + color).length != 7) {
-        debug("color-failed of " + $(element).html() + " is " + color);
-        alert("failed: color is " + color);
+    var ball = View.dashboard.metaballs.get(element);
+    if (ball != null) {
+      var entry = {
+        "type" : 0,
+        "event" : ball.text,
+        "color" : ball.color,
+        "datetime" : Timeline.getDateTime(),
+        "link" : "http://martin.emphasize.de"
+      };
+      queue.push(entry);
+      var time;
+      if (Timeline.cursor != null) {
+        time = Timeline.cursor;
       } else {
-        var entry = {
-          "type" : 0,
-          "event" : event,
-          "color" : color,
-          "datetime" : Timeline.getDateTime(),
-          "link" : "http://martin.emphasize.de"
-        };
-        queue.push(entry);
-        var time;
-        if (Timeline.cursor != null) {
-          time = Timeline.cursor;
-        } else {
-          time = new Date().getTime();
-        }
-        Timeline.events.add(time, entry);
-        processQueue();
+        time = new Date().getTime();
       }
+      Timeline.events.add(time, entry);
+      processQueue();
     }
     currentPlace = element;
   }
@@ -443,7 +430,7 @@ function processQueue() {
               Progress
                   .showStatus(
                       false,
-                      "<i18n key='mph2'><en>Starting time registration for</en><de>Beginn der Zeiterfassung für</de><fr>À partir de l'enregistrement du temps pour</fr><es>A partir de registro de tiempo para</es></i18n>&nbsp;\""
+                      "<i18n key='mph2'><en>Starting time registration for</en><de>Beginn der Zeiterfassung für</de><fr>À partir de l'enregistrement du temps pour</fr><es>A partir de registro de tiempo para</es></i18n> \""
                           + entry.event + "\"");
               updateTimeline();
             },
@@ -454,7 +441,7 @@ function processQueue() {
                       error
                           + " "
                           + status
-                          + ",&nbsp;<i18n key='mph3'><en>retrying later</en><de>später erneuter Versuch</de><fr>réessayer plus tard</fr><es>volver a intentar más tarde</es></i18n>");
+                          + ", <i18n key='mph3'><en>retrying later</en><de>später erneuter Versuch</de><fr>réessayer plus tard</fr><es>volver a intentar más tarde</es></i18n>");
               queue.push(entry);
             }
           });
@@ -475,13 +462,13 @@ function processQueue() {
               Progress
                   .showStatus(
                       false,
-                      "<i18n key='mph4'><en>Info added</en><de>Info hinzugefügt</de><fr>Info ajoutée</fr><es>Información agregó</es></i18n>&nbsp;\""
+                      "<i18n key='mph4'><en>Info added</en><de>Info hinzugefügt</de><fr>Info ajoutée</fr><es>Información agregó</es></i18n> \""
                           + entry.info + "\"");
               updateTimeline();
             },
             error : function(req, status, error) {
               Progress.showStatus(true, error + " " + status
-                  + ",&nbsp;<i18n ref='mph3'></i18n>");
+                  + ", <i18n ref='mph3'></i18n>");
               queue.push(entry);
             }
           });
@@ -501,9 +488,9 @@ function updateTitle(element, instantly) {
     if (event != null && event != undefined) {
       document.title = event.replace(/&lt;/, "<").replace(/&gt;/, ">").replace(
           /&amp;/g, "&")
-          + " - Emphasize (" + user + ")";
+          + " - <app_name/> (" + user + ")";
     } else {
-      document.title = "Emphasize (" + user + ")";
+      document.title = "<app_name/> (" + user + ")";
     }
   }
 }
@@ -885,7 +872,7 @@ function switchLang(lang) {
                     error
                         + " "
                         + status
-                        + ",&nbsp;<i18n key='mph8'><en>Setting language failed</en><de>Setzen der Sprache fehlgeschlagen</de><fr>Réglage de la langue n'a pas succédé</fr><es>Configuración de idioma no</es></i18n>");
+                        + ", <i18n key='mph8'><en>Setting language failed</en><de>Setzen der Sprache fehlgeschlagen</de><fr>Réglage de la langue n'a pas succédé</fr><es>Configuración de idioma no</es></i18n>");
           }
         });
   } else {
@@ -1052,7 +1039,7 @@ function setAvatar(avatar) {
                   error
                       + " "
                       + status
-                      + ",&nbsp;<i18n key='mph9'><en>setting pawn failed</en><de>austausch der Spielfigur fehlgeschlagen</de><fr>remplacement du caractère échoué</fr><es>la sustitución del carácter no</es></i18n>");
+                      + ", <i18n key='mph9'><en>setting pawn failed</en><de>austausch der Spielfigur fehlgeschlagen</de><fr>remplacement du caractère échoué</fr><es>la sustitución del carácter no</es></i18n>");
         }
       });
 }
@@ -1079,7 +1066,7 @@ function deleteAvatar(avatar) {
                   error
                       + " "
                       + status
-                      + ",&nbsp;<i18n key='mph10'><en>deleting personal pawn failed</en><de>Löschen der Spielfigur fehlgeschlagen</de><fr>Supprimer du caractère échoué</fr><es>Eliminar del carácter no</es></i18n>");
+                      + ", <i18n key='mph10'><en>deleting personal pawn failed</en><de>Löschen der Spielfigur fehlgeschlagen</de><fr>Supprimer du caractère échoué</fr><es>Eliminar del carácter no</es></i18n>");
         }
       });
 }
@@ -1099,7 +1086,7 @@ function swapAltTitle(el) {
 function createTempl() {
   var desc = $("#descTemplate").get(0).value;
   $("#createTemplate").attr("disabled", true);
-  var tbody = View.dashboard.getTableHtml();
+  var json = View.dashboard.save();
   $
       .ajax({
         url : domain + "/util/templates.php",
@@ -1110,7 +1097,7 @@ function createTempl() {
           "do" : "createTemplate",
           "token" : token,
           "name" : desc,
-          "tbody" : tbody
+          "content" : json
         }),
         success : function(msg) {
           $("#templateSelectSpan").html(msg);
@@ -1127,7 +1114,7 @@ function createTempl() {
                   error
                       + " "
                       + status
-                      + ",&nbsp;<i18n key='mph12'><en>template creation failed</en><de>Vorlage anlegen fehlgeschlagen</de><fr>Modèle omis de créer</fr><es>Plantilla creada no</es></i18n>");
+                      + ", <i18n key='mph12'><en>template creation failed</en><de>Vorlage anlegen fehlgeschlagen</de><fr>Modèle omis de créer</fr><es>Plantilla creada no</es></i18n>");
         }
       });
   return false;
@@ -1137,7 +1124,7 @@ function loadTempl() {
 
   var key = $("#templateSelect").get(0).value;
   if ((key == "reset") && (editReset != undefined)) {
-    View.dashboard.setTableHtml(editReset);
+    View.dashboard.metaballs.load(editReset);
   } else {
     $
         .ajax({
@@ -1151,7 +1138,7 @@ function loadTempl() {
             "key" : key
           }),
           success : function(msg) {
-            View.dashboard.setTableHtml(msg);
+            View.dashboard.metaballs.load(msg);
             Progress
                 .showStatus(
                     false,
@@ -1164,7 +1151,7 @@ function loadTempl() {
                     error
                         + " "
                         + status
-                        + ",&nbsp;<i18n key='mph14'><en>template loading failed</en><de>Vorlage laden fehlgeschlagen</de><fr>Modèle omis de charger</fr><es>cargar Plantilla no</es></i18n>");
+                        + ", <i18n key='mph14'><en>template loading failed</en><de>Vorlage laden fehlgeschlagen</de><fr>Modèle omis de charger</fr><es>cargar Plantilla no</es></i18n>");
           }
         });
   }
@@ -1199,7 +1186,7 @@ function removeTempl() {
                   error
                       + " "
                       + status
-                      + ",&nbsp;<i18n key='mph16'><en>removing template failed</en><de>Vorlage entfernen fehlgeschlagen</de><fr>Modèle omis d'enlever</fr><es>Plantilla fallo al borrar</es></i18n>");
+                      + ", <i18n key='mph16'><en>removing template failed</en><de>Vorlage entfernen fehlgeschlagen</de><fr>Modèle omis d'enlever</fr><es>Plantilla fallo al borrar</es></i18n>");
         }
       });
   return false;
@@ -1236,14 +1223,19 @@ function tubeTutorial(yt) {
   showAbove("Tutorial", null, null, null, 640 + 40, 385 + 60, player);
 }
 
-function clickThrough(x, y) {
-  var element = View.dashboard.findTdAt(x, y);
-  if (element != null) {
-    placeUser(element);
+function clickThrough(pos) {
+  var elements = View.dashboard.metaballs.detect(pos);
+  if (elements.length > 0) {
+    var next = 0;
+    var previous = elements.indexOf(currentPlace);
+    if (previous != -1) {
+      next = (previous + 1) % elements.length;
+    }
+    placeUser(element[next]);
   }
 }
 
-function exportTempl(key, tbody) {
+function exportTempl(key, content) {
   $('iframe#exporter').detach();
   var exporter = $('<iframe id="exporter" src="'
       + domain
@@ -1253,7 +1245,7 @@ function exportTempl(key, tbody) {
     var context = this.contentWindow.document;
     $("#exporterToken", context).val(token);
     $("#exporterKey", context).val(key);
-    $("#exporterTbody", context).val(tbody);
+    $("#exporterContent", context).val(content);
     $("#exporterSubmit", context).click();
     window.setTimeout("$('iframe#exporter').detach();", 5000);
   });

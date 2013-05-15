@@ -37,7 +37,7 @@ var Timeline = {
    * Initializes the timeline object.
    */
   init : function() {
-    $("#time").live('click', function(e) {
+    $("#time").on('click', function(e) {
       if (isLoggedIn()) {
         var pos = $("#time").offset();
         var x = Math.ceil(e.pageX - pos.left - 1);
@@ -57,8 +57,8 @@ var Timeline = {
       $("#timetip").css("left", (x - 37) + "px");
       $("#timetip").show();
     };
-    $("#time").live("mousemove", timeTip);
-    $("#time").live("hover", timeTip, function() {
+    $("#time").on("mousemove", timeTip);
+    $("#time").on("hover", timeTip, function() {
       $("#timetip").hide();
     });
   },

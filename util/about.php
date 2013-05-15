@@ -6,7 +6,7 @@ header("Content-Type: text/html;charset=UTF-8");
 ?>
 <title><i18n key="abo0"> <en>About</en> <de>Info über</de> <fr>A propos</fr>
 			<es>Acerca de</es></i18n>
-			&nbsp;emphasize.de</title>
+			 <app_name/></title>
 </head>
 <body>
 	<!--bContent-->

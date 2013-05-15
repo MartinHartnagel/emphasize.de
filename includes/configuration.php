@@ -16,7 +16,13 @@ $feedback_to = "admin@emphasize.de";
 // configuration-replace
 // installed db-configuration (overriding example above)
 // nizip
-include_once(dirname(__FILE__).'/../../../files/db1.php');
+$db_host = "localhost";
+$db_name = "usr_web78_1";
+$db_username = "root";
+$db_password = "heru108ka";
+$db_prefix = "EMPHASIZE";
+$domain = "http://next.emphasize.de";
+$feedback_to = "admin@emphasize.de";
 // /nizip
 // /configuration-replace
 

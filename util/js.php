@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 require_once(dirname(__FILE__)."/../includes/configuration.php");
+require_once(INC."/languages.php");
 require_once(INC."/translations.php");
 require_once(INC.'/minify/JSMin.php');
 
@@ -69,13 +70,18 @@ function create_js($lang) {
 $lang=$_GET["lang"];
 ini_set('max_execution_time', '120');
 
-header('Cache-Control: max-age='.(60*24*3600));
+if (!DEV) {
+ header('Cache-Control: max-age='.(60*24*3600));
+} else {
+ header('Cache-Control: max-age=0');
+}
 header('Content-Type: text/javascript; charset=utf-8');
 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
   header("X-Compression: gzip");
   header("Content-Encoding: gzip");
 }
-if (!DEV &&file_exists(CACHE.'/'.$lang.'.js.gz')) {
+
+if (!DEV && file_exists(CACHE.'/'.$lang.'.js.gz')) {
   if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
     readfile(CACHE.'/'.$lang.'.js.gz');
     exit();
@@ -87,7 +93,7 @@ if (!DEV &&file_exists(CACHE.'/'.$lang.'.js.gz')) {
   if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
     echo($s);
   } else {
-    echo(gzuncompress(substr($s), 8));
+    echo(gzuncompress(substr($s, 8)));
   }
 }
 ?>

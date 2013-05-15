@@ -32,13 +32,13 @@ class Template {
 
  function save() {
   if ($this->templateId==null) {
-  $insert = @mysql_query("INSERT INTO " . DB_PREFIX . "TEMPLATE SET id_user='".p($this->userId)."', name='".p($this->name)."', tbody='".p($this->value)."'");
+  $insert = @mysql_query("INSERT INTO " . DB_PREFIX . "TEMPLATE SET id_user='".p($this->userId)."', name='".p($this->name)."', content='".p($this->value)."'");
   if (!$insert) {
    fail("unexpected: template ".$this->name." insert failed");
   }
   $this->templateId = mysql_insert_id();
   } else {
-   $update = @mysql_query("REPLACE INTO " . DB_PREFIX . "TEMPLATE SET id_user='".p($this->userId)."', id='".p($this->templateId)."', name='".p($this->name)."', tbody='".p($this->value)."'");
+   $update = @mysql_query("REPLACE INTO " . DB_PREFIX . "TEMPLATE SET id_user='".p($this->userId)."', id='".p($this->templateId)."', name='".p($this->name)."', content='".p($this->value)."'");
    if (!$update) {
     fail("unexpected: template ".$this->name." update failed");
    }
@@ -52,9 +52,9 @@ class Template {
   if ($templateId==null) {
    $templateId=$this->templateId;
   }
-  $sql = @mysql_query("SELECT tbody FROM " . DB_PREFIX . "TEMPLATE WHERE id_user='".p($this->userId)."' AND `ID`='" . p($templateId) . "'");
+  $sql = @mysql_query("SELECT content FROM " . DB_PREFIX . "TEMPLATE WHERE id_user='".p($this->userId)."' AND `ID`='" . p($templateId) . "'");
   if($row = mysql_fetch_array($sql)) {
-   $this->value=$row["tbody"];
+   $this->value=$row["content"];
   } else {
    fail("unexpected: template ".$templateId." of ".$this->userId." not found");
   }

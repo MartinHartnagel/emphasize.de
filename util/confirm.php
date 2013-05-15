@@ -1,7 +1,7 @@
 <?php
 include_once(dirname(__FILE__).'/../includes/config.php');
 ?>
-<title>Emphasize -&nsbp;<i18n ref="demo0"></i18n>
+<title><app_name/> -&nsbp;<i18n ref="demo0"></i18n>
 </title>
 <script type="text/javascript">
 function setName() {
@@ -52,9 +52,9 @@ function initLogin() {
 			fail("Confirmation denied");
 		}
 
-		if (!(isset($testing) && $testing)) {
+		if (!defined('TESTING')) {
 		 // inform admin
-		 enqueueMail(FEEDBACK_TO, "[Emphasize] Confirmed: $name", "$name on DOMAIN", "From: ".FEEDBACK_TO."\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
+		 enqueueMail(FEEDBACK_TO, i18n("[- <app_name/>] Confirmed: $name"), "$name on <domain/>", "From: ".FEEDBACK_TO."\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n");
 		}
 	} else {
 		fail("Confirmation failed");

@@ -154,8 +154,6 @@ class RegisterTest extends UnitTestCase {
   global $ob_buffer;
   global $testmail;
   global $lc;
-  global $tbody_value;
-  global $tbody_names;
 
   global $reports;
 

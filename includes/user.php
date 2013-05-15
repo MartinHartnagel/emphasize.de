@@ -285,8 +285,8 @@ class User {
   return null;
  }
 
- function updateTbody($tbody) {
-  $this->template->setValue($tbody);
+ function updateContent($content) {
+  $this->template->setValue($content);
   $this->template->save();
  }
 

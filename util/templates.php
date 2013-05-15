@@ -3,7 +3,7 @@ include_once(dirname(__FILE__).'/../includes/config.php');
 
 if (!empty($_POST)) {
  $export="json";
-  $json=array('error'=>'', 'msg'=>'', 'tbody'=>'');
+  $json=array('error'=>'', 'msg'=>'', 'content'=>'');
   $fileElementName = 'fileToImport';
   if (!empty($_FILES[$fileElementName]['error']))
   {
@@ -47,7 +47,7 @@ if (!empty($_POST)) {
 		  $contents=file_get_contents($_FILES[$fileElementName]['tmp_name']);
 		  if (preg_match("/<emphasize>.*<\/emphasize>/msU", $contents, $f)) {
 			  $verify=md5("mph".$f[0]);
-			  $json['tbody']=str_replace("</emphasize>", "", str_replace("<emphasize>", "", $f[0]));
+			  $json['content']=str_replace("</emphasize>", "", str_replace("<emphasize>", "", $f[0]));
 		  } else {
 			  $json['error'] = "emphasize-section missing";
 		  }
@@ -71,7 +71,7 @@ if (!empty($_POST)) {
 	if (isset($_POST["do"]) && $_POST["do"] == "createTemplate") {
 		$export="json";
 		$name = $_POST["name"];
-		$tbody = $_POST["tbody"];
+		$content = $_POST["content"];
 		$key=$id.'_'.base_convert(time(), 10, 36);
 		// make name unique
 		$sql=@mysql_query("SELECT name FROM " . DB_PREFIX . "TEMPLATE WHERE id_user=".p($id));
@@ -94,7 +94,7 @@ if (!empty($_POST)) {
 		}
 		// name should now be unique and not longer than 30 chars
 
-		$insert = @mysql_query("INSERT INTO " . DB_PREFIX . "TEMPLATE SET id_user=".p($id).", name='".p($name)."', `KEY`='".p($key)."', tbody='".p($tbody)."'");
+		$insert = @mysql_query("INSERT INTO " . DB_PREFIX . "TEMPLATE SET id_user=".p($id).", name='".p($name)."', `KEY`='".p($key)."', content='".p($content)."'");
 		if (!$insert) {
 			fail("Eintrag fehlgeschlagen");
 		}
@@ -102,12 +102,12 @@ if (!empty($_POST)) {
 		$export="json";
 		header("Content-Type: text/html;charset=UTF-8");
 		$key = $_POST["key"];
-		if (array_key_exists($key, $tbody_value)) {
-			echo($tbody_value[$key]);
+		if (array_key_exists($key, $content_value)) {
+			echo($content_value[$key]);
 		} else {
-			$sql = @mysql_query("SELECT tbody FROM " . DB_PREFIX . "TEMPLATES WHERE id_user='".p($id)."' AND `KEY`='" . p($key) . "'");
+			$sql = @mysql_query("SELECT content FROM " . DB_PREFIX . "TEMPLATES WHERE id_user='".p($id)."' AND `KEY`='" . p($key) . "'");
 			if ($row = mysql_fetch_array($sql)) {
-				echo($row["tbody"]);
+				echo($row["content"]);
 			}
 		}
 		bottom();
@@ -122,13 +122,13 @@ if (!empty($_POST)) {
 }
 
 $ts='<select id="templateSelect" name="templates"
-	onchange="checkRemoveTemplate('.(sizeof($tbody_names)+1).')">
+	onchange="checkRemoveTemplate('.(sizeof($content_names)+1).')">
 	<option value="reset">
 		<i18n key="tmp0"> <en>Reset</en> <de>Zurücksetzen</de> <fr>Reset</fr>
 		<es>Restablecer</es></i18n>
 	</option>'."\n";
-foreach($tbody_names as $key=>$tbody_name) {
-	$ts.="<option value=\"$key\">$tbody_name</option>\n";
+foreach($content_names as $key=>$content_name) {
+	$ts.="<option value=\"$key\">$content_name</option>\n";
 }
 $sql = @mysql_query("SELECT `KEY`, name FROM " . DB_PREFIX . "TEMPLATES WHERE id_user='".p($id)."' ORDER BY name ASC, `KEY` ASC");
 while($row = mysql_fetch_array($sql)) {
@@ -153,7 +153,7 @@ function fileImport() {
 						alert(data.error);
 					} else {
 					  $("#descTemplate").val(data.msg);
-					  t.setTableHtml(data.tbody);
+					  View.dashboard.metaballs.load(data.content);
 					  if (aboveClose != undefined) {
               aboveClose();
             }
