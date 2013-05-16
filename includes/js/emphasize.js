@@ -60,10 +60,9 @@ var Model = {
  */
 var Presenter = {
   init : function() {
-    View.dashboard.setSelf("View.dashboard");
-    View.dashboard.addListener("place", this.place);
-    View.dashboard.addListener("edit", this.edit);
-    View.dashboard.addListener("color", this.color);
+    Dashboard.addListener("place", this.place);
+    Dashboard.addListener("edit", this.edit);
+    Dashboard.addListener("color", this.color);
     View.init();
     Progress.init();
   },
@@ -81,7 +80,7 @@ var Presenter = {
   edit : function() {
     Model
         .edit(
-            View.dashboard.metaballs.save(),
+            Metaballs.save(),
             {
               success : function(data) {
                 Progress
@@ -112,7 +111,6 @@ var Presenter = {
  * 
  */
 var View = {
-  dashboard : undefined,
   init : function() {
     Timeline.init();
     if ($("#tabs").is(':visible')) {
@@ -170,7 +168,7 @@ var View = {
               });
       $("#tabs span.ui-icon-disk").on("click", function() {
         var tabTitle = $(this).parent().parent().find("a").text();
-        exportTempl(tabTitle, View.dashboard.metaballs.save());
+        exportTempl(tabTitle, Metaballs.save());
       });
       $("#tabs span.ui-icon-trash").on("click", function() {
         var index = $("li", tabs).index($(this).parent().parent());
@@ -179,10 +177,10 @@ var View = {
     }
   },
   addPlaceHandler : function(handler) {
-    this.dashboard.setOnPlaced(handler);
+    Dashboard.setOnPlaced(handler);
   },
   addEditHandler : function(handler) {
-    this.dashboard.setOnEdited(handler);
+    Dashboard.setOnEdited(handler);
   },
   sizing : function() {
     if ($("#tabs").is(':visible')) {
@@ -192,7 +190,7 @@ var View = {
           - $(".ui-tabs-panel:visible").height() + 10;
       $(".ui-tabs-panel").height(Math.floor(wh - h));
     }
-    View.dashboard.updateEdits();
+    Dashboard.updateEdits();
   }
 };
 
@@ -200,7 +198,6 @@ $(document).ready(function() {
   user = $("#user").val();
   email = $("#email").val();
   token = $("#token").val();
-  View.dashboard = new Dashboard();
   Presenter.init();
   initView();
 });
@@ -248,7 +245,6 @@ function initView() {
 
   $('.docu').hide();
 
-  View.dashboard.setDebug(debug);
   $(window).resize(function() {
     View.sizing();
     if (currentPlace != undefined) {
@@ -347,7 +343,7 @@ function initPlaceUser(event) {
     $("#blind").hide();
     blindPlace = false;
   }
-  var element = View.dashboard.metaballs.find(event);
+  var element = Dashboard.metaballs.find(event);
   if (element != null) {
     currentPlace = element;
     updateTitle(element);
@@ -378,7 +374,7 @@ function placeUser(element) {
   }
 
   if ((element != currentPlace) || (timePlaceUpdates > 0)) {
-    var ball = View.dashboard.metaballs.get(element);
+    var ball = Dashboard.metaballs.get(element);
     if (ball != null) {
       var entry = {
         "type" : 0,
@@ -1086,7 +1082,7 @@ function swapAltTitle(el) {
 function createTempl() {
   var desc = $("#descTemplate").get(0).value;
   $("#createTemplate").attr("disabled", true);
-  var json = View.dashboard.save();
+  var json = Dashboard.save();
   $
       .ajax({
         url : domain + "/util/templates.php",
@@ -1124,7 +1120,7 @@ function loadTempl() {
 
   var key = $("#templateSelect").get(0).value;
   if ((key == "reset") && (editReset != undefined)) {
-    View.dashboard.metaballs.load(editReset);
+    Dashboard.metaballs.load(editReset);
   } else {
     $
         .ajax({
@@ -1138,7 +1134,7 @@ function loadTempl() {
             "key" : key
           }),
           success : function(msg) {
-            View.dashboard.metaballs.load(msg);
+            Dashboard.metaballs.load(msg);
             Progress
                 .showStatus(
                     false,
@@ -1224,7 +1220,7 @@ function tubeTutorial(yt) {
 }
 
 function clickThrough(pos) {
-  var elements = View.dashboard.metaballs.detect(pos);
+  var elements = Dashboard.metaballs.detect(pos);
   if (elements.length > 0) {
     var next = 0;
     var previous = elements.indexOf(currentPlace);
@@ -1250,3 +1246,18 @@ function exportTempl(key, content) {
     window.setTimeout("$('iframe#exporter').detach();", 5000);
   });
 }
+
+function track(url, title) {
+  // nizip
+  try {
+    piwikTracker.setCustomUrl(url);
+    piwikTracker.setDocumentTitle(title);
+    piwikTracker.trackPageView();
+    piwikTracker.enableLinkTracking();
+  }catch(err) {
+    //Piwik funktioniert nicht
+  }
+  // /nizip
+}
+
+

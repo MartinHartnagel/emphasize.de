@@ -28,159 +28,12 @@ if (isset($title)) {
 }
 // /nizip
 ?>
-<script type="text/javascript">
-<!--
-var step=0;
-var steps=10;
-
-function setName() {
-  setCookieParam("name", document.login.name.value);
-}
-
-function setCookieParam(param, value) {
-  var n=param+"="+value+";";
-  document.cookie = n;
-}
-
-function getCookieParam(param) {
-  if (document.cookie) {
-    var chocolates=document.cookie.split(";");
-    for(var i=0; i<chocolates.length; i++) {
-      if (chocolates[i].match("^ *" + param + "=")) {
-        return chocolates[i].substr(chocolates[i].indexOf('=')+1);
-      }
-    }
-  }
-  return "";
-}
-
-function initLogin() {
-  $('.docu').hide();
-  if (typeof(window["confirmed_name"]) != "undefined") {
-    document.login.name.value = confirmed_name;
-    setName();
-  } else if (document.login.name.value == "") {
-    document.login.name.value = getCookieParam("name");
-  }
-  if (document.login.name.value.length > 0) {
-    document.login.password.focus();
-  }
-  init();
-}
-
-var currentContent="";
-
-function init() {
-  t=new Dashboard(document.getElementById("table"));
-  t.setDemo(true);
-  initTimeline();
-  window.setTimeout("animate()", 2000);
-
-  $(window).hashchange(function(){
-    var hash = location.hash;
-    if (hash.length > 1) {
-      var url=hash.substr(1)+".php";
-      if (currentContent != url) {
-       $.post(domain+url, {"ajax":"true", "grep":"bContent"}, function(data) {
-         $("#bContent").replaceWith(data);
-         currentContent=url;
-       });
-      }
-    } else if (currentContent != "") {
-      $.post(domain, {"ajax":"true", "grep":"bContent", "lang":lang}, function(data) {
-        $("#bContent").replaceWith(data);
-        currentContent="";
-      });
-    }
-  });
-
-  $(window).hashchange();
-}
-
-function animate() {
-  if (step%steps==0 && t.isValid()) Avatar.jumpTo(t.getTd(0,0));
-  if (step%steps==1 && t.isValid()) Avatar.jumpTo(t.getTd(1,0));
-  if (step%steps==2 && t.isValid()) { t.showEdits(t.getTd(0,0));}
-  if (step%steps==3 && t.isValid()) { t.setDemo(false); t.horizontalSplit(t.getTd(0,0)); t.getTd(0,1).innerHTML='{i18n ref="con10" />'; t.setDemo(true); $(t.getTd(0,1)).css("background-color", "#ecfe32");}
-  if (step%steps==4 && t.isValid()) Avatar.jumpTo(t.getTd(0,1));
-  if (step%steps==5 && t.isValid()) Avatar.jumpTo(t.getTd(1,1));
-  if (step%steps==6 && t.isValid()) t.showEdits(t.getTd(0,0));
-  if (step%steps==7 && t.isValid()) { t.setDemo(false); t.horizontalMerge(t.getTd(0,0)); t.setDemo(true); }
-  if (step%steps==8 && t.isValid()) Avatar.jumpTo(t.getTd(1,1));
-  if (step%steps==9 && t.isValid()) Avatar.jumpTo(t.getTd(1,0));
-
-  step++;
-  window.setTimeout("animate()", 2000);
-}
-
-$('a.blog').on('click',function(){
-  var url = $(this).attr("href");
-  $.post(domain+url, {"ajax":"true", "grep":"bContent"}, function(data) {
-    $("#bContent").replaceWith(data);
-    window.location.hash = '#' + url.replace('.php','');
-  });
-  return false;
-});
-
-function track(url, title) {
-  // nizip
-  try {
-    piwikTracker.setCustomUrl(url);
-    piwikTracker.setDocumentTitle(title);
-    piwikTracker.trackPageView();
-    piwikTracker.enableLinkTracking();
-  }catch(err) {
-    //Piwik funktioniert nicht
-  }
-  // /nizip
-}
-//-->
-</script>
 <!-- nizip -->
 <script
 	type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 <script
 	type="text/javascript"
 	src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
-<script
-	type="text/javascript"
-	src="<?php echo(DOMAIN.'/js/jquery.ba-hashchange.min.js'); ?>"></script>
-<script
-	type="text/javascript" src="<?php echo(DOMAIN.'/js/swfobject.js'); ?>"></script>
-<script type="text/javascript">
-$(document).ready(function() {
- var flashvars = false;
- var params = {
-   transparent: "true",
-   allowFullScreen: "true",
-   allowscriptaccess: "always",
-          wmode: "transparent"
- };
- var attributes = {
-               style: "z-index:1"
- };
-
- swfobject.embedSWF('http://www.youtube.com/p/{i18n key='tech1'}{en}8D1C1809D9BAB718?hl=en_US{/en}{de}F2A34232616B5BF1?hl=de_DE{/de}{fr}8D1C1809D9BAB718?hl=fr_FR{/fr}{es}8D1C1809D9BAB718?hl=es_ES{/es}{/i18n}&fs=1', "emphasizeTube", "420", "261", "9.0.0", null, flashvars, params, attributes);
-});
-
-$(document).ready(function() {
- var flashvars = true;
- var params = {
-               menu: "false",
-               scale: "noScale",
-               allowscriptaccess: "always",
-               wmode: "opaque",
-               bgcolor: "#FFFFFF",
-               allowfullscreen: "true",
-                      flashvars: "dataUrl={domain/}/util/delegate.php&hueMin=0&hueMax=40&satMin=0.5&satMax=0.9&lgtMin=0.97&lgtMax=0.44&iconOffset=0&defaultMetric=nb_visits&txtLoading=........loading...&txtLoadingData=loading%20data...&txtToggleFullscreen=Fullscreen&txtExportImage=Export"
- };
- var attributes = {
-               style: "z-index:1"
- };
-
- swfobject.embedSWF(domain+'/util/worldmap.php', "worldmap", "420", "238", "9.0.0", null, flashvars, params, attributes);
-});
-</script>
 <!-- /nizip -->
 </head>
 <body onload="initLogin()">
@@ -467,8 +320,8 @@ $(document).ready(function() {
             <input type="hidden" name="cmd" value="_s-xclick">
             <input type="hidden" name="hosted_button_id" value="L8A7JQWGFNJYG">
             <?php
-              echo('<input type="image" src="https://www.paypalobjects.com/'.i18n("<lang/>_{i18n key='don0'}{de}DE/DE{/de}{en}US/GB{/en}{fr}FR/FR{/fr}{es}ES/ES{/es}{/i18n}").'/i/btn/btn_donateCC_LG.gif" onclick="track(\'/util/donate.php\', \'Donate\')" border="0" name="submit" alt="'.i18n("{i18n key='don1'}{de}Jetzt einfach, schnell und sicher online spenden – mit PayPal.{/de}{en}quickly and securely donate online now - with PayPal.{/en}{fr}rapidement et en toute sécurité un don en ligne maintenant - avec PayPal.{/fr}{es}rápida y segura donar en línea ahora - con PayPal.{/es}{/i18n}").'">');
-              echo('<img alt="" border="0" src="https://www.paypalobjects.com/'.i18n("<lang/>_<LANG/>").'/i/scr/pixel.gif" width="1" height="1">');
+              echo('<input type="image" src="https://www.paypalobjects.com/'.str_replace(" ", "", i18n("<lang/>_{i18n key='don0'}{de}DE/DE{/de}{en}US/GB{/en}{fr}FR/FR{/fr}{es}ES/ES{/es}{/i18n}")).'/i/btn/btn_donateCC_LG.gif" onclick="track(\'/util/donate.php\', \'Donate\')" border="0" name="submit" alt="'.i18n("{i18n key='don1'}{de}Jetzt einfach, schnell und sicher online spenden – mit PayPal.{/de}{en}quickly and securely donate online now - with PayPal.{/en}{fr}rapidement et en toute sécurité un don en ligne maintenant - avec PayPal.{/fr}{es}rápida y segura donar en línea ahora - con PayPal.{/es}{/i18n}").'">');
+              echo('<img alt="" border="0" src="https://www.paypalobjects.com/'.str_replace(" ", "",i18n("<lang/>_<LANG/>")).'/i/scr/pixel.gif" width="1" height="1">');
             ?>
           </form>
         </div>

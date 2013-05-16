@@ -1,17 +1,42 @@
 /**
- * @class Dashboard object controls modifications on a html table containing the
- *        fields..
+ * @class Dashboard static class controls modifications Avatar and Metaballs
+ *        containing the events.
  * 
  * @author <a href="http://martin.emphasize.de" target="_blank">Martin Hartnagel</a>
- * 
  */
-Dashboard = function() {
-  this.metaballs = Metaballs;
-  var over = undefined;
-  var demo = false;
-  var self = "Dashboard.prototype";
-
-  var listeners = new Object();
+var Dashboard = {
+  /**
+   * The element the (one and only shown) edit-controls are currently displayed
+   * over, or undefined.
+   */
+  over : undefined,
+  /** Flag set in demo mode to avoid user interaction with the animated demo. */
+  demo : false,
+  /** Initial maximum character length for a field name. */
+  entryMaxLength : 108,
+  /**
+   * Listeners notified for change of "place" of the avatar, "edit" or "color"
+   * of an event.
+   */
+  listeners : new Object(),
+  /**
+   * Initializes the dashboard to work on the given div.
+   * 
+   * @param div
+   *          in which the dashboard works.
+   */
+  init : function(div) {
+    if (Dashboard.demo) {
+      return;
+    }
+    $(div).on('mousemove', '.ball', function(event) {
+      Dashboard.showEdits(this);
+    });
+    $(div).on('click', '.ball', function(event) {
+      Dashboard.hideEdits(Dashboard.over);
+      Dashboard.placeUser(this);
+    });
+  },
   /**
    * Registers a listener to receive change-notifications.
    * 
@@ -20,12 +45,12 @@ Dashboard = function() {
    * @param listener
    *          to call on the event.
    */
-  Dashboard.prototype.addListener = function(type, listener) {
-    if (listeners[type] == undefined) {
-      listeners[type] = new Array();
+  addListener : function(type, listener) {
+    if (this.listeners[type] == undefined) {
+      this.listeners[type] = new Array();
     }
-    listeners[type].push(listener);
-  };
+    this.listeners[type].push(listener);
+  },
 
   /**
    * Notifies added listeners of a type of a change.
@@ -35,7 +60,7 @@ Dashboard = function() {
    * @param further
    *          variable arguments passed to the listener-call.
    */
-  function notify(type) {
+  notify : function(type) {
     var args = new Array();
     if (notify.arguments.length > 1) {
       for ( var i = 1; i < notify.arguments.length; i++) {
@@ -43,101 +68,31 @@ Dashboard = function() {
       }
     }
 
-    if (listeners[type] == undefined) {
+    if (this.listeners[type] == undefined) {
       return;
     }
-    var array = listeners[type];
+    var array = this.listeners[type];
     for ( var i = 0; i < array.length; i++) {
       array[i].apply(this, args);
     }
-  }
-
-  var debug = undefined;
-  /** Initial maximum character length for a field name. */
-  var entryMaxLength = 108;
-  /* TODO enable with metaballs replacement
-   * $("table.dashboard td").on('mousemove', function(event) {
-    if (isLoggedIn()) {
-      Dashboard.prototype.showEdits(this);
-    }
-  });
-  $("table.dashboard td").on('click', function(event) {
-    if (isLoggedIn()) {
-      hideEdits(over);
-      Dashboard.prototype.placeUser(this);
-    }
-  });*/
+  },
   /**
-   * Sets the maximum character length for a field name.
+   * Place the avatar on the given element and event to start tracking time for.
+   * 
+   * @param element
+   *          to place the avatar on and event to start tracking time for.
    */
-  Dashboard.prototype.setEntryMaxLength = function(len) {
-    entryMaxLength = len;
-  };
-
-  Dashboard.prototype.setDemo = function(flag) {
-    demo = flag;
-  };
-
-  Dashboard.prototype.setSelf = function(s) {
-    self = s;
-  };
-
-  Dashboard.prototype.setDebug = function(s) {
-    debug = s;
-  };
-
-  function watch() {
-    if (demo) {
-      return;
-    }
-
-    if (over != undefined) {
-      Dashboard.prototype.showEdits(over);
-    }
-  }
-
-  function editControl(src, css, click, title) {
-    var img = $('<img src="'
-        + src
-        + '" title="'
-        + title
-        + '" style="cursor:pointer;position:absolute;overflow:hidden;z-index:50;display:none;'
-        + css + '" class="edit"/>');
-    $(img).click(click);
-    return img;
-  }
-
-  function addEvent(tag, event, action) {
-    if (event != undefined) {
-      if (tag.style != undefined) { // IE special treatment
-        eval("tag." + event + "=function() { " + action.replace("this", "tag")
-            + ";}");
-      } else {
-        var tagEventAttrib = document.createAttribute(event);
-        tagEventAttrib.nodeValue = action;
-        tag.setAttributeNode(tagEventAttrib);
-      }
-    }
-  }
-
-  function classTag(type, clazz, event, action, event2, action2) {
-    var tag = document.createElement(type);
-    if ((clazz != undefined) && (clazz != null)) {
-      var tagStyleAttrib = document.createAttribute("class");
-      tagStyleAttrib.nodeValue = clazz;
-      tag.setAttributeNode(tagStyleAttrib);
-    }
-    addEvent(tag, event, action);
-    addEvent(tag, event2, action2);
-    return tag;
-  }
-
-  Dashboard.prototype.placeUser = function(element) {
+  placeUser : function(element) {
     $('.edit').stop();
     notify("place", element);
-  };
-
-  function returnCompleteEscAborts(complete) {
+  },
+  /**
+   * TODO
+   * 
+   * @param complete
+   * @returns {Function}
+   */
+  returnCompleteEscAborts : function(complete) {
     return function(event) {
       event.stopPropagation();
       var code = 0;
@@ -149,12 +104,11 @@ Dashboard = function() {
           complete();
         } else {
           $("#cellEvent").val(text);
-          hideEdits(over);
+          this.hideEdits(this.over);
         }
       }
     };
-  }
-
+  },
   /**
    * Displays a <code>cellEdit</code> component and allows editing of the
    * event text.
@@ -162,7 +116,7 @@ Dashboard = function() {
    * @param element
    *          to edit.
    */
-  Dashboard.prototype.editText = function(element) {
+  editText : function(element) {
     var ball = metaballs.get(element);
     // content-editing controls
     var text = $(element).text().replace(/"/g, '&quot;');
@@ -174,7 +128,7 @@ Dashboard = function() {
     var doChange = function() {
       ball.setText($("#cellEvent").val());
       notify("edit");
-      hideEdits(over);
+      this.hideEdits(this.over);
     };
 
     if (!demo) {
@@ -190,9 +144,14 @@ Dashboard = function() {
       $("#cellEvent").keyup(returnCompleteEscAborts(doChange));
       $("#cellEvent").focus();
     }
-  };
-
-  Dashboard.prototype.editLink = function(element) {
+  },
+  /**
+   * Display a dialog to set the hyperlink for the given element.
+   * 
+   * @param element
+   *          to set the hyperlink for.
+   */
+  editLink : function(element) {
     var ball = metaballs(element);
     // content-editing controls
     var text = $(element).text().replace(/"/g, '&quot;');
@@ -203,7 +162,7 @@ Dashboard = function() {
     var doChange = function() {
       ball.setLink($("#cellEvent").val());
       notify("edit");
-      hideEdits(over);
+      this.hideEdits(this.over);
     };
 
     if (!demo) {
@@ -219,12 +178,17 @@ Dashboard = function() {
       $("#cellEvent").keyup(returnCompleteEscAborts(doChange));
       $("#cellEvent").focus();
     }
-  };
-
-  Dashboard.prototype.editEstimation = function(element) {
+  },
+  /**
+   * Display a dialog to set the time-estimation for the given element.
+   * 
+   * @param element
+   *          to set the time-estimation for.
+   */
+  editEstimation : function(element) {
     var ball = metaballs.get(element);
     // content-editing controls
-    var text = $('#'+ball).text().replace(/"/g, '&quot;');
+    var text = $('#' + ball).text().replace(/"/g, '&quot;');
     var d = $('<div id="cellEdit" class="edit" style="cursor:pointer;position:absolute;overflow:hidden;z-index:50;bottom:20px;left:0px;width:100%;"><input id="cellEvent" style="text-align:center;vertical-align:middle;line-height:1em;font-size:14px;width:150px;" type="text" value="0d 0h" maxlength="30" /></div>');
     $(d).appendTo(element);
 
@@ -232,7 +196,7 @@ Dashboard = function() {
       var estimation = $("#cellEvent").val().replace(/^[\s\xA0]+/, "").replace(
           /[\s\xA0]+$/, "").replace(/</, "&lt;").replace(/>/, "&gt;");
 
-      hideEdits(over);
+      this.hideEdits(this.over);
     };
 
     if (!demo) {
@@ -248,9 +212,14 @@ Dashboard = function() {
       $("#cellEvent").keyup(returnCompleteEscAborts(doChange));
       $("#cellEvent").focus();
     }
-  };
-
-  Dashboard.prototype.editColor = function(element) {
+  },
+  /**
+   * Display a dialog to set the color for the given element.
+   * 
+   * @param element
+   *          to set the color for.
+   */
+  editColor : function(element) {
     var ball = metaballs.get(element);
     // content-editing controls
     var editColors = metaballs.getBallColors();
@@ -289,11 +258,16 @@ Dashboard = function() {
       $("#cellColor").detach();
       notify("edit");
     });
-  };
-
-  Dashboard.prototype.showEdits = function(element) {
-    if (over != element) {
-      hideEdits(over);
+  },
+  /**
+   * Adds edit-controls to the given element.
+   * 
+   * @param element
+   *          to show the edit-controls on.
+   */
+  showEdits : function(element) {
+    if (this.over != element) {
+      this.hideEdits(this.over);
       // cutting controls
       var ec = {
         w : 52,
@@ -311,29 +285,25 @@ Dashboard = function() {
         w : 28,
         h : 31
       }; // stopwatch
-      var vs = {
-        w : 28,
-        h : 49
-      }; // verticalSplit
-      var hs = {
-        w : 50,
-        h : 28
-      }; // horizontalSplit
-      var vg = {
-        w : 40,
-        h : 47
-      }; // verticalGlue
-      var hg = {
-        w : 42,
-        h : 37
-      }; // horizontalGlue
+
+      var editControl = function(src, css, click, title) {
+        var img = $('<img src="'
+            + src
+            + '" title="'
+            + title
+            + '" style="cursor:pointer;position:absolute;overflow:hidden;z-index:50;display:none;'
+            + css + '" class="edit"/>');
+        $(img).click(click);
+        return img;
+      };
+
       $(
           editControl(
               "graphics/eventColor.png",
               "left:0px;top:0px;width:" + ec.w + "px;height:" + ec.h + "px;",
               function(event) {
                 event.stopPropagation();
-                Dashboard.prototype.editColor(element);
+                this.editColor(element);
               },
               "<i18n key='tab57'><en>select field color</en><de>Feldfarbe auswählen</de><fr>Choisissez une couleur pour le champ</fr><es>Elija un color para el campo</es></i18n>"))
           .appendTo(element);
@@ -344,7 +314,7 @@ Dashboard = function() {
                   + et.w + "px;height:" + et.h + "px;",
               function(event) {
                 event.stopPropagation();
-                Dashboard.prototype.editText(element);
+                this.editText(element);
               },
               "<i18n key='tab62'><en>adjust field name</en><de>Feldbeschreibung anpassen</de><fr>Changer le nom du champ</fr><es>Cambie el nombre del campo</es></i18n>"))
           .appendTo(element);
@@ -355,7 +325,7 @@ Dashboard = function() {
                   + "px;",
               function(event) {
                 event.stopPropagation();
-                Dashboard.prototype.editLink(element);
+                this.editLink(element);
               },
               "<i18n key='tab60'><en>set field link</en><de>Verknüpfung des Feldes setzen</de><fr>Couplage de l'ensemble champ</fr><es>Vinculación del campo de juego</es></i18n>"))
           .appendTo(element);
@@ -365,27 +335,34 @@ Dashboard = function() {
               "left:0px;bottom:0px;width:" + sw.w + "px;height:" + sw.h + "px;",
               function(event) {
                 event.stopPropagation();
-                Dashboard.prototype.editEstimation(element);
+                this.editEstimation(element);
               },
               "<i18n key='tab63'><en>set planned time for activity</en><de>Plan-Zeit für Tätigkeit setzen</de><fr>régler l'heure prévue pour l'activité</fr><es>ajustar la hora prevista para la actividad</es></i18n>"))
           .appendTo(element);
       $('.edit').stop().delay(500).fadeIn();
-      over = element;
+      this.over = element;
     }
-  };
-
-  function hideEdits(element) {
+  },
+  /**
+   * Detaches the edit-controls possibly showing on the given element.
+   * 
+   * @param element
+   *          on which edit-controls are showing.
+   */
+  hideEdits : function(element) {
     if ((element == undefined) || (element == null)) {
       return;
     }
     $(element).css("color", '');
     $("body").find(".edit").detach();
-    over = undefined;
-  }
-
-  Dashboard.prototype.updateEdits = function() {
-    hideEdits(over);
-    Dashboard.prototype.showEdits(over);
+    this.over = undefined;
+  },
+  /**
+   * Updates the positions of the edit-controls by hiding & showing.
+   */
+  updateEdits : function() {
+    this.hideEdits(this.over);
+    this.showEdits(this.over);
     watch();
-  };
+  }
 };

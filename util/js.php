@@ -7,38 +7,45 @@ require_once(INC."/translations.php");
 require_once(INC.'/minify/JSMin.php');
 
 $js=array(
- "jquery-1.9.1.min.js",
- "jquery-ui-1.10.3.custom.min.js",
- "ajaxfileupload.js",
- "dashboard.js",
- "emphasize.js",
- "progress.js",
- "timesortedset.js",
- "timeline.js",
- "avatar.js",
- "metaballs.js",
+  "jquery-1.9.1.min.js",
+  "jquery-ui-1.10.3.custom.min.js",
+  "ajaxfileupload.js",
+  "dashboard.js",
+  "emphasize.js",
+  "progress.js",
+  "timesortedset.js",
+  "timeline.js",
+  "avatar.js",
+  "metaballs.js",
+  // for demo only
+  "demo.js",
+  "jquery.history.js",
+  "swfobject.js",
 );
 
 $translate=array(
- "ajaxfileupload.js",
- "dashboard.js",
- "emphasize.js",
- "progress.js",
- "timesortedset.js",
- "timeline.js",
- "avatar.js",
- "metaballs.js",
+  "ajaxfileupload.js",
+  "dashboard.js",
+  "emphasize.js",
+  "progress.js",
+  "timesortedset.js",
+  "timeline.js",
+  "avatar.js",
+  "metaballs.js",
+  "demo.js",
 );
 
 $minify=array(
- "ajaxfileupload.js",
- "dashboard.js",
- "emphasize.js",
- "progress.js",
- "timesortedset.js",
- "timeline.js",
- "avatar.js",
- "metaballs.js",
+  "ajaxfileupload.js",
+  "dashboard.js",
+  "emphasize.js",
+  "progress.js",
+  "timesortedset.js",
+  "timeline.js",
+  "avatar.js",
+  "metaballs.js",
+  "demo.js",
+  "swfobjects.js",
 );
 
 function compress($s) {
@@ -47,24 +54,24 @@ function compress($s) {
 }
 
 function create_js($lang) {
-  global $js;
-  global $translate;
-  global $minify;
+ global $js;
+ global $translate;
+ global $minify;
 
-  $s="";
-  foreach($js as $j) {
-    $c=file_get_contents(INC.'/js/'.$j);
-    if (in_array($j, $translate)) { // with i18n
-      $c.=i18n($c, $lang);
-    }
-    if (!DEV && in_array($j, $minify)) { // minify
-     $c.=JSMin::minify($c);
-    }
-    $s.=$c."\n";
+ $s="";
+ foreach($js as $j) {
+  $c=file_get_contents(INC.'/js/'.$j);
+  if (in_array($j, $translate)) { // with i18n
+   $c=i18n($c, $lang);
   }
-  $s=compress($s);
-  file_put_contents(CACHE.'/'.$lang.'.js.gz', $s);
-  return $s;
+  if (!DEV && in_array($j, $minify)) { // minify
+   $c=JSMin::minify($c);
+  }
+  $s.=$c."\n";
+ }
+ $s=compress($s);
+ file_put_contents(CACHE.'/'.$lang.'.js.gz', $s);
+ return $s;
 }
 
 $lang=$_GET["lang"];
@@ -77,23 +84,23 @@ if (!DEV) {
 }
 header('Content-Type: text/javascript; charset=utf-8');
 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
-  header("X-Compression: gzip");
-  header("Content-Encoding: gzip");
+ header("X-Compression: gzip");
+ header("Content-Encoding: gzip");
 }
 
 if (!DEV && file_exists(CACHE.'/'.$lang.'.js.gz')) {
-  if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
-    readfile(CACHE.'/'.$lang.'.js.gz');
-    exit();
-  } else {
-    echo(gzuncompress(substr(file_get_contents(CACHE.'/'.$lang.'.js.gz'), 8)));
-  }
+ if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
+  readfile(CACHE.'/'.$lang.'.js.gz');
+  exit();
+ } else {
+  echo(gzuncompress(substr(file_get_contents(CACHE.'/'.$lang.'.js.gz'), 8)));
+ }
 } else {
-  $s=create_js($lang);
-  if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
-    echo($s);
-  } else {
-    echo(gzuncompress(substr($s, 8)));
-  }
+ $s=create_js($lang);
+ if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) {
+  echo($s);
+ } else {
+  echo(gzuncompress(substr($s, 8)));
+ }
 }
 ?>
